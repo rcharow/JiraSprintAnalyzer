@@ -2,3 +2,4 @@
 .idea/
 /ui/node_modules
 /ui/target
+ui.iml
