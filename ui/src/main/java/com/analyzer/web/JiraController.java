@@ -1,21 +1,18 @@
 package com.analyzer.web;
 
+import com.analyzer.domain.JiraBoard;
+import com.analyzer.domain.JiraBoardResponse;
 import com.analyzer.domain.JiraProject;
 import com.analyzer.service.JiraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by rcharow on 9/21/16.
@@ -29,8 +26,20 @@ public class JiraController {
     private JiraService jiraService;
 
     @GET
-    @Path("/projects")
+    @Path("/project")
     public List<JiraProject> getProjects() {
         return jiraService.getProjects();
+    }
+
+    @GET
+    @Path("/board")
+    public List<JiraBoard> getBoards() {
+        return jiraService.getAllBoards();
+    }
+
+    @GET
+    @Path("/board/{id}")
+    public JiraBoard getBoard(@PathParam("id") String id) {
+        return jiraService.getBoard(id);
     }
 }
