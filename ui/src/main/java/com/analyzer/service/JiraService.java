@@ -1,8 +1,6 @@
 package com.analyzer.service;
 
-import com.analyzer.domain.JiraBoard;
-import com.analyzer.domain.JiraBoardResponse;
-import com.analyzer.domain.JiraProject;
+import com.analyzer.domain.*;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,11 +10,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.constraints.Null;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -107,6 +105,39 @@ public class JiraService {
         JiraBoard board = response.getBody();
 
         return board;
+    }
+
+    public List<JiraSprint> getSprints(String boardId) {
+
+        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board/" + boardId + "/sprint",
+                HttpMethod.GET,
+                request,
+                JiraSprintResponse.class
+        );
+
+        JiraSprintResponse sprintsResponse = response.getBody();
+
+        return sprintsResponse.getValues();
+    }
+
+    public List<JiraSprint> getSprints(String boardId, String sprintStates) {
+
+        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<JiraSprintResponse> response =
+                restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates,
+                HttpMethod.GET,
+                request,
+                JiraSprintResponse.class
+        );
+
+        JiraSprintResponse sprintsResponse = response.getBody();
+
+        return sprintsResponse.getValues();
     }
 
 }
