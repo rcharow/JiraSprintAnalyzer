@@ -1,10 +1,8 @@
 package com.analyzer.web;
 
-import com.analyzer.domain.JiraBoard;
-import com.analyzer.domain.JiraBoardResponse;
-import com.analyzer.domain.JiraProject;
-import com.analyzer.domain.JiraSprint;
+import com.analyzer.domain.*;
 import com.analyzer.service.JiraBoardService;
+import com.analyzer.service.JiraIssueService;
 import com.analyzer.service.JiraService;
 import com.analyzer.service.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,9 @@ public class JiraController {
     @Autowired
     private JiraSprintService jiraSprintService;
 
+    @Autowired
+    private JiraIssueService jiraIssueService;
+
     @GET
     @Path("/board")
     public List<JiraBoard> getBoards() {
@@ -53,5 +54,11 @@ public class JiraController {
     @Path("/board/{boardId}/sprints/{sprintStates}")
     public List<JiraSprint> getSprints(@PathParam("boardId") String boardId, @PathParam("sprintStates") String sprintStates) {
         return jiraSprintService.getSprints(boardId,sprintStates);
+    }
+
+    @GET
+    @Path("/sprint/{sprintId}/issues")
+    public List<JiraIssue> getIssues(@PathParam("sprintId") String sprintId) {
+        return jiraIssueService.getSprintIssues(sprintId);
     }
 }
