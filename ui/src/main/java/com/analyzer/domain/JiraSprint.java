@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by rcharow on 10/8/16.
  */
 @JsonIgnoreProperties(ignoreUnknown = true )
-public class JiraSprint implements Comparable<JiraSprint>{
+public class JiraSprint {
     private Integer id;
     private String self;
     private String state;
@@ -84,9 +84,5 @@ public class JiraSprint implements Comparable<JiraSprint>{
 
     public void setOriginBoardId(Integer originBoardId) {
         this.originBoardId = originBoardId;
-    }
-
-    public int compareTo(JiraSprint sprint) {
-        return startDate.compareTo(sprint.startDate);
     }
 }
