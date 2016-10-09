@@ -8,7 +8,7 @@ import java.util.List;
  * Created by rcharow on 10/1/16.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JiraBoard {
+public class JiraBoard implements Comparable<JiraBoard>{
     public String id;
     public String self;
     public String name;
@@ -54,6 +54,10 @@ public class JiraBoard {
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 '}';
+    }
+
+    public int compareTo(JiraBoard board) {
+        return name.compareTo(board.name);
     }
 
 }
