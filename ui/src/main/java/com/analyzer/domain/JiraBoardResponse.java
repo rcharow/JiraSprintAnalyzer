@@ -12,7 +12,6 @@ import java.util.List;
 public class JiraBoardResponse extends JiraResponse{
     private List<JiraBoard> values;
 
-
     public List<JiraBoard> getValues() {
         return values;
     }

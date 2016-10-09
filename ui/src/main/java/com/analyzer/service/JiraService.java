@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.constraints.Null;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,14 +20,14 @@ import java.util.List;
  */
 @Component
 @PropertySource(value = "config.properties")
-public class JiraService {
+public abstract class JiraService {
     private String jiraUser;
 
     private String jiraPassword;
 
-    private String jiraUrl;
+    protected String jiraUrl;
 
-    private HttpHeaders jiraAuthHeaders;
+    protected HttpHeaders jiraAuthHeaders;
 
     public void setJiraUser(String jiraUser) {
         this.jiraUser = jiraUser;
@@ -61,83 +59,4 @@ public class JiraService {
 
         this.jiraAuthHeaders = headers;
     }
-
-    public List<JiraProject> getProjects() {
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<List<JiraProject>> response = restTemplate.exchange(jiraUrl + "/rest/api/2/project",
-                HttpMethod.GET,
-                request,
-                new ParameterizedTypeReference<List<JiraProject>>() {
-                });
-
-        List<JiraProject> projects = response.getBody();
-
-        return projects;
-    }
-
-    public List<JiraBoard> getAllBoards() {
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<JiraBoardResponse> response = restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board",
-                HttpMethod.GET,
-                request,
-                JiraBoardResponse.class
-        );
-
-        JiraBoardResponse boardResponse = response.getBody();
-
-        return boardResponse.getValues();
-    }
-
-    public JiraBoard getBoard(String name) {
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<JiraBoard> response = restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board/" + name,
-                HttpMethod.GET,
-                request,
-                JiraBoard.class
-        );
-
-        JiraBoard board = response.getBody();
-
-        return board;
-    }
-
-    public List<JiraSprint> getSprints(String boardId) {
-
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board/" + boardId + "/sprint",
-                HttpMethod.GET,
-                request,
-                JiraSprintResponse.class
-        );
-
-        JiraSprintResponse sprintsResponse = response.getBody();
-
-        return sprintsResponse.getValues();
-    }
-
-    public List<JiraSprint> getSprints(String boardId, String sprintStates) {
-
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<JiraSprintResponse> response =
-                restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates,
-                HttpMethod.GET,
-                request,
-                JiraSprintResponse.class
-        );
-
-        JiraSprintResponse sprintsResponse = response.getBody();
-
-        return sprintsResponse.getValues();
-    }
-
 }

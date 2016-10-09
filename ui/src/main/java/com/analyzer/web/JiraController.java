@@ -4,7 +4,9 @@ import com.analyzer.domain.JiraBoard;
 import com.analyzer.domain.JiraBoardResponse;
 import com.analyzer.domain.JiraProject;
 import com.analyzer.domain.JiraSprint;
+import com.analyzer.service.JiraBoardService;
 import com.analyzer.service.JiraService;
+import com.analyzer.service.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,35 +26,32 @@ import java.util.List;
 public class JiraController {
 
     @Autowired
-    private JiraService jiraService;
+    private JiraBoardService jiraBoardService;
 
-    @GET
-    @Path("/project")
-    public List<JiraProject> getProjects() {
-        return jiraService.getProjects();
-    }
+    @Autowired
+    private JiraSprintService jiraSprintService;
 
     @GET
     @Path("/board")
     public List<JiraBoard> getBoards() {
-        return jiraService.getAllBoards();
+        return jiraBoardService.getAllBoards();
     }
 
     @GET
     @Path("/board/{id}")
     public JiraBoard getBoard(@PathParam("id") String id) {
-        return jiraService.getBoard(id);
+        return jiraBoardService.getBoard(id);
     }
 
     @GET
     @Path("/board/{boardId}/sprints/")
     public List<JiraSprint> getSprints(@PathParam("boardId") String boardId) {
-        return jiraService.getSprints(boardId);
+        return jiraSprintService.getSprints(boardId);
     }
 
     @GET
     @Path("/board/{boardId}/sprints/{sprintStates}")
     public List<JiraSprint> getSprints(@PathParam("boardId") String boardId, @PathParam("sprintStates") String sprintStates) {
-        return jiraService.getSprints(boardId,sprintStates);
+        return jiraSprintService.getSprints(boardId,sprintStates);
     }
 }
