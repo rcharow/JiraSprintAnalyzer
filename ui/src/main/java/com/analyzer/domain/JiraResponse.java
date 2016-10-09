@@ -1,7 +1,6 @@
 package com.analyzer.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * Created by rcharow on 10/8/16.
@@ -9,7 +8,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraResponse {
     private Integer maxResults;
-    private Integer startAt;
+    private Long startAt;
     private Integer total;
     private Boolean isLast;
 
@@ -21,11 +20,11 @@ public class JiraResponse {
         this.maxResults = maxResults;
     }
 
-    public Integer getStartAt() {
+    public Long getStartAt() {
         return startAt;
     }
 
-    public void setStartAt(Integer startAt) {
+    public void setStartAt(Long startAt) {
         this.startAt = startAt;
     }
 
@@ -37,11 +36,11 @@ public class JiraResponse {
         this.total = total;
     }
 
-    public Boolean getLast() {
+    public boolean getIsLast() {
         return isLast;
     }
 
-    public void setLast(Boolean last) {
+    public void setIsLast(boolean last) {
         isLast = last;
     }
 }
