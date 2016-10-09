@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -60,6 +61,7 @@ public class JiraBoardService extends JiraService {
             boards.addAll(boardResponse.getValues());
         }
 
+        Collections.sort(boards);
         return boards;
     }
 
