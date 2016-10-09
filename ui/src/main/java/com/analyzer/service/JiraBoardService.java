@@ -24,19 +24,43 @@ public class JiraBoardService extends JiraService {
         super(jiraUser, jiraPassword, jiraUrl);
     }
 
-    public List<JiraBoard> getAllBoards() {
+    private JiraBoardResponse getBoardPage(Long startPage) {
+        String requestUrl = "/rest/agile/1.0/board?limit=50";
+
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<JiraBoardResponse> response = restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board",
+        if(startPage != 0L){
+            requestUrl = "/rest/agile/1.0/board?limit=50&startAt=" + startPage;
+        }
+
+        ResponseEntity<JiraBoardResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
                 HttpMethod.GET,
                 request,
                 JiraBoardResponse.class
         );
 
-        JiraBoardResponse boardResponse = response.getBody();
 
-        return boardResponse.getValues();
+        return response.getBody();
+    }
+
+    public List<JiraBoard> getAllBoards() {
+        List<JiraBoard> boards;
+        Boolean lastPage;
+        Long startPage = 0L;
+
+        JiraBoardResponse boardResponse = getBoardPage(startPage);
+        lastPage = boardResponse.getIsLast();
+        boards = boardResponse.getValues();
+
+        while(!lastPage){
+            startPage = startPage + 50;
+            boardResponse = getBoardPage(startPage);
+            lastPage = boardResponse.getIsLast();
+            boards.addAll(boardResponse.getValues());
+        }
+
+        return boards;
     }
 
     public JiraBoard getBoard(String boardId) {
