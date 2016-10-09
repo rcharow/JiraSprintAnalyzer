@@ -81,7 +81,6 @@ public class JiraSprintService extends JiraService{
             sprints.addAll(boardResponse.getValues());
         }
 
-        Collections.sort(sprints);
         return sprints;
     }
 
@@ -102,7 +101,6 @@ public class JiraSprintService extends JiraService{
             sprints.addAll(boardResponse.getValues());
         }
 
-        Collections.sort(sprints);
         return sprints;
     }
 }
