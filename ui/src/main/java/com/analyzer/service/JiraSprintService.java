@@ -4,14 +4,12 @@ import com.analyzer.domain.JiraSprint;
 import com.analyzer.domain.JiraSprintResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,10 +44,10 @@ public class JiraSprintService extends JiraService{
     }
 
     private JiraSprintResponse getSprintPage(String boardId, Long startPage, String sprintStates) {
-        String requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?states=" + sprintStates + "&limit=50";
+        String requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates + "&limit=50";
 
         if(startPage != 0L){
-            requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?states=" + sprintStates + "&limit=50&startAt=" + startPage;
+            requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates + "&limit=50&startAt=" + startPage;
         }
 
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
@@ -84,19 +82,19 @@ public class JiraSprintService extends JiraService{
         return sprints;
     }
 
-    public List<JiraSprint> getSprints(String boardId, String sprintStates) {
+    public List<JiraSprint> getSprints(String boardId, String sprintState) {
 
         List<JiraSprint> sprints;
         Boolean lastPage;
         Long startPage = 0L;
 
-        JiraSprintResponse boardResponse = getSprintPage(boardId, startPage, sprintStates);
+        JiraSprintResponse boardResponse = getSprintPage(boardId, startPage, sprintState);
         lastPage = boardResponse.getIsLast();
         sprints = boardResponse.getValues();
 
         while(!lastPage){
             startPage = startPage + 50;
-            boardResponse = getSprintPage(boardId, startPage, sprintStates);
+            boardResponse = getSprintPage(boardId, startPage, sprintState);
             lastPage = boardResponse.getIsLast();
             sprints.addAll(boardResponse.getValues());
         }

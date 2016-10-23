@@ -3,7 +3,6 @@ package com.analyzer.web;
 import com.analyzer.domain.*;
 import com.analyzer.service.JiraBoardService;
 import com.analyzer.service.JiraIssueService;
-import com.analyzer.service.JiraService;
 import com.analyzer.service.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,9 +50,9 @@ public class JiraController {
     }
 
     @GET
-    @Path("/board/{boardId}/sprints/{sprintStates}")
-    public List<JiraSprint> getSprints(@PathParam("boardId") String boardId, @PathParam("sprintStates") String sprintStates) {
-        return jiraSprintService.getSprints(boardId,sprintStates);
+    @Path("/board/{boardId}/sprints/{sprintState}")
+    public List<JiraSprint> getSprints(@PathParam("boardId") String boardId, @PathParam("sprintState") String sprintState) {
+        return jiraSprintService.getSprints(boardId, sprintState);
     }
 
     @GET
