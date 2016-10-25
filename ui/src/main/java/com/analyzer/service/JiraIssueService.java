@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by rcharow on 10/9/16.
@@ -60,5 +62,15 @@ public class JiraIssueService extends JiraService {
         }
 
         return issues;
+    }
+
+    public List<JiraIssue> getSprintParentIssues(String sprintId){
+        List<JiraIssue> issues = this.getSprintIssues(sprintId);
+
+        List<JiraIssue> parentIssues = issues.stream()
+                .filter(p -> p.getFields().getIssuetype().isSubtask() == false)
+                .collect(Collectors.toList());
+
+        return parentIssues;
     }
 }
