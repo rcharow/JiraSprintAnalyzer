@@ -48,15 +48,15 @@ public class JiraIssueService extends JiraService {
         Boolean lastPage;
         Long startPage = 0L;
 
-        JiraIssueResponse sprintResponse = getSprintIssuePage(sprintId, startPage);
-        issues = sprintResponse.getIssues();
+        JiraIssueResponse issueResponse = getSprintIssuePage(sprintId, startPage);
+        issues = issueResponse.getIssues();
         lastPage = issues.size() == 0;
 
         while(!lastPage){
             startPage = startPage + 50;
-            sprintResponse = getSprintIssuePage(sprintId, startPage);
-            lastPage = sprintResponse.getIssues().size() == 0;
-            issues.addAll(sprintResponse.getIssues());
+            issueResponse = getSprintIssuePage(sprintId, startPage);
+            lastPage = issueResponse.getIssues().size() == 0;
+            issues.addAll(issueResponse.getIssues());
         }
 
         return issues;
