@@ -60,4 +60,10 @@ public class JiraController {
     public List<JiraIssue> getIssues(@PathParam("sprintId") String sprintId) {
         return jiraIssueService.getSprintIssues(sprintId);
     }
+
+    @GET
+    @Path("/sprint/{sprintId}/issues/parent")
+    public List<JiraIssue> getParentIssues(@PathParam("sprintId") String sprintId) {
+        return jiraIssueService.getSprintParentIssues(sprintId);
+    }
 }
