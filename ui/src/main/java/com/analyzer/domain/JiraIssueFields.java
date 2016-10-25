@@ -8,22 +8,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraIssueFields {
-    private Integer customfield_10063;
-    private String description;
 
-    public Integer getCustomfield_10063() {
-        return customfield_10063;
+    private Integer points;
+    private JiraIssueTypeFields issuetype;
+
+    @JsonProperty("points")
+    public Integer getPoints() {
+        return points;
     }
 
-    public void setCustomfield_10063(Integer customfield_10063) {
-        this.customfield_10063 = customfield_10063;
+    @JsonProperty("customfield_10063")
+    public void setPoints(Integer points) {
+        this.points = points;
     }
 
-    public String getDescription() {
-        return description;
+    public JiraIssueTypeFields getIssuetype() {
+        return issuetype;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setIssuetype(JiraIssueTypeFields issuetype) {
+        this.issuetype = issuetype;
+    }
+
+    @Override
+    public String toString() {
+        return "JiraIssueFields{" +
+                "points=" + points +
+                ", issuetype=" + issuetype +
+                '}';
     }
 }
