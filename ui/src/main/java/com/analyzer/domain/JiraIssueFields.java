@@ -9,8 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraIssueFields {
     private Integer points;
-    private JiraIssueTypeFields issuetype;
-    private Boolean isSubtask;
+    private JiraIssueTypeFields issueType;
 
     @JsonProperty("points")
     public Integer getPoints() {
@@ -22,19 +21,21 @@ public class JiraIssueFields {
         this.points = points;
     }
 
-    public JiraIssueTypeFields getIssuetype() {
-        return issuetype;
+    @JsonProperty("issueType")
+    public JiraIssueTypeFields getIssueType() {
+        return issueType;
     }
 
-    public void setIssuetype(JiraIssueTypeFields issuetype) {
-        this.issuetype = issuetype;
+    @JsonProperty("issuetype")
+    public void setIssueType(JiraIssueTypeFields issueType) {
+        this.issueType = issueType;
     }
 
     @Override
     public String toString() {
         return "JiraIssueFields{" +
                 "points=" + points +
-                ", issuetype=" + issuetype +
+                ", issueType=" + issueType +
                 '}';
     }
 }
