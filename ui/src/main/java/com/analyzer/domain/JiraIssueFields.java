@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraIssueFields {
-
     private Integer points;
     private JiraIssueTypeFields issuetype;
+    private Boolean isSubtask;
 
     @JsonProperty("points")
     public Integer getPoints() {
