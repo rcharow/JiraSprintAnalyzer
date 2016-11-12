@@ -1,4 +1,4 @@
-package com.analyzer.service;
+package com.analyzer.service.Jira;
 
 import com.analyzer.domain.JiraIssue;
 import com.analyzer.domain.JiraIssueResponse;

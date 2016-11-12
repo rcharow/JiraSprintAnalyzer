@@ -1,4 +1,4 @@
-package com.analyzer.service;
+package com.analyzer.service.Jira;
 
 import com.analyzer.domain.JiraSprint;
 import com.analyzer.domain.JiraSprintResponse;

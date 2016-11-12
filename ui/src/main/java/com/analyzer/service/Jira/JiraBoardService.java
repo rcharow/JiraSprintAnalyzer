@@ -1,10 +1,9 @@
-package com.analyzer.service;
+package com.analyzer.service.Jira;
 
 import com.analyzer.domain.JiraBoard;
 import com.analyzer.domain.JiraBoardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
