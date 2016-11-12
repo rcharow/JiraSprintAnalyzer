@@ -1,9 +1,9 @@
 package com.analyzer.web;
 
 import com.analyzer.domain.*;
-import com.analyzer.service.JiraBoardService;
-import com.analyzer.service.JiraIssueService;
-import com.analyzer.service.JiraSprintService;
+import com.analyzer.service.jira.JiraBoardService;
+import com.analyzer.service.jira.JiraIssueService;
+import com.analyzer.service.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
