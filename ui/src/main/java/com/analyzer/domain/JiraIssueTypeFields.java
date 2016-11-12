@@ -37,4 +37,13 @@ public class JiraIssueTypeFields {
     public void setSubtask(boolean subtask) {
         isSubtask = subtask;
     }
+
+    @Override
+    public String toString() {
+        return "JiraIssueTypeFields{" +
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", isSubtask=" + isSubtask +
+                '}';
+    }
 }
