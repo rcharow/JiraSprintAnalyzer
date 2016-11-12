@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JiraIssueFields {
     private Integer points;
     private JiraIssueTypeFields issueType;
+    private Integer timeSpent;
+    private Integer aggregateTimeSpent;
 
     @JsonProperty("points")
     public Integer getPoints() {
@@ -31,11 +33,33 @@ public class JiraIssueFields {
         this.issueType = issueType;
     }
 
+    @JsonProperty("timeSpent")
+    public Integer getTimeSpent() {
+        return timeSpent;
+    }
+
+    @JsonProperty("timespent")
+    public void setTimeSpent(Integer timeSpent) {
+        this.timeSpent = timeSpent;
+    }
+
+    @JsonProperty("aggregateTimeSpent")
+    public Integer getAggregateTimeSpent() {
+        return aggregateTimeSpent;
+    }
+
+    @JsonProperty("aggregatetimespent")
+    public void setAggregateTimeSpent(Integer aggregateTimeSpent) {
+        this.aggregateTimeSpent = aggregateTimeSpent;
+    }
+
     @Override
     public String toString() {
         return "JiraIssueFields{" +
                 "points=" + points +
                 ", issueType=" + issueType +
+                ", timeSpent=" + timeSpent +
+                ", aggregateTimeSpent=" + aggregateTimeSpent +
                 '}';
     }
 }
