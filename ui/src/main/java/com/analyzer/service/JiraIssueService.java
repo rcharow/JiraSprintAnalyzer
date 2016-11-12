@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,7 +66,7 @@ public class JiraIssueService extends JiraService {
         List<JiraIssue> issues = this.getSprintIssues(sprintId);
 
         List<JiraIssue> parentIssues = issues.stream()
-                .filter(p -> p.getFields().getIssuetype().isSubtask() == false)
+                .filter(p -> p.getFields().getIssueType().isSubtask() == false)
                 .collect(Collectors.toList());
 
         return parentIssues;
