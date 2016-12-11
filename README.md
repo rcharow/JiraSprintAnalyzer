@@ -7,6 +7,7 @@ _This application is in the beginning stages_
 1. ``cd /JiraSprintAnalyzer/ui``
 2. ``npm install``
 3. ``gulp && gulp watch``
+    - Gulp will compile the ts to js using webpack, and the sass to css
 4. ``mvn spring-boot-run``
 5. Visit localhost/8080#
 
