@@ -20,5 +20,11 @@ module.exports = {
         loaders: [
             {test: /\.tsx?$/, loader: 'ts-loader'}
         ]
-    }
+    },
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('third-party', _output_dir + 'third-party.js'),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery'
+        })]
 };
