@@ -22,3 +22,4 @@ import 'rxjs/add/operator/delay';
 
 import 'lodash';
 import 'bootstrap';
+import 'jquery';
