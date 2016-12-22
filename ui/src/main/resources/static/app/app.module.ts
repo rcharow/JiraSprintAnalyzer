@@ -9,12 +9,12 @@ import { HomeComponent } from './home';
 @NgModule({
     imports: [BrowserModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'revenue', pathMatch: 'full'},
+            { path: '', redirectTo: '/', pathMatch: 'full'},
         ]),
         HttpModule
     ],
     providers: [
-        { provide: APP_BASE_HREF, useValue: '/analyzer/' }
+        { provide: APP_BASE_HREF, useValue: '/' }
     ],
     exports: [
         RouterModule
