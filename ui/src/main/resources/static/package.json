@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "~2.2.4",
     "@angular/router": "~3.2.4",
     "@angular/upgrade": "~2.2.4",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.0.0-alpha.5",
     "core-js": "^2.4.1",
     "es6-shim": "^0.35.2",
     "jquery": "^3.1.1",
@@ -32,8 +32,10 @@
     "zone.js": "^0.7.2"
   },
   "devDependencies": {
+    "bourbon": "^4.2.7",
     "gulp": "^3.9.1",
     "gulp-sass": "^3.0.0",
+    "gulp-sourcemaps": "^1.9.1",
     "gulp-watch": "^4.3.11",
     "html-webpack-plugin": "^2.24.1",
     "raw-loader": "^0.5.1",
