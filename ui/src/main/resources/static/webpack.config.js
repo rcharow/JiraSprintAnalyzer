@@ -25,6 +25,7 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin('third-party', _output_dir + 'third-party.js'),
         new webpack.ProvidePlugin({
             $: 'jquery',
-            jQuery: 'jquery'
+            jQuery: 'jquery',
+            'window.Tether': 'tether'
         })]
 };
