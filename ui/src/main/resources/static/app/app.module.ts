@@ -4,9 +4,14 @@ import { APP_BASE_HREF } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
-import { HomeComponent } from './home';
+import { HomeComponent } from './home.component';
+import {NavBarComponent} from "./navbar/navbar.component";
 
 @NgModule({
+    declarations: [
+        HomeComponent,
+        NavBarComponent
+    ],
     imports: [BrowserModule,
         RouterModule.forRoot([
             { path: '', redirectTo: '/', pathMatch: 'full'},
@@ -19,7 +24,6 @@ import { HomeComponent } from './home';
     exports: [
         RouterModule
     ],
-    declarations: [HomeComponent],
     bootstrap: [HomeComponent],
 })
 export class AppModule { }
