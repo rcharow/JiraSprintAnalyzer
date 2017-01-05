@@ -11,13 +11,14 @@ export class JiraBoard {
 }
 
 @Injectable()
-export class AnalysisOptionsService {
+export class JiraService {
     constructor (private http: Http) {
-        console.debug('AnalysisOptionsService initialized.')
+        console.debug('JiraService initialized.')
     }
 
-    getAnalysisOptions (): Observable<JiraBoard[]> {
+    getBoards (): Observable<JiraBoard[]> {
         return this.http.get('/api/jira/board')
             .map(res => res.json())
     }
+
 };
