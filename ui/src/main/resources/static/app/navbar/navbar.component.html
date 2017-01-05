@@ -6,7 +6,7 @@
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="http://example.com" id="responsiveNavbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose Jira board</a>
         <div class="dropdown-menu" aria-labelledby="responsiveNavbarDropdown">
-          <li *ngFor="let option of analysisOptions" class="dropdown-item" value="{{option.id}}">{{option.name}}</li>
+          <li *ngFor="let board of boards" class="dropdown-item" value="{{board.id}}">{{board.name}}</li>
         </div>
       </li>
     </ul>
