@@ -5,14 +5,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home.component';
-import {NavBarComponent} from "./navbar/navbar.component";
+import  {NavBarComponent } from "./navbar/navbar.component";
 
 @NgModule({
     declarations: [
         HomeComponent,
         NavBarComponent
     ],
-    imports: [BrowserModule,
+    imports: [
+        BrowserModule,
         RouterModule.forRoot([
             { path: '', redirectTo: '/', pathMatch: 'full'},
         ]),
