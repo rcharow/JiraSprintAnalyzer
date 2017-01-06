@@ -8,6 +8,7 @@ import { JiraService, JiraBoard } from "./jira/jira.service";
 })
 export class HomeComponent{
     boards: JiraBoard[] = [];
+    selectedBoard: JiraBoard;
 
     constructor(private jiraService: JiraService) {
         console.debug('Home component loaded!');
