@@ -3,11 +3,11 @@
   <div class="collapse navbar-toggleable-md" id="navbarResponsive">
     <a class="navbar-brand" href="#">Sprint Analyzer</a>
     <ul class="nav navbar-nav">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="http://example.com" id="responsiveNavbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose Jira board</a>
-        <div class="dropdown-menu" aria-labelledby="responsiveNavbarDropdown">
-          <li *ngFor="let board of boards" class="dropdown-item" value="{{board.id}}">{{board.name}}</li>
-        </div>
+      <li class="nav-item">
+        <select class="custom-select" (change)="boardSelected($event)" [(ngModel)]="selectedBoard">
+          <option selected>Select Jira Board</option>
+          <option *ngFor="let board of boards" [ngValue]="{{board}}">{{board.name}}</option>
+        </select>
       </li>
     </ul>
   </div>
