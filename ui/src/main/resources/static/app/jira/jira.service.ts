@@ -10,6 +10,17 @@ export class JiraBoard {
 
 }
 
+export class JiraSprint {
+    public id: String;
+    public self: String;
+    public state: String;
+    public name: String;
+    public startDate: Date;
+    public endDate: Date;
+    public completeDate: Date;
+    public originBoardId: String;
+}
+
 @Injectable()
 export class JiraService {
     constructor (private http: Http) {
