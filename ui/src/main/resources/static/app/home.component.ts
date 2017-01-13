@@ -8,7 +8,7 @@ import { JiraService, JiraBoard } from "./jira/jira.service";
 })
 export class HomeComponent{
     boards: JiraBoard[] = [];
-    selectedBoard: JiraBoard;
+    selectedBoard: JiraBoard = new JiraBoard();
 
     constructor(private jiraService: JiraService) {
         console.debug('Home component loaded!');
@@ -19,6 +19,10 @@ export class HomeComponent{
             .subscribe(boards => {
                 this.boards = boards;
             });
+    }
+
+    onBoardSelect(board: JiraBoard) {
+        this.selectedBoard = board;
     }
 
 }

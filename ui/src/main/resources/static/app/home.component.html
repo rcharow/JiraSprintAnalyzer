@@ -1,1 +1,2 @@
-<navbar [boards]="boards"></navbar>
+<navbar [boards]="boards" (selectBoard)="onBoardSelect($event)"></navbar>
+Selected Board: {{selectedBoard.name}}

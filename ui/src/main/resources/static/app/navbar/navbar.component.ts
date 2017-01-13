@@ -6,17 +6,12 @@ import { FormsModule } from '@angular/forms';
     selector: 'navbar',
     templateUrl: '/app/navbar/navbar.component.html'
 })
+
 export class NavBarComponent{
     @Input() boards: JiraBoard[];
     @Output() selectBoard: EventEmitter<JiraBoard> = new EventEmitter<JiraBoard>();
 
-    private selectedBoard: JiraBoard;
-
-    constructor() { }
-
-    ngOnInit() {
-
-    }
+    selectedBoard: JiraBoard;
 
     onBoardSelect() {
         this.selectBoard.emit(this.selectedBoard);
