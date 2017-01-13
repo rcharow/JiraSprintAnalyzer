@@ -4,7 +4,8 @@
 var gulp       = require('gulp'),
     sass       = require('gulp-sass'),
     webpack    = require('webpack-stream'),
-    sourcemap  = require('gulp-sourcemaps');
+    sourcemap  = require('gulp-sourcemaps'),
+    plumber    = require('gulp-plumber');
 
 var _output_dir = '../../../../target/classes/static/app/';
 
@@ -29,6 +30,7 @@ gulp.task('watch-pack', function () {
 //compile sass files
 gulp.task('build-css', function () {
     return gulp.src('./assets/scss/*.scss')
+        .pipe(plumber({ errorHandler: handleError }))
         .pipe(sourcemap.init())
         .pipe(sass({
             verbose: true,
@@ -36,7 +38,6 @@ gulp.task('build-css', function () {
             includePaths: [
                 './node_modules/bootstrap/scss/',
                 require('bourbon').includePaths
-
             ],
             sourcemaps: true
         }).on('error', function (err) {
@@ -50,11 +51,19 @@ gulp.task('build-css', function () {
 
 gulp.task('sass-copy', ['build-css'], function () {
     return gulp.src('./assets/css/**/*')
+        .pipe(plumber({ errorHandler: handleError }))
         .pipe(gulp.dest(_output_dir + '../assets/css'));
 });
 
 function pack(config) {
     return gulp.src('./app/vendor.js')
+        .pipe(plumber({ errorHandler: handleError }))
         .pipe(webpack(require(config)))
-        .pipe(gulp.dest(_output_dir));
+        .pipe(gulp.dest(_output_dir))
+        .on('err', handleError);
+}
+
+function handleError(err) {
+    console.log(err.toString());
+    this.emit('end');
 }
