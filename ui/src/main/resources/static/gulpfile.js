@@ -65,8 +65,7 @@ function pack(config) {
     return gulp.src('./app/vendor.js')
         .pipe(plumber({ errorHandler: handleError }))
         .pipe(webpack(require(config)))
-        .pipe(gulp.dest(_output_dir))
-        .on('err', handleError);
+        .pipe(gulp.dest(_output_dir));
 }
 
 function handleError(err) {
