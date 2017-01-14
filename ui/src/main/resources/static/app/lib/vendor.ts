@@ -21,5 +21,6 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 
 import 'lodash';
-import 'bootstrap';
 import 'jquery';
+import 'tether';
+import 'bootstrap';
