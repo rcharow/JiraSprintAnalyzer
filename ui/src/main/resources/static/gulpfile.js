@@ -5,7 +5,9 @@ var gulp       = require('gulp'),
     sass       = require('gulp-sass'),
     webpack    = require('webpack-stream'),
     sourcemap  = require('gulp-sourcemaps'),
-    plumber    = require('gulp-plumber');
+    plumber    = require('gulp-plumber'),
+    watch      = require('gulp-watch');
+
 
 var _output_dir = '../../../../target/classes/static/app/';
 
@@ -14,8 +16,8 @@ gulp.task('default', ['pack', 'build-css']);
 
 
 // configure which files to watch and what tasks to use on file changes
-gulp.task('watch', ['watch-pack'], function() {
-  gulp.watch('./scss/**/*.scss', ['sass-copy']);
+gulp.task('watch', ['sync-html', 'watch-pack'], function() {
+  gulp.watch('./assets/scss/**/*.scss', ['sass-copy']);
 });
 
 //pack ts to js with webpack
@@ -53,6 +55,10 @@ gulp.task('sass-copy', ['build-css'], function () {
     return gulp.src('./assets/css/**/*')
         .pipe(plumber({ errorHandler: handleError }))
         .pipe(gulp.dest(_output_dir + '../assets/css'));
+});
+
+gulp.task('sync-html', function () {
+    watch('app/**/*.html', {ignoreInitial: false}).pipe(gulp.dest(_output_dir));
 });
 
 function pack(config) {
