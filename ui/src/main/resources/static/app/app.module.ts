@@ -8,12 +8,14 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home.component';
 import  { NavBarComponent } from "./navbar/navbar.component";
 import  { VerticalNavComponent } from "./vertical-nav/vertical-nav.component";
+import { PillNavComponent } from "./pill-nav/pill-nav.component";
 
 @NgModule({
     declarations: [
         HomeComponent,
         NavBarComponent,
-        VerticalNavComponent
+        VerticalNavComponent,
+        PillNavComponent
     ],
     imports: [
         BrowserModule,
