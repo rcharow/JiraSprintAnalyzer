@@ -5,8 +5,8 @@
   <a class="navbar-brand top-nav__title" href="#">Sprint Analyzer</a>
 
   <div class="collapse navbar-collapse" id="topNavToggle">
-    <form class="form-inline">
-      <div class="form-group">
+    <form class="form-inline top-nav__board-form">
+      <div class="form-group top-nav__board-select">
         <select name="boardSelect" class="custom-select" (change)="onBoardSelect($event)" [(ngModel)]="selectedBoard" required>
           <option selected>Select Jira Board</option>
           <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
