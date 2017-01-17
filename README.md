@@ -15,7 +15,7 @@ jira.password=[password for authenticating requests to jira api]
 ```
 
 ## Running the app
-1. ``cd /JiraSprintAnalyzer/ui``
+1. ``cd /JiraSprintAnalyzer/ui/src/main/resources/static``
 2. ``npm install``
 3. ``gulp && gulp watch``
     - Gulp will compile the ts to js using webpack, and the sass to css
