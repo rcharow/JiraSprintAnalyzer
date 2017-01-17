@@ -1,21 +1,17 @@
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-toggleable-md navbar-light fixed-top top-nav">
+  <button class="navbar-toggler navbar-toggler-right top-nav__toggle" type="button" data-toggle="collapse" data-target="#topNavToggle" aria-controls="topNavToggle" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="#">Sprint Analyzer</a>
+  <a class="navbar-brand top-nav__title" href="#">Sprint Analyzer</a>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <form class="form-inline">
-          <div class="form-group">
-            <select name="boardSelect" class="custom-select" (change)="onBoardSelect($event)" [(ngModel)]="selectedBoard" required>
-              <option selected>Select Jira Board</option>
-              <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
-            </select>
-          </div>
-        </form>
-      </li>
-    </ul>
+  <div class="collapse navbar-collapse" id="topNavToggle">
+    <form class="form-inline">
+      <div class="form-group">
+        <select name="boardSelect" class="custom-select" (change)="onBoardSelect($event)" [(ngModel)]="selectedBoard" required>
+          <option selected>Select Jira Board</option>
+          <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
+        </select>
+      </div>
+    </form>
   </div>
 </nav>
