@@ -32,4 +32,9 @@ export class JiraService {
             .map(res => res.json())
     }
 
+    getSprintsByBoardId (boardId: String): Observable<JiraSprint[]> {
+        return this.http.get('/api/jira/board/' + boardId + '/sprints')
+            .map(res => res.json());
+    }
+
 };
