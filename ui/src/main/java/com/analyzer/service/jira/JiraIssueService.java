@@ -65,10 +65,8 @@ public class JiraIssueService extends JiraService {
     public List<JiraIssue> getSprintParentIssues(String sprintId){
         List<JiraIssue> issues = this.getSprintIssues(sprintId);
 
-        List<JiraIssue> parentIssues = issues.stream()
+        return issues.stream()
                 .filter(p -> p.getFields().getIssueType().isSubtask() == false)
                 .collect(Collectors.toList());
-
-        return parentIssues;
     }
 }
