@@ -22,14 +22,18 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class JiraController {
 
-    @Autowired
-    private JiraBoardService jiraBoardService;
+    private final JiraBoardService jiraBoardService;
+
+    private final JiraSprintService jiraSprintService;
+
+    private final JiraIssueService jiraIssueService;
 
     @Autowired
-    private JiraSprintService jiraSprintService;
-
-    @Autowired
-    private JiraIssueService jiraIssueService;
+    public JiraController(JiraBoardService jiraBoardService, JiraSprintService jiraSprintService, JiraIssueService jiraIssueService) {
+        this.jiraBoardService = jiraBoardService;
+        this.jiraSprintService = jiraSprintService;
+        this.jiraIssueService = jiraIssueService;
+    }
 
     @GET
     @Path("/board")

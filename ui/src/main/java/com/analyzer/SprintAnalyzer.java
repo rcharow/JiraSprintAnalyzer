@@ -18,7 +18,7 @@ public class SprintAnalyzer extends ResourceConfig {
 
     @Configuration
     @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-    protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
