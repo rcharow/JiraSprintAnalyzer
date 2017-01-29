@@ -74,8 +74,6 @@ public class JiraBoardService extends JiraService {
                 JiraBoard.class
         );
 
-        JiraBoard board = response.getBody();
-
-        return board;
+        return response.getBody();
     }
 }

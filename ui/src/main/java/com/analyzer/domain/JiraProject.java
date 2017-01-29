@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Created by rcharow on 10/1/16.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JiraProject {
+class JiraProject {
     private String id;
     private String name;
     private String key;

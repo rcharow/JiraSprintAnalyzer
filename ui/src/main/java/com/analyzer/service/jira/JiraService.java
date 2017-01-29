@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @PropertySource(value = "config.properties")
-public abstract class JiraService {
+abstract class JiraService {
     private String jiraUser;
 
     private String jiraPassword;
 
-    protected String jiraUrl;
+    String jiraUrl;
 
-    protected HttpHeaders jiraAuthHeaders;
+    final HttpHeaders jiraAuthHeaders;
 
     public void setJiraUser(String jiraUser) {
         this.jiraUser = jiraUser;
