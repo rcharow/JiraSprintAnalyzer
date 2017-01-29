@@ -1,10 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { JiraService, JiraBoard } from "../jira/jira.service";
-import { FormsModule } from '@angular/forms';
+import { JiraService, JiraBoard } from '../jira/jira.service';
 
 @Component({
     selector: 'navbar',
-    templateUrl: '/app/navbar/navbar.component.html'
+    templateUrl: '/app/navigation/navbar.component.html'
 })
 
 export class NavBarComponent{
