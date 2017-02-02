@@ -1,6 +1,7 @@
 package com.analyzer;
 
 import com.analyzer.web.JiraController;
+import com.analyzer.web.ViewController;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -34,6 +35,7 @@ public class SprintAnalyzer extends ResourceConfig {
     }
 
     public SprintAnalyzer(){
+//        register(ViewController.class);
         register(JiraController.class);
     }
 
