@@ -15,7 +15,7 @@ import { NavigationModule } from "./navigation/navigation.module";
     imports: [
         BrowserModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: '/', pathMatch: 'full'},
+            { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
         ]),
         HttpModule,
         DashboardModule,

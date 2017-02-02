@@ -1,27 +1,27 @@
-
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardResolveService } from './dashboard-resolve.service';
-import { SingleSprintStatsComponent } from "./single-sprint-stats.component";
+import { DashboardResolveService } from './dashboard-resolve.service'
+import { DashboardComponent } from './dashboard.component';
+import { SingleSprintStatsComponent } from './single-sprint-stats.component';
 
-
-let routes: Routes = [
-    {
-        path: 'single/:boardId',
+const routes:Routes = [
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      {
+        path: 'stats',
         component: SingleSprintStatsComponent,
-        resolve: { boards: DashboardResolveService },
-        children: [
-            {
-                path: ':boardId',
-                component: SingleSprintStatsComponent,
-                resolve: { sprints: DashboardResolveService }
-            }
-        ]
-    }];
+        resolve: {sprints: DashboardResolveService}
+      }
+    ]
+  }
+];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
-    providers: [DashboardResolveService]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+  providers: [DashboardResolveService]
 })
-export class DashboardRoutingModule { }
+export class DashboardRoutingModule {
+}
