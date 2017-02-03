@@ -57,6 +57,8 @@ gulp.task('sass-copy', ['build-css'], function () {
         .pipe(gulp.dest(_output_dir + '../assets/css'));
 });
 
+//TODO: add html copy task
+
 gulp.task('sync-html', function () {
     watch('app/**/*.html', {ignoreInitial: false}).pipe(gulp.dest(_output_dir));
 });
