@@ -12,12 +12,12 @@ var gulp       = require('gulp'),
 var _output_dir = '../../../../target/classes/static/app/';
 
 // define the default task and add the watch task to it
-gulp.task('default', ['pack', 'build-css', 'sync-html']);
+gulp.task('default', ['pack', 'build-css', 'copy-html']);
 
 
 // configure which files to watch and what tasks to use on file changes
 gulp.task('watch', ['sync-html', 'watch-pack'], function() {
-  gulp.watch('./assets/scss/**/*.scss', ['sass-copy']);
+  gulp.watch('./assets/scss/**/*.scss', ['copy-sass']);
 });
 
 //pack ts to js with webpack
@@ -51,13 +51,17 @@ gulp.task('build-css', function () {
 });
 
 
-gulp.task('sass-copy', ['build-css'], function () {
+gulp.task('copy-sass', ['build-css'], function () {
     return gulp.src('./assets/css/**/*')
         .pipe(plumber({ errorHandler: handleError }))
         .pipe(gulp.dest(_output_dir + '../assets/css'));
 });
 
-//TODO: add html copy task
+gulp.task('copy-html', function () {
+  return gulp.src('app/**/*.html')
+    .pipe(plumber({ errorHandler: handleError }))
+    .pipe(gulp.dest(_output_dir));
+});
 
 gulp.task('sync-html', function () {
     watch('app/**/*.html', {ignoreInitial: false}).pipe(gulp.dest(_output_dir));
