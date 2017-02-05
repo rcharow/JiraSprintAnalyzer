@@ -1,17 +1,31 @@
 <nav class="navbar navbar-toggleable-md navbar-light fixed-top top-nav">
-  <button class="navbar-toggler navbar-toggler-right top-nav__toggle" type="button" data-toggle="collapse" data-target="#topNavToggle" aria-controls="topNavToggle" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler navbar-toggler-right top-nav__toggle" type="button" data-toggle="collapse"
+          data-target="#topNavToggle" aria-controls="topNavToggle" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <a class="navbar-brand top-nav__title" href="#">Sprint Analyzer</a>
 
   <div class="collapse navbar-collapse" id="topNavToggle">
-    <form class="form-inline top-nav__board-form">
-      <div class="form-group top-nav__board-select">
-        <select name="boardSelect" class="custom-select" (change)="onBoardSelect($event)" [(ngModel)]="selectedBoard" required>
-          <option selected>Select Jira Board</option>
-          <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
-        </select>
-      </div>
-    </form>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <form class="form-inline top-nav__board-form">
+          <div class="form-group top-nav__board-select">
+            <select name="boardSelect" class="custom-select" (change)="onBoardSelect($event)"
+                    [(ngModel)]="selectedBoard" required>
+              <option selected>Select Jira Board</option>
+              <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
+            </select>
+          </div>
+        </form>
+      </li>
+    </ul>
   </div>
+  <!--<ul class="navbar-nav">-->
+    <!--<li class="nav-item">-->
+      <!--<button class="top-nav__auth"><a routerLink="login">Login</a></button>-->
+    <!--</li>-->
+    <!--<li class="nav-item">-->
+      <!--<button (click)="logout($event)" class="top-nav__auth">Logout</button>-->
+    <!--</li>-->
+  <!--</ul>-->
 </nav>
