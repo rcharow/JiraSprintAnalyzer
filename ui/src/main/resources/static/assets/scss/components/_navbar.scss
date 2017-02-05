@@ -1,0 +1,40 @@
+.top-nav {
+  background-color: $black1;
+  color: $light-gray1;
+  border-bottom: 3px solid $red1;
+}
+
+.top-nav__title.navbar-brand {
+  color: $light-gray1;
+  &:hover, &:active {
+    color: $yellow1;
+  }
+
+  &:visited {
+    color: $light-gray1;
+  }
+}
+
+.top-nav__toggle {
+  background-color: $light-gray1;
+}
+
+.top-nav__board-form {
+  width: 100%;
+
+  @include media-breakpoint-up(md){
+    width: 250px;
+  }
+}
+
+.top-nav__board-select {
+  margin: 20px auto 0 auto;
+
+  @include media-breakpoint-up(md){
+    margin: 0;
+  }
+}
+
+.top-nav__auth {
+  float: right;
+}

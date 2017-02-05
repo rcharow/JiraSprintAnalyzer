@@ -1,0 +1,9 @@
+.nav-pills {
+  .pill-nav__link {
+    color: $green1;
+  }
+
+  .pills-nav__link.active {
+    background-color: $green1;
+  }
+}

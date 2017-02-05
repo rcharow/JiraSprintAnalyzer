@@ -2,17 +2,15 @@ package com.analyzer.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.List;
-
 /**
  * Created by rcharow on 10/1/16.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraBoard implements Comparable<JiraBoard>{
-    public String id;
-    public String self;
-    public String name;
-    public String type;
+    private String id;
+    private String self;
+    private String name;
+    private String type;
 
     public String getId() {
         return id;
