@@ -6,19 +6,25 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.ws.rs.ApplicationPath;
 
-//@EnableWebSecurity
+@EnableWebSecurity
 @SpringBootApplication
 @ApplicationPath("/api")
 public class SprintAnalyzer extends ResourceConfig {
+
+//    @RequestMapping("/user")
+//    public String user(Principal user) {
+//        log.trace("Trying to return user: " + user.getName());
+//        return user.getName();
+//    }
 
     @Configuration
     @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -27,13 +33,24 @@ public class SprintAnalyzer extends ResourceConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+            ///ORIGINAL SETUP FOR NO AUTH
+//            http
+//                .authorizeRequests()
+//                .antMatchers("/**")
+//                .authenticated()
+////                .antMatchers("/index.html").permitAll()
+//                .and()
+//                .httpBasic();
+
+            //TRYING TO GET AUTH TO WORK
             http
-                .authorizeRequests()
-                .antMatchers("/**")
-                .authenticated()
-//                .antMatchers("/index.html").permitAll()
-                .and()
-                .httpBasic();
+                    .httpBasic()
+                    .and()
+                    .authorizeRequests()
+                    .antMatchers("/**").permitAll()
+                    .anyRequest().authenticated().and()
+                    .csrf()
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         }
     }
