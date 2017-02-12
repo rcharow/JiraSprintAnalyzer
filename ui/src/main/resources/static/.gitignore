@@ -1,5 +1,6 @@
 /node_modules
 /assets/css
+/assets/fonts
 app/**/*.js
 app/**/*.js.map
 /typings
