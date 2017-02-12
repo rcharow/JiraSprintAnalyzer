@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { JiraService, JiraSprint} from '../jira/jira.service';
+import { JiraService } from '../jira/jira.service';
+import { JiraSprint } from '../jira/jira.model';
 
 @Injectable()
 export class DashboardResolveService implements Resolve<Observable<JiraSprint[]>> {
