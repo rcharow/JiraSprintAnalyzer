@@ -1,25 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
-export class JiraBoard {
-    public id: String;
-    public self: String;
-    public name: String;
-    public type: String;
-
-}
-
-export class JiraSprint {
-    public id: String;
-    public self: String;
-    public state: String;
-    public name: String;
-    public startDate: Date;
-    public endDate: Date;
-    public completeDate: Date;
-    public originBoardId: String;
-}
+import { JiraBoard, JiraSprint } from './jira.model';
 
 @Injectable()
 export class JiraService {
@@ -30,6 +12,11 @@ export class JiraService {
     getBoards (): Observable<JiraBoard[]> {
         return this.http.get('/api/jira/board')
             .map(res => res.json())
+    }
+
+    getScrumBoards (): Observable<JiraBoard[]> {
+        return this.http.get('/api/jira/board/type/scrum')
+          .map(res => res.json())
     }
 
     getSprintsByBoardId (boardId: String): Observable<JiraSprint[]> {
