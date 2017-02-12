@@ -42,6 +42,10 @@ public class JiraController {
     }
 
     @GET
+    @Path("/board/type/{type}")
+    public List<JiraBoard> getBoardsByType(@PathParam("type") String boardType) { return jiraBoardService.getAllBoardsByType(boardType); }
+
+    @GET
     @Path("/board/{id}")
     public JiraBoard getBoard(@PathParam("id") String id) {
         return jiraBoardService.getBoard(id);
