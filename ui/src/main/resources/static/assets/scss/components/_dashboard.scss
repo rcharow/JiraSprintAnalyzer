@@ -1,0 +1,29 @@
+
+.dashboard__options {
+  margin: 0 auto;
+  display: block;
+}
+
+.dashboard__options-select {
+  width: 100%;
+}
+
+.dashboard__options-multi {
+  line-height: 100px;
+}
+
+.dashboard__options-submit {
+  width: 100%;
+
+  @include media-breakpoint-up(md) {
+    margin-top: 31px;
+  }
+}
+
+.dashboard__options-option {
+  margin-top: 25px;
+
+  @include media-breakpoint-up(md){
+    margin-top: 0;
+  }
+}
