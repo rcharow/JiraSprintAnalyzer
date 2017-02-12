@@ -12,6 +12,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static javafx.beans.binding.Bindings.select;
+import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
 
 /**
  * Created by rcharow on 10/9/16.
@@ -62,6 +66,13 @@ public class JiraBoardService extends JiraService {
 
         Collections.sort(boards);
         return boards;
+    }
+
+    public List<JiraBoard> getAllBoardsByType(String type){
+        List<JiraBoard> boards = getAllBoards();
+        List<JiraBoard> filteredBoards = boards.stream().filter(b -> b.getType().equals("scrum")).collect(Collectors.toList());
+
+        return filteredBoards;
     }
 
     public JiraBoard getBoard(String boardId) {
