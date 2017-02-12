@@ -7,9 +7,9 @@ import { RouterModule } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { NavigationModule } from "./navigation/navigation.module";
-import {LoginComponent} from "./login/login.component";
-import {AuthService} from "./shared/auth.service";
-import {AppRoutingModule} from "./app.routing.module";
+import { LoginComponent } from "./login/login.component";
+import { AuthService } from "./shared/auth.service";
+import { AppRoutingModule } from "./app.routing.module";
 
 @NgModule({
   declarations: [
