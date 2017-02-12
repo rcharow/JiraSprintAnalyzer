@@ -8,15 +8,7 @@
   <div class="collapse navbar-collapse" id="topNavToggle">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <form class="form-inline top-nav__board-form">
-          <div class="form-group top-nav__board-select">
-            <select name="boardSelect" class="custom-select" (change)="onBoardSelect($event)"
-                    [(ngModel)]="selectedBoard" required>
-              <option selected>Select Jira Board</option>
-              <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
-            </select>
-          </div>
-        </form>
+
       </li>
     </ul>
   </div>
