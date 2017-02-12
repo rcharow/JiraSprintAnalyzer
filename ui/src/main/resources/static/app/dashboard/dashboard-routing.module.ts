@@ -11,8 +11,7 @@ const routes:Routes = [
     children: [
       {
         path: 'stats',
-        component: SingleSprintStatsComponent//,
-        //resolve: {sprints: DashboardResolveService}
+        component: SingleSprintStatsComponent
       }
     ]
   }
