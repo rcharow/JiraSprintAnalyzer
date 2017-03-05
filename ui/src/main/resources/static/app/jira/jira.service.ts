@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { JiraBoard, JiraSprint } from './jira.model';
+import {JiraSprintStats} from "./jira.model";
 
 @Injectable()
 export class JiraService {
@@ -22,6 +23,12 @@ export class JiraService {
     getSprintsByBoardId (boardId: String): Observable<JiraSprint[]> {
         return this.http.get('/api/jira/board/' + boardId + '/sprints')
             .map(res => res.json());
+    }
+
+    getSprintStats (boardId: String, startSprintCompleteDate: Date, endSprintCompleteDate: Date): Observable<JiraSprintStats[]> {
+        let test = "test";
+        return this.http.get('api/analysis/stats/' + boardId + '/' + startSprintCompleteDate + '/' + endSprintCompleteDate )
+          .map(res => res.json());
     }
 
 };
