@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -99,6 +100,7 @@ public class JiraSprintService extends JiraService{
             sprints.addAll(boardResponse.getValues());
         }
 
+        Collections.sort(sprints);
         return sprints;
     }
 }
