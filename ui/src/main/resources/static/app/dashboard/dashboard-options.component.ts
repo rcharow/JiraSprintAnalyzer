@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { JiraService } from '../jira/jira.service';
 import { JiraBoard } from '../jira/jira.model';
 import { JiraSprint } from "../jira/jira.model";
+import { DashboardService } from "./dashboard.service";
 
 @Component({
   selector: 'dashboard-options',
@@ -18,9 +19,9 @@ export class DashboardOptionsComponent {
   sprints: JiraSprint[];
   startSprint:JiraSprint;
   endSprint:JiraSprint;
-  multiSprint:Boolean;
+  isMultiSprint:boolean;
 
-  constructor(private jiraService:JiraService) {
+  constructor(private jiraService:JiraService, private dashboardService:DashboardService) {
 
   }
 
@@ -32,6 +33,7 @@ export class DashboardOptionsComponent {
   }
 
   onBoardSelect() {
+    this.dashboardService.setCurrentBoard(this.selectedBoard);
     this.jiraService.getSprintsByBoardId(this.selectedBoard.id)
       .subscribe(sprints => {
         this.sprints = sprints;
@@ -39,8 +41,14 @@ export class DashboardOptionsComponent {
   }
 
   submitEnabled() {
-    if(this.multiSprint) return this.startSprint && this.endSprint;
+    if(this.isMultiSprint) return this.startSprint && this.endSprint;
     return this.startSprint;
+  }
+
+  submitOptions() {
+    this.dashboardService.setStartSprint(this.startSprint);
+    this.dashboardService.setEndSprint(this.endSprint);
+    this.dashboardService.setMultiSprint(this.isMultiSprint);
   }
 
 }
