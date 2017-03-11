@@ -1,42 +1,60 @@
 <form>
   <div class="form-group">
     <div class="container">
+      <div class="row dashboard-options__loading-row--mobile">
+        <div class="col dashboard-options__loading-container--mobile">
+          <i class="fa fa-circle-o-notch fa-spin fa-lg fa-fw dashboard-options__loading dashboard-options__loading--mobile" [hidden]="!loading"></i>
+        </div>
+      </div>
       <div class="row">
-        <div class="col-md-3 dashboard__options-option">
-          <label for="boardSelect">Select Project</label>
-          <select id="boardSelect" name="boardSelect" placeholder="Jira Project"
-                  class="custom-select dashboard__options-select" (change)="onBoardSelect($event)"
-                  [(ngModel)]="selectedBoard">
-            <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
-          </select>
+        <div class="col-md-3 dashboard-options__option">
+          <div class="row">
+            <div class="col-md-1">
+              <i class="fa fa-circle-o-notch fa-spin fa-lg fa-fw dashboard-options__loading dashboard-options__loading--desktop" [hidden]="!loading"></i>
+            </div>
+            <div class="col">
+              <label for="boardSelect">Select Project</label>
+              <select id="boardSelect" name="boardSelect" placeholder="Jira Project"
+                      class="custom-select dashboard-options__select dashboard-options__select--project"
+                      (change)="onBoardSelect($event)"
+                      [(ngModel)]="selectedBoard"
+                      [disabled]="loading">
+                <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="col-md-9">
           <div class="row">
-            <div class="col-md-4 dashboard__options-option">
+            <div class="col-md-4 dashboard-options__option">
               <label for="startSprintSelect">Start Sprint</label>
               <select id="startSprintSelect" name="startSprintSelect" placeholder="Start Sprint"
-                      class="custom-select dashboard__options-select" [(ngModel)]="startSprint">
+                      class="custom-select dashboard-options__select"
+                      [(ngModel)]="startSprint"
+                      [disabled]="loading || !selectedBoard">
                 <option *ngFor="let sprint of sprints" [ngValue]="sprint">{{sprint.name}}</option>
               </select>
             </div>
             <div class="col-md-2">
               <div class="form-check float-md-right">
-                <label class="form-check-label dashboard__options-multi">
+                <label class="form-check-label dashboard-options__multi">
                   <input name="multiSprintCheck" type="checkbox" class="form-check-input" [(ngModel)]="isMultiSprint">
                   Multi
                 </label>
               </div>
             </div>
-            <div class="col-md-4 dashboard__options-option">
+            <div class="col-md-4 dashboard-options__option">
               <label for="endSprintSelect">End Sprint</label>
               <select id="endSprintSelect" name="endSprintSelect" placeholder="End Sprint"
-                      class="custom-select dashboard__options-select" [(ngModel)]="endSprint" [disabled]="!isMultiSprint">
+                      class="custom-select dashboard-options__select" [(ngModel)]="endSprint"
+                      [disabled]="!isMultiSprint || loading || !selectedBoard">
                 <option *ngFor="let sprint of sprints" [ngValue]="sprint">{{sprint.name}}</option>
               </select>
             </div>
-            <div class="col-md-2 dashboard__options-option">
-              <button type="submit" class="btn btn-primary dashboard__options-submit align-middle"
-                      [disabled]="!submitEnabled()" (click)="submitOptions()">Go</button>
+            <div class="col-md-2 dashboard-options__option">
+              <button type="submit" class="btn btn-primary dashboard-options__submit align-middle"
+                      [disabled]="!submitEnabled()" (click)="submitOptions()">Go
+              </button>
             </div>
           </div>
         </div>
