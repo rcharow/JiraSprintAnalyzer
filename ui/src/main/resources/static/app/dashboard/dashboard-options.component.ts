@@ -20,23 +20,28 @@ export class DashboardOptionsComponent {
   startSprint:JiraSprint;
   endSprint:JiraSprint;
   isMultiSprint:boolean;
+  loading:boolean;
 
   constructor(private jiraService:JiraService, private dashboardService:DashboardService) {
 
   }
 
   ngOnInit() {
+    this.loading = true;
     this.jiraService.getScrumBoards()
       .subscribe(boards => {
         this.boards = boards;
+        this.loading = false;
       });
   }
 
   onBoardSelect() {
     this.dashboardService.setCurrentBoard(this.selectedBoard);
+    this.loading = true;
     this.jiraService.getSprintsByBoardId(this.selectedBoard.id)
       .subscribe(sprints => {
         this.sprints = sprints;
+        this.loading = false;
       })
   }
 
