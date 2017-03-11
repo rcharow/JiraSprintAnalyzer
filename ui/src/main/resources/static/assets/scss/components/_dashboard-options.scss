@@ -1,0 +1,69 @@
+.dashboard-options__loading {
+  line-height: 100px;
+  color: $green1;
+}
+.dashboard-options__loading-row--mobile {
+  margin-bottom: 15px;
+}
+
+.dashboard-options__loading-container--mobile {
+  display: block;
+  height: 50px;
+
+  @include media-breakpoint-up(md) {
+    display: none;
+  }
+}
+
+.dashboard-options__loading--mobile {
+  display: block;
+  margin: 0 auto;
+  @include media-breakpoint-up(md) {
+    display: none;
+  }
+}
+
+.dashboard-options__loading--desktop {
+  display: none;
+  @include media-breakpoint-up(md) {
+    display: block;
+  }
+}
+
+.dashboard-options__select {
+  width: 100%;
+}
+
+.dashboard-options__select--project {
+  @include media-breakpoint-up(md) {
+    margin-left: 5px;
+  }
+}
+
+.dashboard-options__multi {
+  line-height: 100px;
+}
+
+.dashboard-options__submit {
+  width: 100%;
+
+  @include media-breakpoint-up(md) {
+    margin-top: 31px;
+  }
+}
+
+.dashboard-options__option {
+  margin-top: 25px;
+
+  @include media-breakpoint-up(md){
+    margin-top: 0;
+  }
+}
+
+.dashboard-options__option--project {
+  margin-top: 30px;
+
+  @include media-breakpoint-up(md) {
+    margin-top: 0;
+  }
+}
