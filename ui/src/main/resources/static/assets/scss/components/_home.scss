@@ -1,5 +1,9 @@
 .app-content {
-  margin-top: 100px;
+  margin-top: 20px;
+
+  @include media-breakpoint-up(md) {
+    margin-top: 100px;
+  }
 }
 .dashboard {
   width: 100%;
