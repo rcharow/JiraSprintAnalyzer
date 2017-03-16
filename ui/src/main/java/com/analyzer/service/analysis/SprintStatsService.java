@@ -2,8 +2,7 @@ package com.analyzer.service.analysis;
 
 import com.analyzer.domain.JiraIssue;
 import com.analyzer.domain.JiraSprint;
-import com.analyzer.domain.JiraSprintStats;
-import com.analyzer.service.jira.JiraBoardService;
+import com.analyzer.domain.JiraSprintSummary;
 import com.analyzer.service.jira.JiraIssueService;
 import com.analyzer.service.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,38 +27,32 @@ public class SprintStatsService {
         this.jiraIssueService = jiraIssueService;
     }
 
-    public List<JiraSprintStats> getSprintStats(String boardId, Date startSprintCompleteDate, Date endSprintCompleteDate) {
-        List<JiraSprint> sprints = jiraSprintService.getSprints(boardId);
-        List<JiraSprintStats> statsList = new ArrayList<JiraSprintStats>();
+    public JiraSprintSummary getSprintSummary(String sprintId) {
 
-        for (JiraSprint sprint : sprints) {
-            Date sprintDate = sprint.getCompleteDate();
-            if((sprintDate.equals(startSprintCompleteDate) || sprintDate.after(startSprintCompleteDate) ) && (sprintDate.equals(endSprintCompleteDate) || sprintDate.before(endSprintCompleteDate))){
+        JiraSprintSummary summary = new JiraSprintSummary();
+        summary.setId(sprintId);
 
-                String sprintId = sprint.getId();
-                JiraSprintStats stats = new JiraSprintStats();
-                stats.setId(sprintId);
+        List<JiraIssue> issues = jiraIssueService.getSprintIssues(sprintId);
+        summary = calculateStats(issues);
 
-                List<JiraIssue> issues = jiraIssueService.getSprintIssues(sprintId);
-                stats = calculateStats(issues);
-
-                statsList.add(stats);
-            }
-        }
-
-        return statsList;
+        return summary;
     }
 
-    private JiraSprintStats calculateStats(List<JiraIssue> issues) {
-        JiraSprintStats stats = new JiraSprintStats();
+    private JiraSprintSummary calculateStats(List<JiraIssue> issues) {
+        JiraSprintSummary stats = new JiraSprintSummary();
         Integer totalPoints = 0;
         Integer totalSeconds = 0;
 
         stats.setTotalIssues(issues.size());
 
         for (JiraIssue issue : issues) {
-            totalPoints = totalPoints + issue.getFields().getPoints();
-            totalSeconds = totalSeconds + issue.getFields().getTimeSpent();
+            Integer points = issue.getFields().getPoints();
+            points = points != null ? points : 0;
+            totalPoints = totalPoints + points;
+
+            Integer seconds = issue.getFields().getTimeSpent();
+            seconds = seconds != null ? seconds : 0;
+            totalSeconds = totalSeconds + seconds;
         }
 
         double cost = totalSeconds/60/60*costPerHour;
