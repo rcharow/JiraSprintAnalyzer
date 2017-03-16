@@ -18,9 +18,9 @@ export class JiraSprint {
 }
 
 
-export class JiraSprintStats {
+export class JiraSprintSummary {
   public id: String;
-  public name: String;
+  public self: String;
   public totalIssues: Number;
   public totalPoints: Number;
   public totalTimeSeconds: Number;
