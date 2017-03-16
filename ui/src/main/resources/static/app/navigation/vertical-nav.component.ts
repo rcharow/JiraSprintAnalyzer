@@ -10,24 +10,24 @@ import {JiraSprint} from "../jira/jira.model";
 })
 
 export class VerticalNavComponent{
-    currentBoard:JiraBoard;
-    startSprint:JiraSprint;
-    endSprint:JiraSprint;
+    currentBoard:String;
+    startSprint:String;
+    endSprint:String;
     isMultiSprint:boolean;
 
     constructor(private dashboardService:DashboardService){}
 
     ngOnInit(){
         this.dashboardService.currentBoard.subscribe((board:JiraBoard) => {
-            this.currentBoard = board;
+            this.currentBoard = board ? board.id : null;
         });
 
         this.dashboardService.startSprint.subscribe((sprint:JiraSprint) => {
-            this.startSprint = sprint;
+            this.startSprint = sprint ? sprint.id : null;
         });
 
         this.dashboardService.endSprint.subscribe((sprint:JiraSprint) => {
-            this.endSprint = sprint;
+            this.endSprint = sprint ? sprint.id : null;
         });
 
         this.dashboardService.isMultiSprint.subscribe((isMultiSprint:boolean) => {
