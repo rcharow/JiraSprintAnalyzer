@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
-import { SprintStatsComponent } from './sprint-stats.component';
 import { StatsResolveService } from "./stats-resolve.service";
+import {SprintSummaryComponent} from "./sprint-summary.component";
 
 const routes:Routes = [
   {
@@ -10,10 +10,20 @@ const routes:Routes = [
     component: DashboardComponent,
     children: [
       {
-        path: 'stats/:boardId/:start/:end/:multi',
-        component: SprintStatsComponent,
+        path: 'summary/:boardId/:start/:end/:multi',
+        component: SprintSummaryComponent,
         resolve: { stats: StatsResolveService }
+      },
+      {
+        path: 'summary/:sprintId',
+        component: SprintSummaryComponent,
+        resolve: { stats: StatsResolveService }
+      },
+      {
+        path: 'summary',
+        redirectTo: '/dashboard',
       }
+
     ]
   }
 ];
