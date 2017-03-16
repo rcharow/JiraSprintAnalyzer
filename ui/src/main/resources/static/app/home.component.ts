@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'home',
@@ -9,4 +9,12 @@ export class HomeComponent{
     constructor() {
         console.debug('Home component loaded!');
     };
+
+    ngOnInit() {
+
+        //Initialize bootstrap tooltips
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    }
 }
