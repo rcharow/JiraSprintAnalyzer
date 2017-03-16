@@ -1,11 +1,13 @@
 <div class="dashboard container">
-    <dashboard-options class="dashboard__options"></dashboard-options>
-    <div class="col-sm-1">
+  <dashboard-options class="dashboard__options"></dashboard-options>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
         <vertical-nav></vertical-nav>
-    </div>
-    <div class="col-sm-11">
+      </div>
+      <div class="col">
         <router-outlet></router-outlet>
+      </div>
     </div>
-
-
+  </div>
 </div>
