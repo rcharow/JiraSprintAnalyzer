@@ -1,6 +1,6 @@
 package com.analyzer.web;
 
-import com.analyzer.domain.JiraSprintStats;
+import com.analyzer.domain.JiraSprintSummary;
 import com.analyzer.service.analysis.SprintStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,13 +29,18 @@ public class AnalysisController {
     }
 
     @GET
-    @Path("/stats/{boardId}/{startSprintCompleteDate}/{endSprintCompleteDate}/{isMultiSprint}")
-    public List<JiraSprintStats> getSprintStats(
-            @PathParam("boardId") String boardId,
-            @PathParam("startSprintCompleteDate") Date startSprintCompleteDate,
-            @PathParam("endSprintCompleteDate") Date endSprintCompleteDate,
-            @PathParam("isMultiSprint") boolean isMultiSprint ) {
+    @Path("/summary/{sprintId}")
+    public JiraSprintSummary getSingleSprintSummary(@PathParam("sprintId") String sprintId) { return sprintStatsService.getSprintSummary(sprintId); }
 
-        return sprintStatsService.getSprintStats(boardId, startSprintCompleteDate, endSprintCompleteDate);
-    }
 }
+//    @GET
+//    @Path("/stats/{boardId}/{startSprintCompleteDate}/{endSprintCompleteDate}/{isMultiSprint}")
+//    public List<JiraSprintSummary> getSprintStats(
+//            @PathParam("boardId") String boardId,
+//            @PathParam("startSprintCompleteDate") Date startSprintCompleteDate,
+//            @PathParam("endSprintCompleteDate") Date endSprintCompleteDate,
+//            @PathParam("isMultiSprint") boolean isMultiSprint ) {
+//
+//        return sprintStatsService.getSprintSummary(boardId, startSprintCompleteDate, endSprintCompleteDate);
+//    }
+//}
