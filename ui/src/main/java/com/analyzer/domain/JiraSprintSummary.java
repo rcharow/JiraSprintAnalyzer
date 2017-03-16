@@ -3,12 +3,12 @@ package com.analyzer.domain;
 /**
  * Created by rcharow on 2/19/17.
  */
-public class JiraSprintStats {
+public class JiraSprintSummary {
     private String id;
     private String self;
     private Integer totalIssues;
     private Integer totalPoints;
-    private Integer totalTime;
+    private Integer totalTimeSeconds;
     private double totalCost;
 
     public String getId() {
@@ -43,12 +43,12 @@ public class JiraSprintStats {
         this.totalPoints = totalPoints;
     }
 
-    public Integer getTotalTime() {
-        return totalTime;
+    public Integer getTotalTimeSeconds() {
+        return totalTimeSeconds;
     }
 
-    public void setTotalTime(Integer totalTime) {
-        this.totalTime = totalTime;
+    public void setTotalTimeSeconds(Integer totalTimeSeconds) {
+        this.totalTimeSeconds = totalTimeSeconds;
     }
 
     public double getTotalCost() {
