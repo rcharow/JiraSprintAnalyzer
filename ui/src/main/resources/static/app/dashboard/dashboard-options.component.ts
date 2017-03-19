@@ -38,7 +38,7 @@ export class DashboardOptionsComponent {
   onBoardSelect() {
     this.dashboardService.setCurrentBoard(this.selectedBoard);
     this.loading = true;
-    this.jiraService.getSprintsByBoardId(this.selectedBoard.id)
+    this.jiraService.getClosedSprintsByBoardId(this.selectedBoard.id)
       .subscribe(sprints => {
         this.sprints = sprints;
         this.loading = false;
