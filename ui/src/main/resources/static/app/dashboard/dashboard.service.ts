@@ -10,11 +10,13 @@ export class DashboardService {
   private _startSprint: BehaviorSubject<JiraSprint> = new BehaviorSubject(null);
   private _endSprint: BehaviorSubject<JiraSprint> = new BehaviorSubject(null);
   private _isMultiSprint: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _isDashboardLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   public currentBoard: Observable<JiraBoard> = this._currentBoard.asObservable();
   public startSprint: Observable<JiraSprint> = this._startSprint.asObservable();
   public endSprint: Observable<JiraSprint> = this._endSprint.asObservable();
   public isMultiSprint: Observable<boolean> = this._isMultiSprint.asObservable();
+  public isDashboardLoading: Observable<boolean> = this._isDashboardLoading.asObservable();
 
   setCurrentBoard(board:JiraBoard) {
     this._currentBoard.next(board);
@@ -30,6 +32,10 @@ export class DashboardService {
 
   setMultiSprint(isMultSprint:boolean) {
     this._isMultiSprint.next(isMultSprint);
+  }
+
+  setDashboardLoading(loading:boolean) {
+    this._isDashboardLoading.next(loading);
   }
 
 }
