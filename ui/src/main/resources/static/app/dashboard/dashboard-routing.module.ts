@@ -12,12 +12,12 @@ const routes:Routes = [
       {
         path: 'summary/:boardId/:start/:end/:multi',
         component: SprintSummaryComponent,
-        resolve: { stats: StatsResolveService }
+        resolve: { summary: StatsResolveService }
       },
       {
         path: 'summary/:sprintId',
         component: SprintSummaryComponent,
-        resolve: { stats: StatsResolveService }
+        resolve: { summary: StatsResolveService }
       },
       {
         path: 'summary',
