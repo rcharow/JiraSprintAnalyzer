@@ -9,7 +9,9 @@ public class JiraSprintSummary {
     private Integer totalIssues;
     private Integer totalPoints;
     private Integer totalTimeSeconds;
-    private double totalCost;
+    private double clientTotalCost;
+    private double internalTotalCost;
+    private double margin;
 
     public String getId() {
         return id;
@@ -51,11 +53,27 @@ public class JiraSprintSummary {
         this.totalTimeSeconds = totalTimeSeconds;
     }
 
-    public double getTotalCost() {
-        return totalCost;
+    public double getClientTotalCost() {
+        return clientTotalCost;
     }
 
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
+    public void setClientTotalCost(double clientTotalCost) {
+        this.clientTotalCost = clientTotalCost;
+    }
+
+    public double getInternalTotalCost() {
+        return internalTotalCost;
+    }
+
+    public void setInternalTotalCost(double internalTotalCost) {
+        this.internalTotalCost = internalTotalCost;
+    }
+
+    public double getMargin() {
+        return margin;
+    }
+
+    public void setMargin(double margin) {
+        this.margin = margin;
     }
 }
