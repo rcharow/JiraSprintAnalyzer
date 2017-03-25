@@ -30,6 +30,7 @@
               <label for="startSprintSelect">Start Sprint</label>
               <select id="startSprintSelect" name="startSprintSelect" placeholder="Start Sprint"
                       class="custom-select dashboard-options__select"
+                      (change)="onStartSprintSelect($event)"
                       [(ngModel)]="startSprint"
                       [disabled]="loading || !selectedBoard">
                 <option *ngFor="let sprint of sprints" [ngValue]="sprint">{{sprint.name}}</option>
@@ -48,7 +49,7 @@
               <select id="endSprintSelect" name="endSprintSelect" placeholder="End Sprint"
                       class="custom-select dashboard-options__select" [(ngModel)]="endSprint"
                       [disabled]="!isMultiSprint || loading || !selectedBoard">
-                <option *ngFor="let sprint of sprints" [ngValue]="sprint">{{sprint.name}}</option>
+                <option *ngFor="let sprint of endSprints" [ngValue]="sprint">{{sprint.name}}</option>
               </select>
             </div>
             <div class="col-md-2 dashboard-options__option">

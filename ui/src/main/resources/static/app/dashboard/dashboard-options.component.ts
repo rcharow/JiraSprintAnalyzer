@@ -4,7 +4,7 @@ import { JiraBoard } from '../jira/jira.model';
 import { JiraSprint } from "../jira/jira.model";
 import { DashboardService } from "./dashboard.service";
 import { Router } from '@angular/router';
-
+import { filter } from 'lodash';
 
 @Component({
   selector: 'dashboard-options',
@@ -19,6 +19,7 @@ export class DashboardOptionsComponent {
   boards:JiraBoard[];
   selectedBoard:JiraBoard;
   sprints: JiraSprint[];
+  endSprints: JiraSprint[];
   startSprint:JiraSprint;
   endSprint:JiraSprint;
   isMultiSprint:boolean;
@@ -40,11 +41,21 @@ export class DashboardOptionsComponent {
   onBoardSelect() {
     this.dashboardService.setCurrentBoard(this.selectedBoard);
     this.loading = true;
+    this.startSprint = null;
+    this.endSprint = null;
+
     this.jiraService.getClosedSprintsByBoardId(this.selectedBoard.id)
       .subscribe(sprints => {
         this.sprints = sprints;
         this.loading = false;
       })
+  }
+
+  onStartSprintSelect() {
+    this.endSprint = null;
+    this.endSprints = filter(this.sprints, (sprint) => {
+      return sprint.startDate > this.startSprint.startDate;
+    });
   }
 
   submitEnabled() {
