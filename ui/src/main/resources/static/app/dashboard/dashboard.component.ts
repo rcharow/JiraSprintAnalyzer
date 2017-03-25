@@ -16,6 +16,7 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
+    //TODO: Should this happen in a higher-level component?
     this.router.events.subscribe((event) => {
       if (split(event.url, '/')[1] === 'dashboard') {
         switch (event.constructor) {
