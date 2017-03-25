@@ -39,7 +39,9 @@
             <div class="col-md-2">
               <div class="form-check float-md-right">
                 <label class="form-check-label dashboard-options__multi">
-                  <input name="multiSprintCheck" type="checkbox" class="form-check-input" [(ngModel)]="isMultiSprint">
+                  <input name="multiSprintCheck" type="checkbox" class="form-check-input"
+                         (change)="onMultiSprintSelect($event)"
+                         [(ngModel)]="isMultiSprint">
                   Multi
                 </label>
               </div>

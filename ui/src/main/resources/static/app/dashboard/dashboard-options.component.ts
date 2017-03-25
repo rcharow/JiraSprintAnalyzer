@@ -58,6 +58,12 @@ export class DashboardOptionsComponent {
     });
   }
 
+  onMultiSprintSelect() {
+    if(!this.isMultiSprint) {
+      this.endSprint = null;
+    }
+  }
+
   submitEnabled() {
     if(this.isMultiSprint) return this.startSprint && this.endSprint;
     return this.startSprint;
