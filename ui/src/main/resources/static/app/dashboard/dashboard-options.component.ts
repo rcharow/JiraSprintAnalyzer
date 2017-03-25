@@ -3,6 +3,8 @@ import { JiraService } from '../jira/jira.service';
 import { JiraBoard } from '../jira/jira.model';
 import { JiraSprint } from "../jira/jira.model";
 import { DashboardService } from "./dashboard.service";
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'dashboard-options',
@@ -22,7 +24,7 @@ export class DashboardOptionsComponent {
   isMultiSprint:boolean;
   loading:boolean;
 
-  constructor(private jiraService:JiraService, private dashboardService:DashboardService) {
+  constructor(private jiraService:JiraService, private dashboardService:DashboardService, private router:Router) {
 
   }
 
@@ -54,6 +56,12 @@ export class DashboardOptionsComponent {
     this.dashboardService.setStartSprint(this.startSprint);
     this.dashboardService.setEndSprint(this.endSprint);
     this.dashboardService.setMultiSprint(this.isMultiSprint);
+
+    var url = '/dashboard/summary/' + this.startSprint.id;
+    if(typeof(this.endSprint) !== 'undefined') {
+      url += '/' + this.endSprint.id + '/true';
+    }
+    this.router.navigateByUrl(url);
   }
 
 }
