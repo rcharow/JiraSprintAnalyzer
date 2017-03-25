@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { StatsResolveService } from "./stats-resolve.service";
-import {SprintSummaryComponent} from "./sprint-summary.component";
+import { SprintSummaryComponent } from "./sprint-summary.component";
 
 const routes:Routes = [
   {
