@@ -41,8 +41,8 @@ export class DashboardOptionsComponent {
   onBoardSelect() {
     this.dashboardService.setCurrentBoard(this.selectedBoard);
     this.loading = true;
-    this.startSprint = null;
-    this.endSprint = null;
+    this.startSprint = undefined;
+    this.endSprint = undefined;
 
     this.jiraService.getClosedSprintsByBoardId(this.selectedBoard.id)
       .subscribe(sprints => {
@@ -52,7 +52,7 @@ export class DashboardOptionsComponent {
   }
 
   onStartSprintSelect() {
-    this.endSprint = null;
+    this.endSprint = undefined;
     this.endSprints = filter(this.sprints, (sprint) => {
       return sprint.startDate > this.startSprint.startDate;
     });
@@ -60,7 +60,7 @@ export class DashboardOptionsComponent {
 
   onMultiSprintSelect() {
     if(!this.isMultiSprint) {
-      this.endSprint = null;
+      this.endSprint = undefined;
     }
   }
 
