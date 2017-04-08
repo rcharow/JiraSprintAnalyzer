@@ -1,6 +1,7 @@
 package com.analyzer.domain;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by rcharow on 2/19/17.
@@ -14,7 +15,7 @@ public class JiraSprintSummary {
     private double clientTotalCost;
     private double internalTotalCost;
     private double margin;
-    private HashMap worklogSummaryHours;
+    private List<JiraWorklogSummaryItem> worklogSummaryHours;
 
 
     public String getId() {
@@ -81,11 +82,11 @@ public class JiraSprintSummary {
         this.margin = margin;
     }
 
-    public HashMap getWorklogSummaryHours() {
+    public List<JiraWorklogSummaryItem> getWorklogSummaryHours() {
         return worklogSummaryHours;
     }
 
-    public void setWorklogSummaryHours(HashMap worklogSummaryHours) {
+    public void setWorklogSummaryHours(List<JiraWorklogSummaryItem> worklogSummaryHours) {
         this.worklogSummaryHours = worklogSummaryHours;
     }
 

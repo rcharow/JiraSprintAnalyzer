@@ -3,14 +3,13 @@ package com.analyzer.service.analysis;
 import com.analyzer.domain.JiraIssue;
 import com.analyzer.domain.JiraSprintSummary;
 import com.analyzer.domain.JiraWorklog;
+import com.analyzer.domain.JiraWorklogSummaryItem;
 import com.analyzer.service.jira.JiraIssueService;
 import com.analyzer.service.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by rcharow on 2/19/17.
@@ -71,7 +70,16 @@ public class SprintStatsService {
             }
         }
 
-        summary.setWorklogSummaryHours(worklogMap);
+        Iterator iterator = worklogMap.entrySet().iterator();
+        List<JiraWorklogSummaryItem> worklogSummary = new ArrayList<JiraWorklogSummaryItem>();
+        while(iterator.hasNext()){
+            Map.Entry values = (Map.Entry)iterator.next();
+            JiraWorklogSummaryItem item = new JiraWorklogSummaryItem();
+            item.setAuthor((String)values.getKey());
+            item.setTotalTimeHours((double)values.getValue());
+            worklogSummary.add(item);
+        }
+        summary.setWorklogSummaryHours(worklogSummary);
 
         double hours = (double)totalSeconds / 60 / 60;
         summary.setTotalTimeHours(hours);

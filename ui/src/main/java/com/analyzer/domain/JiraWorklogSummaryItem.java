@@ -3,7 +3,7 @@ package com.analyzer.domain;
 /**
  * Created by rcharow on 4/8/17.
  */
-class JiraWorklogSummaryItem {
+public class JiraWorklogSummaryItem {
     private String author;
     private double totalTimeHours;
 
