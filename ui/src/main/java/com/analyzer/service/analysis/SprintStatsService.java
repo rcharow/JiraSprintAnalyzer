@@ -52,7 +52,8 @@ public class SprintStatsService {
             seconds = seconds != null ? seconds : 0;
             totalSeconds = totalSeconds + seconds;
         }
-        summary.setTotalTimeSeconds(totalSeconds);
+        double hours = (double)totalSeconds / 60 / 60;
+        summary.setTotalTimeHours(hours);
         summary.setTotalPoints(totalPoints);
 
         double clientCost = totalSeconds/60/60* clientCostPerHour;

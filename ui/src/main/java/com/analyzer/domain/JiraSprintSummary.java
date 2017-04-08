@@ -8,7 +8,7 @@ public class JiraSprintSummary {
     private String self;
     private Integer totalIssues;
     private Integer totalPoints;
-    private Integer totalTimeSeconds;
+    private double totalTimeHours;
     private double clientTotalCost;
     private double internalTotalCost;
     private double margin;
@@ -45,12 +45,12 @@ public class JiraSprintSummary {
         this.totalPoints = totalPoints;
     }
 
-    public Integer getTotalTimeSeconds() {
-        return totalTimeSeconds;
+    public double getTotalTimeHours() {
+        return totalTimeHours;
     }
 
-    public void setTotalTimeSeconds(Integer totalTimeSeconds) {
-        this.totalTimeSeconds = totalTimeSeconds;
+    public void setTotalTimeHours(double totalTimeHours) {
+        this.totalTimeHours = totalTimeHours;
     }
 
     public double getClientTotalCost() {

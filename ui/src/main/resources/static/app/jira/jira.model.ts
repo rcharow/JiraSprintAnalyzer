@@ -23,6 +23,6 @@ export class JiraSprintSummary {
   public self: String;
   public totalIssues: Number;
   public totalPoints: Number;
-  public totalTimeSeconds: Number;
+  public totalTimeHours: Number;
   public totalCost: Number;
 }
