@@ -24,5 +24,7 @@ export class JiraSprintSummary {
   public totalIssues: Number;
   public totalPoints: Number;
   public totalTimeHours: Number;
-  public totalCost: Number;
+  public clientTotalCost: Number;
+  public internalTotalCost: Number;
+  public margin: Number;
 }

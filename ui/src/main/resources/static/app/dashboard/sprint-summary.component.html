@@ -1,1 +1,42 @@
-<div class="sprint-summary">TEST</div>
+<div class="sprint-summary">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <table class="sprint-summary__table table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Number of Issues</td>
+            <td>{{summary.totalIssues}}</td>
+          </tr>
+          <tr>
+            <td>Total Points</td>
+            <td>{{summary.totalPoints}}</td>
+          </tr>
+          <tr>
+            <td>Hours Worked</td>
+            <td>{{summary.totalTimeHours|number:'1.0-2'}}</td>
+          </tr>
+          <tr>
+            <td>Client Cost</td>
+            <td>{{summary.clientTotalCost|currency:USD:true }}</td>
+          </tr>
+          <tr>
+            <td>Internal Cost</td>
+            <td>{{summary.internalTotalCost|currency:USD:true}}</td>
+          </tr>
+          <tr>
+            <td>Margin</td>
+            <td>{{summary.margin}}%</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
