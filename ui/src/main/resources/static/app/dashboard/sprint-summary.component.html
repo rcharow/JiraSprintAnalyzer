@@ -2,6 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6">
+        <div>Sprint Summary</div>
         <table class="sprint-summary__table table table-striped">
           <thead>
           <tr>
@@ -33,6 +34,23 @@
           <tr>
             <td>Margin</td>
             <td>{{summary.margin}}%</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <div>Sprint Team &amp; Hours Worked</div>
+        <table class="sprint-summary__table table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of summary.worklogSummaryHours">
+            <td>{{item.author}}</td>
+            <td>{{item.totalTimeHours|number:'1.0-2'}}</td>
           </tr>
           </tbody>
         </table>
