@@ -1,5 +1,7 @@
 package com.analyzer.domain;
 
+import java.util.HashMap;
+
 /**
  * Created by rcharow on 2/19/17.
  */
@@ -12,6 +14,8 @@ public class JiraSprintSummary {
     private double clientTotalCost;
     private double internalTotalCost;
     private double margin;
+    private HashMap worklogSummaryHours;
+
 
     public String getId() {
         return id;
@@ -76,4 +80,13 @@ public class JiraSprintSummary {
     public void setMargin(double margin) {
         this.margin = margin;
     }
+
+    public HashMap getWorklogSummaryHours() {
+        return worklogSummaryHours;
+    }
+
+    public void setWorklogSummaryHours(HashMap worklogSummaryHours) {
+        this.worklogSummaryHours = worklogSummaryHours;
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.analyzer.service.jira;
 
-import com.analyzer.domain.JiraIssue;
-import com.analyzer.domain.JiraIssueResponse;
+import com.analyzer.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -68,5 +67,20 @@ public class JiraIssueService extends JiraService {
         return issues.stream()
                 .filter(p -> p.getFields().getIssueType().isSubtask() == false)
                 .collect(Collectors.toList());
+    }
+
+    public List<JiraWorklog> getIssueWorklog(String issueId) {
+        String requestUrl =  "/rest/api/2/issue/" + issueId + "/worklog";
+
+        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<JiraWorklogResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                HttpMethod.GET,
+                request,
+                JiraWorklogResponse.class
+        );
+
+        return response.getBody().getWorklogs();
     }
 }
