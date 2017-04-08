@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {JiraBoard} from "../jira/jira.model";
-import {DashboardService} from "../dashboard/dashboard.service";
-import {JiraSprint} from "../jira/jira.model";
+import { JiraBoard } from "../jira/jira.model";
+import { DashboardService } from "../dashboard/dashboard.service";
+import { JiraSprint } from "../jira/jira.model";
 
 @Component({
     selector: 'vertical-nav',
@@ -14,6 +14,9 @@ export class VerticalNavComponent{
     startSprint:String;
     endSprint:String;
     isMultiSprint:boolean;
+    summarySelected:boolean = true;
+    moneySelected:boolean = false;
+    timeSelected:boolean = false;
 
     constructor(private dashboardService:DashboardService){}
 
@@ -33,5 +36,12 @@ export class VerticalNavComponent{
         this.dashboardService.isMultiSprint.subscribe((isMultiSprint:boolean) => {
             this.isMultiSprint = isMultiSprint;
         });
+    }
+
+    selectView(view:string) {
+        this.summarySelected = false;
+        this.moneySelected = false;
+        this.timeSelected = false;
+        this[view] = true;
     }
 }
