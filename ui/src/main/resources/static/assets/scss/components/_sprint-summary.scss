@@ -10,3 +10,12 @@
     margin-top: 0;
   }
 }
+
+.sprint-summary__heading {
+  margin-top: 2.5rem;
+  font-weight: bold;
+
+  @include media-breakpoint-up(lg) {
+    margin: 0;
+  }
+}
