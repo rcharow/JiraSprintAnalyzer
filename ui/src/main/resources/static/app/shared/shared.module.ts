@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule as AngularCommon } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {AuthService} from "./auth.service";
+import { AuthService } from "./auth.service";
+import { LoadingComponent } from "./widgets/loading.component";
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    LoadingComponent
+  ],
   imports: [
     AngularCommon,
     ReactiveFormsModule
@@ -12,7 +15,8 @@ import {AuthService} from "./auth.service";
   exports: [
     AngularCommon,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    LoadingComponent
   ],
   providers: [
     AuthService
