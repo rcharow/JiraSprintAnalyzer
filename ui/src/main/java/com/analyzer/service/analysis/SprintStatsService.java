@@ -1,9 +1,6 @@
 package com.analyzer.service.analysis;
 
-import com.analyzer.domain.JiraIssue;
-import com.analyzer.domain.JiraSprintSummary;
-import com.analyzer.domain.JiraWorklog;
-import com.analyzer.domain.JiraWorklogSummaryItem;
+import com.analyzer.domain.*;
 import com.analyzer.service.jira.JiraIssueService;
 import com.analyzer.service.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,21 +35,12 @@ public class SprintStatsService {
         return summary;
     }
 
-    private JiraSprintSummary calculateStats(List<JiraIssue> issues) {
-        JiraSprintSummary summary = new JiraSprintSummary();
-        Integer totalPoints = 0;
+    public JiraWorklogSummary getSprintWorklogSummary(String sprintId) {
+        List<JiraIssue> issues = jiraIssueService.getSprintParentIssues(sprintId);
         Integer totalSeconds = 0;
 
-        summary.setTotalIssues(issues.size());
         HashMap worklogMap = new HashMap();
         for (JiraIssue issue : issues) {
-            Integer points = issue.getFields().getPoints();
-            points = points != null ? points : 0;
-            totalPoints = totalPoints + points;
-
-            Integer seconds = issue.getFields().getTimeSpent();
-            seconds = seconds != null ? seconds : 0;
-            totalSeconds = totalSeconds + seconds;
 
             List<JiraWorklog> worklogs = jiraIssueService.getIssueWorklog(issue.getId());
 
@@ -71,15 +59,41 @@ public class SprintStatsService {
         }
 
         Iterator iterator = worklogMap.entrySet().iterator();
-        List<JiraWorklogSummaryItem> worklogSummary = new ArrayList<JiraWorklogSummaryItem>();
+        JiraWorklogSummary worklogSummary = new JiraWorklogSummary();
+        worklogSummary.setSprintId(sprintId);
+
+        List<JiraWorklogSummaryItem> worklogs = new ArrayList<JiraWorklogSummaryItem>();
+
         while(iterator.hasNext()){
             Map.Entry values = (Map.Entry)iterator.next();
             JiraWorklogSummaryItem item = new JiraWorklogSummaryItem();
             item.setAuthor((String)values.getKey());
             item.setTotalTimeHours((double)values.getValue());
-            worklogSummary.add(item);
+            worklogs.add(item);
         }
-        summary.setWorklogSummaryHours(worklogSummary);
+
+        worklogSummary.setWorklogs(worklogs);
+
+        return worklogSummary;
+    }
+
+
+    private JiraSprintSummary calculateStats(List<JiraIssue> issues) {
+        JiraSprintSummary summary = new JiraSprintSummary();
+        Integer totalPoints = 0;
+        Integer totalSeconds = 0;
+
+        summary.setTotalIssues(issues.size());
+
+        for (JiraIssue issue : issues) {
+            Integer points = issue.getFields().getPoints();
+            points = points != null ? points : 0;
+            totalPoints = totalPoints + points;
+
+            Integer seconds = issue.getFields().getTimeSpent();
+            seconds = seconds != null ? seconds : 0;
+            totalSeconds = totalSeconds + seconds;
+        }
 
         double hours = (double)totalSeconds / 60 / 60;
         summary.setTotalTimeHours(hours);

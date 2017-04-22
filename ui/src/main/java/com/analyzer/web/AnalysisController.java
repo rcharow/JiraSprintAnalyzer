@@ -1,6 +1,8 @@
 package com.analyzer.web;
 
 import com.analyzer.domain.JiraSprintSummary;
+import com.analyzer.domain.JiraWorklogSummary;
+import com.analyzer.domain.JiraWorklogSummaryItem;
 import com.analyzer.service.analysis.SprintStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,12 @@ public class AnalysisController {
     @GET
     @Path("/summary/{sprintId}")
     public JiraSprintSummary getSingleSprintSummary(@PathParam("sprintId") String sprintId) { return sprintStatsService.getSprintSummary(sprintId); }
+
+    @GET
+    @Path("/worklogs/{sprintId}")
+    public JiraWorklogSummary getSingleSprintWorklogSummary(@PathParam("sprintId") String sprintId) {
+        return sprintStatsService.getSprintWorklogSummary(sprintId);
+    }
 
 }
 //    @GET
