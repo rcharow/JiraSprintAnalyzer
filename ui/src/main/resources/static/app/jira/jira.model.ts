@@ -28,3 +28,13 @@ export class JiraSprintSummary {
   public internalTotalCost: Number;
   public margin: Number;
 }
+
+export class JiraWorklog {
+  public author:String;
+  public totalTimeHours:number;
+}
+
+export class JiraWorklogSummary {
+  public sprintId:String;
+  public worklogs:Array<JiraWorklog>;
+}

@@ -11,11 +11,12 @@ export class StatsResolveService implements Resolve<Observable<JiraSprintSummary
 
     constructor(private service: JiraService){}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<JiraSprintSummary> {
+    resolve(route: ActivatedRouteSnapshot): void {
         let sprintId: String = route.params['sprintId'];
         let startSprintCompleteDate: Date = route.params['start'];
         let endSprintCompleteDate: Date = route.params['end'];
 
-        return this.service.getSingleSprintSummary(sprintId);
+        this.service.setCurrentSummary(sprintId);
+        this.service.setCurrentWorklogSummary(sprintId);
     }
 }

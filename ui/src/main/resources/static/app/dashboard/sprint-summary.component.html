@@ -1,7 +1,12 @@
 <div class="sprint-summary">
   <div class="container">
     <div class="row">
-      <div class="col-md-6">
+      <div class="sprint-summary__column col-md-6">
+        <div class="sprint-summary__overlay" [hidden]="!loadingSummary">
+          <div class="sprint-summary__loading">
+            <loading></loading>
+          </div>
+        </div>
         <div class="sprint-summary__heading">Sprint Summary</div>
         <table class="sprint-summary__table table table-striped">
           <thead>
@@ -38,7 +43,12 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-6">
+      <div class="sprint-summary__column col-md-6">
+        <div class="sprint-summary__overlay" [hidden]="!loadingWorklogs">
+          <div class="sprint-summary__loading">
+            <loading></loading>
+          </div>
+        </div>
         <div class="sprint-summary__heading">Sprint Team &amp; Hours Worked</div>
         <table class="sprint-summary__table table table-striped">
           <thead>
@@ -48,7 +58,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let item of summary.worklogSummaryHours">
+          <tr *ngFor="let item of worklogs.worklogs">
             <td>{{item.author}}</td>
             <td>{{item.totalTimeHours|number:'1.0-2'}}</td>
           </tr>
