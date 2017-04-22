@@ -31,7 +31,7 @@ public class SprintStatsService {
 
         JiraSprintSummary summary = new JiraSprintSummary();
 
-        List<JiraIssue> issues = jiraIssueService.getSprintIssues(sprintId);
+        List<JiraIssue> issues = jiraIssueService.getSprintParentIssues(sprintId);
         summary = calculateStats(issues);
         summary.setId(sprintId);
 
