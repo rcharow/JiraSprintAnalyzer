@@ -12,14 +12,14 @@ import java.util.*;
  * Created by rcharow on 2/19/17.
  */
 @Component
-public class SprintStatsService {
+public class SummaryAnalysisService {
     private final JiraSprintService jiraSprintService;
     private final JiraIssueService jiraIssueService;
     private final Integer clientCostPerHour = 125;
     private final Integer internalCostPerHour = 65;
 
     @Autowired
-    public SprintStatsService(JiraSprintService jiraSprintService, JiraIssueService jiraIssueService){
+    public SummaryAnalysisService(JiraSprintService jiraSprintService, JiraIssueService jiraIssueService){
         this.jiraSprintService = jiraSprintService;
         this.jiraIssueService = jiraIssueService;
     }
