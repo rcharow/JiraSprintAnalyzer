@@ -5,14 +5,14 @@
          routerLink="summary/{{startSprint}}/{{endSprint}}/{{isMultSprint}}" routerLinkActive="active"
          (click)="selectView('summarySelected')">
         <i class="fa fa-table vertical-nav__icon" [ngClass]="{'vertical-nav__icon--selected': summarySelected}"
-           aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Sprint Summary"></i>
+           aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Sprint Summary"></i>
       </a>
     </div>
     <div class="col-4 col-md-4 col-lg-12 vertical-nav__item">
       <a class="nav-link vertical-nav__link"
          routerLink="" routerLinkActive="active"
          (click)="selectView('moneySelected')"
-         data-toggle="tooltip" data-placement="right" title="Monetary Stats">
+         data-toggle="tooltip" data-placement="bottom" title="Monetary Stats">
         <i class="fa fa-dollar vertical-nav__icon" [ngClass]="{'vertical-nav__icon--selected': moneySelected}"
            aria-hidden="true"></i>
       </a>
@@ -20,7 +20,7 @@
     <div class="col-4 col-md-4 col-lg-12 vertical-nav__item">
       <a class="nav-link vertical-nav__link" routerLink="" routerLinkActive="active"
          (click)="selectView('timeSelected')"
-         data-toggle="tooltip" data-placement="right" title="Hourly Stats">
+         data-toggle="tooltip" data-placement="bottom" title="Hourly Stats">
         <i class="fa fa-clock-o vertical-nav__icon" [ngClass]="{'vertical-nav__icon--selected': timeSelected}"
            aria-hidden="true"></i>
       </a>
