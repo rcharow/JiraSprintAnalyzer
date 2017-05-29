@@ -35,6 +35,16 @@ public class SummaryAnalysisService {
         return summary;
     }
 
+    public JiraSprintSummary getSprintSummaryWithWorklogs(String sprintId) {
+        //TODO: Refactor this so its not repeating code or effort.
+        JiraSprintSummary summary = getSprintSummary(sprintId);
+        JiraWorklogSummary worklogSummary = getSprintWorklogSummary(sprintId);
+
+        summary.setWorklogSummary(worklogSummary);
+
+        return summary;
+    }
+
     public JiraWorklogSummary getSprintWorklogSummary(String sprintId) {
         List<JiraIssue> issues = jiraIssueService.getSprintParentIssues(sprintId);
         Integer totalSeconds = 0;

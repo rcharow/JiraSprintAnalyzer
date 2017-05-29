@@ -9,6 +9,7 @@ import java.util.List;
 public class JiraSprintSummary {
     private String id;
     private String self;
+    private String name;
     private Integer totalIssues;
     private Integer totalPoints;
     private double totalTimeHours;
@@ -16,6 +17,7 @@ public class JiraSprintSummary {
     private double internalTotalCost;
     private double margin;
     private List<JiraWorklogSummaryItem> worklogSummaryHours;
+    private JiraWorklogSummary worklogSummary;
 
 
     public String getId() {
@@ -33,6 +35,10 @@ public class JiraSprintSummary {
     public void setSelf(String self) {
         this.self = self;
     }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 
     public Integer getTotalIssues() {
         return totalIssues;
@@ -90,4 +96,11 @@ public class JiraSprintSummary {
         this.worklogSummaryHours = worklogSummaryHours;
     }
 
+    public JiraWorklogSummary getWorklogSummary() {
+        return worklogSummary;
+    }
+
+    public void setWorklogSummary(JiraWorklogSummary worklogSummary) {
+        this.worklogSummary = worklogSummary;
+    }
 }

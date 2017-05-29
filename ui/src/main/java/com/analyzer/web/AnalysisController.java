@@ -37,6 +37,10 @@ public class AnalysisController {
         return summaryAnalysisService.getSprintWorklogSummary(sprintId);
     }
 
+    @GET
+    @Path("/summary/worklogs/{sprintId}")
+    public JiraSprintSummary getSprintSummaryWithWorklogs(@PathParam("sprintId") String sprintId) { return summaryAnalysisService.getSprintSummaryWithWorklogs(sprintId); }
+
 }
 //    @GET
 //    @Path("/stats/{boardId}/{startSprintCompleteDate}/{endSprintCompleteDate}/{isMultiSprint}")
