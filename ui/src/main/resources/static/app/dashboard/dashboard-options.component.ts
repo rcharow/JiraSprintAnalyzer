@@ -4,7 +4,8 @@ import { JiraBoard } from '../jira/jira.model';
 import { JiraSprint } from "../jira/jira.model";
 import { DashboardService } from "./dashboard.service";
 import { Router } from '@angular/router';
-import { filter } from 'lodash';
+import { filter, each  } from 'lodash';
+import { IMultiSelectOption, IMultiSelectSettings } from 'angular-2-dropdown-multiselect';
 
 @Component({
   selector: 'dashboard-options',
@@ -24,6 +25,13 @@ export class DashboardOptionsComponent {
   endSprint:JiraSprint;
   isMultiSprint:boolean;
   loading:boolean;
+  sprintOptions:IMultiSelectOption[];
+  sprintOptionSettings:IMultiSelectSettings = {
+    checkedStyle: 'fontawesome',
+    enableSearch: false
+
+  };
+  sprintsModel:string[] = [];
 
   constructor(private jiraService:JiraService, private dashboardService:DashboardService, private router:Router) {
 
@@ -48,37 +56,27 @@ export class DashboardOptionsComponent {
       .subscribe(sprints => {
         this.sprints = sprints;
         this.loading = false;
+
+        this.sprintOptions = [];
+        each(sprints, (sprint) => {
+          this.sprintOptions.push({
+            id: sprint.id,
+            name: sprint.name
+          })
+        });
+
       })
   }
 
-  onStartSprintSelect() {
-    this.endSprint = undefined;
-    this.endSprints = filter(this.sprints, (sprint) => {
-      return sprint.startDate > this.startSprint.startDate;
-    });
-  }
-
-  onMultiSprintSelect() {
-    if(!this.isMultiSprint) {
-      this.endSprint = undefined;
-    }
-  }
-
   submitEnabled() {
-    if(this.isMultiSprint) return this.startSprint && this.endSprint;
-    return this.startSprint;
+    return this.sprintsModel && this.sprintsModel.length;
   }
 
   submitOptions() {
-    this.dashboardService.setStartSprint(this.startSprint);
-    this.dashboardService.setEndSprint(this.endSprint);
-    this.dashboardService.setMultiSprint(this.isMultiSprint);
+    this.dashboardService.setCurrentSprints(this.sprintsModel);
 
-    var url = '/dashboard/summary/' + this.startSprint.id;
-    if(typeof(this.endSprint) !== 'undefined') {
-      url += '/' + this.endSprint.id + '/true';
-    }
-    this.router.navigateByUrl(url);
+    this.router.navigate(['/dashboard/summary/'], { queryParams: {sprints: this.sprintsModel} });
   }
+
 
 }

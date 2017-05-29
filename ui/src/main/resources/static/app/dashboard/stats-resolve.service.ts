@@ -7,16 +7,16 @@ import { JiraSprint } from '../jira/jira.model';
 import {JiraSprintSummary} from "../jira/jira.model";
 
 @Injectable()
-export class StatsResolveService implements Resolve<Observable<JiraSprintSummary[]>> {
+export class StatsResolveService implements Resolve<boolean> {
 
     constructor(private service: JiraService){}
 
-    resolve(route: ActivatedRouteSnapshot): void {
-        let sprintId: String = route.params['sprintId'];
-        let startSprintCompleteDate: Date = route.params['start'];
-        let endSprintCompleteDate: Date = route.params['end'];
+    resolve(route: ActivatedRouteSnapshot): boolean {
+        let sprints = route.queryParams['sprints'];
 
-        this.service.setCurrentSummary(sprintId);
-        this.service.setCurrentWorklogSummary(sprintId);
+        this.service.setCurrentSummary(sprints);
+        //this.service.setCurrentWorklogSummary(sprints);
+
+        return true;
     }
 }

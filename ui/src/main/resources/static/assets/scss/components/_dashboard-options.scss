@@ -40,6 +40,12 @@
   }
 }
 
+.dashboard-options__multi-select {
+  .dropdown-toggle, .dropdown {
+    width: 100%;
+  }
+}
+
 .dashboard-options__multi {
   line-height: 100px;
 }

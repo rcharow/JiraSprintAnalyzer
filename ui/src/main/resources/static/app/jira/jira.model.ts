@@ -1,40 +1,42 @@
 export class JiraBoard {
-  public id: String;
-  public self: String;
-  public name: String;
-  public type: String;
+  public id: string;
+  public self: string;
+  public name: string;
+  public type: string;
 
 }
 
 export class JiraSprint {
-  public id: String;
-  public self: String;
-  public state: String;
-  public name: String;
+  public id: string;
+  public self: string;
+  public state: string;
+  public name: string;
   public startDate: Date;
   public endDate: Date;
   public completeDate: Date;
-  public originBoardId: String;
+  public originBoardId: string;
 }
 
 
 export class JiraSprintSummary {
-  public id: String;
-  public self: String;
+  public id: string;
+  public self: string;
+  public name: string;
   public totalIssues: Number;
   public totalPoints: Number;
   public totalTimeHours: Number;
   public clientTotalCost: Number;
   public internalTotalCost: Number;
   public margin: Number;
+  public worklogSummary: JiraWorklogSummary;
 }
 
 export class JiraWorklog {
-  public author:String;
+  public author:string;
   public totalTimeHours:number;
 }
 
 export class JiraWorklogSummary {
-  public sprintId:String;
+  public sprintId:string;
   public worklogs:Array<JiraWorklog>;
 }

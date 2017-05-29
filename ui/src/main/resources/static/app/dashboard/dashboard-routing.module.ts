@@ -10,19 +10,20 @@ const routes:Routes = [
     component: DashboardComponent,
     children: [
       {
-        path: 'summary/:boardId/:start/:end/:multi',
-        component: SprintSummaryComponent,
-        resolve: { summary: StatsResolveService }
-      },
-      {
-        path: 'summary/:sprintId',
-        component: SprintSummaryComponent,
-        resolve: { summary: StatsResolveService }
-      },
-      {
         path: 'summary',
-        redirectTo: '/dashboard',
+        component: SprintSummaryComponent,
+        resolve: { summary: StatsResolveService }
       }
+      //,
+      //{
+      //  path: 'summary/:sprintId',
+      //  component: SprintSummaryComponent,
+      //  resolve: { summary: StatsResolveService }
+      //},
+      //{
+      //  path: 'summary',
+      //  redirectTo: '/dashboard',
+      //}
 
     ]
   }

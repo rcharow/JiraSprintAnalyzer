@@ -3,6 +3,11 @@
   height: 100%;
 }
 
+.sprint-summary__row {
+  margin-bottom: 50px;
+  border-bottom: solid 1px $green1;
+}
+
 .sprint-summary__overlay {
   position: absolute;
   top: 0;

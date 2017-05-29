@@ -8,13 +8,15 @@ import { NavigationModule } from "../navigation/navigation.module";
 import { DashboardOptionsComponent } from "./dashboard-options.component";
 import { SharedModule } from "../shared/shared.module";
 import { DashboardService } from "./dashboard.service";
+import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 
 @NgModule({
   imports: [
     RouterModule,
     SharedModule,
     DashboardRoutingModule,
-    NavigationModule
+    NavigationModule,
+    MultiselectDropdownModule
   ],
   declarations: [
     DashboardComponent,

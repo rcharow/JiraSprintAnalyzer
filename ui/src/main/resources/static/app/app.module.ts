@@ -10,6 +10,7 @@ import { NavigationModule } from "./navigation/navigation.module";
 import { LoginComponent } from "./login/login.component";
 import { AuthService } from "./shared/auth.service";
 import { AppRoutingModule } from "./app.routing.module";
+import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AppRoutingModule } from "./app.routing.module";
     HttpModule,
     DashboardModule,
     NavigationModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MultiselectDropdownModule
   ],
   providers: [
     {provide: APP_BASE_HREF, useValue: '/a/'},

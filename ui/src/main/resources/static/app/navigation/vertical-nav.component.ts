@@ -10,9 +10,8 @@ import { JiraSprint } from "../jira/jira.model";
 })
 
 export class VerticalNavComponent{
-    currentBoard:String;
-    startSprint:String;
-    endSprint:String;
+    currentBoard:string;
+    currentSprints:string[];
     isMultiSprint:boolean;
     summarySelected:boolean = true;
     moneySelected:boolean = false;
@@ -25,16 +24,8 @@ export class VerticalNavComponent{
             this.currentBoard = board ? board.id : null;
         });
 
-        this.dashboardService.startSprint.subscribe((sprint:JiraSprint) => {
-            this.startSprint = sprint ? sprint.id : null;
-        });
-
-        this.dashboardService.endSprint.subscribe((sprint:JiraSprint) => {
-            this.endSprint = sprint ? sprint.id : null;
-        });
-
-        this.dashboardService.isMultiSprint.subscribe((isMultiSprint:boolean) => {
-            this.isMultiSprint = isMultiSprint;
+        this.dashboardService.currentSprints.subscribe((sprints:string[]) => {
+            this.currentSprints = sprints;
         });
     }
 
