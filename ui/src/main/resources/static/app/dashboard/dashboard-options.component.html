@@ -26,28 +26,25 @@
             </div>
           </div>
         </div>
-        <div class="col-md-9">
-          <div class="row">
-            <div class="col-md-8 dashboard-options__option">
-              <label for="sprintSelect">Sprints</label>
-              <ss-multiselect-dropdown
-                  id="sprintSelect" name="sprintSelect"
-                  class="dashboard-options__multi-select"
-                  [options]="sprintOptions"
-                  [settings]="sprintOptionSettings"
-                  [(ngModel)]="sprintsModel"
-                  [disabled]="loading || !selectedBoard">
-              </ss-multiselect-dropdown>
-            </div>
-            <div class="col-md-2 dashboard-options__option">
-              <button type="submit"
+
+        <div class="col-md-6 dashboard-options__option">
+          <label for="sprintSelect">Select Sprints</label>
+          <ss-multiselect-dropdown
+              id="sprintSelect" name="sprintSelect"
+              class="dashboard-options__multi-select"
+              [options]="sprintOptions"
+              [settings]="sprintOptionSettings"
+              [(ngModel)]="sprintsModel"
+              [disabled]="loading || !selectedBoard">
+          </ss-multiselect-dropdown>
+        </div>
+        <div class="col-md-3 dashboard-options__option">
+          <button type="submit"
                   class="btn btn-primary dashboard-options__submit align-middle"
                   [disabled]="!submitEnabled()"
                   (click)="submitOptions()">
-                Go
-              </button>
-            </div>
-          </div>
+            Go
+          </button>
         </div>
       </div>
     </div>

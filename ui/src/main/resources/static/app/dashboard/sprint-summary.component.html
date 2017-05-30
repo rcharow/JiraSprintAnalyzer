@@ -1,12 +1,13 @@
 <div class="sprint-summary">
   <div class="container">
+    <div class="row sprint-summary__overlay" [hidden]="!loadingSummary">
+      <div class="sprint-summary__loading">
+        <loading></loading>
+      </div>
+    </div>
     <div class="row sprint-summary__row" *ngFor="let summary of summaries">
-      <div class="sprint-summary__column col-md-6">
-        <div class="sprint-summary__overlay" [hidden]="!loadingSummary">
-          <div class="sprint-summary__loading">
-            <loading></loading>
-          </div>
-        </div>
+      <div class="sprint-summary__column col-md">
+
         <div class="sprint-summary__heading">{{summary.name}} Summary</div>
         <table class="sprint-summary__table table table-striped">
           <thead>
@@ -44,11 +45,11 @@
         </table>
       </div>
       <div class="sprint-summary__column col-md-6">
-        <div class="sprint-summary__overlay" [hidden]="!loadingSummary">
-          <div class="sprint-summary__loading">
-            <loading></loading>
-          </div>
-        </div>
+        <!--<div class="sprint-summary__overlay" [hidden]="!loadingSummary">-->
+          <!--<div class="sprint-summary__loading">-->
+            <!--<loading></loading>-->
+          <!--</div>-->
+        <!--</div>-->
         <div class="sprint-summary__heading">Sprint Team &amp; Hours Worked</div>
         <table class="sprint-summary__table table table-striped">
           <thead>

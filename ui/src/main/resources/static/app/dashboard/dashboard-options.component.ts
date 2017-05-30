@@ -20,10 +20,6 @@ export class DashboardOptionsComponent {
   boards:JiraBoard[];
   selectedBoard:JiraBoard;
   sprints: JiraSprint[];
-  endSprints: JiraSprint[];
-  startSprint:JiraSprint;
-  endSprint:JiraSprint;
-  isMultiSprint:boolean;
   loading:boolean;
   sprintOptions:IMultiSelectOption[];
   sprintOptionSettings:IMultiSelectSettings = {
@@ -49,8 +45,8 @@ export class DashboardOptionsComponent {
   onBoardSelect() {
     this.dashboardService.setCurrentBoard(this.selectedBoard);
     this.loading = true;
-    this.startSprint = undefined;
-    this.endSprint = undefined;
+    this.sprints = undefined;
+    this.sprintsModel = [];
 
     this.jiraService.getClosedSprintsByBoardId(this.selectedBoard.id)
       .subscribe(sprints => {
