@@ -3,7 +3,6 @@ package com.analyzer.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by rcharow on 10/8/16.
