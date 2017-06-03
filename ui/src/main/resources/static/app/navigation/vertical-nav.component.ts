@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { JiraBoard } from "../jira/jira.model";
 import { DashboardService } from "../dashboard/dashboard.service";
 import { JiraSprint } from "../jira/jira.model";
@@ -12,12 +12,11 @@ import { JiraSprint } from "../jira/jira.model";
 export class VerticalNavComponent{
     currentBoard:string;
     currentSprints:string[];
-    isMultiSprint:boolean;
     summarySelected:boolean = true;
     moneySelected:boolean = false;
     timeSelected:boolean = false;
 
-    constructor(private dashboardService:DashboardService){}
+    constructor(private router:Router, private dashboardService:DashboardService){}
 
     ngOnInit(){
         this.dashboardService.currentBoard.subscribe((board:JiraBoard) => {
@@ -33,6 +32,8 @@ export class VerticalNavComponent{
         this.summarySelected = false;
         this.moneySelected = false;
         this.timeSelected = false;
-        this[view] = true;
+        this[view + 'Selected'] = true;
+
+        this.router.navigate([`/dashboard/analysis/${view}/`], { queryParams: {sprints: this.currentSprints} });
     }
 }
