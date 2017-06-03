@@ -26,11 +26,16 @@ public class SummaryAnalysisService {
 
     public JiraSprintSummary getSprintSummary(String sprintId) {
 
-        JiraSprintSummary summary = new JiraSprintSummary();
+        JiraSprintSummary summary;
+        JiraSprint sprint;
+
+        sprint = jiraSprintService.getSprintById(sprintId);
 
         List<JiraIssue> issues = jiraIssueService.getSprintParentIssues(sprintId);
         summary = calculateStats(issues);
         summary.setId(sprintId);
+        summary.setName(sprint.getName());
+        summary.setCompleteDate(sprint.getCompleteDate());
 
         return summary;
     }
