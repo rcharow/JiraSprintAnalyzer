@@ -39,21 +39,17 @@ export class JiraService {
   }
 
   setCurrentSummary(sprintIds:string[]) {
-    if(!this._currentSummary.getValue()){
+      sprintIds = typeof sprintIds === 'string' ? [sprintIds] : sprintIds;
       this._currentSummary.next(null);
 
       let requests:Observable<JiraSprintSummary>[] = [];
       each(sprintIds, (sprintId) => {
         requests.push(this.http.get('/api/analysis/summary/worklogs/' + sprintId).map(res => res.json()));
       });
+
       Observable.forkJoin(requests).subscribe((results:JiraSprintSummary[]) => {
         this._currentSummary.next(results);
       });
-
-      //this.http.get('/api/analysis/summary?sprintIds=' + join(sprintIds,','))
-      //  .map(res => res.json())
-      //  .subscribe((summary:JiraSprintSummary[]) => this._currentSummary.next(summary));
-    }
   }
 
   setCurrentWorklogSummary(sprintIds:string[]) {
