@@ -1,6 +1,6 @@
 package com.analyzer.domain;
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,6 +10,7 @@ public class JiraSprintSummary {
     private String id;
     private String self;
     private String name;
+    private Date completeDate;
     private Integer totalIssues;
     private Integer totalPoints;
     private double totalTimeHours;
@@ -39,6 +40,10 @@ public class JiraSprintSummary {
     public String getName() { return name; }
 
     public void setName(String name) { this.name = name; }
+
+    public Date getCompleteDate() { return completeDate; }
+
+    public void setCompleteDate(Date completeDate) { this.completeDate = completeDate; }
 
     public Integer getTotalIssues() {
         return totalIssues;
