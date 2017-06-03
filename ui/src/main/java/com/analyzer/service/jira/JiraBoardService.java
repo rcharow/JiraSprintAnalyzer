@@ -14,9 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static javafx.beans.binding.Bindings.select;
-import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.on;
-
 /**
  * Created by rcharow on 10/9/16.
  */
