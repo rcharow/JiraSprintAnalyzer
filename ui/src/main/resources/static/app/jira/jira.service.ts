@@ -48,6 +48,11 @@ export class JiraService {
       });
 
       Observable.forkJoin(requests).subscribe((results:JiraSprintSummary[]) => {
+        results.sort((a:JiraSprintSummary, b: JiraSprintSummary) => {
+          if(a.completeDate > b.completeDate) return 1;
+          if(a.completeDate < b.completeDate) return -1;
+          return 0;
+        });
         this._currentSummary.next(results);
       });
   }
