@@ -3,7 +3,9 @@ import { RouterModule } from '@angular/router';
 import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { JiraService } from "../jira/jira.service";
 import { DashboardComponent } from "./dashboard.component";
-import { SprintSummaryComponent } from './sprint-summary.component';
+import { SprintSummaryComponent } from './analysis/sprint-summary/sprint-summary.component';
+import { AnalysisComponent } from './analysis/analysis.component';
+import { MoneyComponent } from './analysis/money/money.component';
 import { NavigationModule } from "../navigation/navigation.module";
 import { DashboardOptionsComponent } from "./dashboard-options.component";
 import { SharedModule } from "../shared/shared.module";
@@ -21,7 +23,9 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
   declarations: [
     DashboardComponent,
     SprintSummaryComponent,
-    DashboardOptionsComponent
+    DashboardOptionsComponent,
+    AnalysisComponent,
+    MoneyComponent
   ],
   exports: [
     DashboardComponent,
