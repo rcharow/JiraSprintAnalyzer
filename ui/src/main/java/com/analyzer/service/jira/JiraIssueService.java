@@ -1,6 +1,11 @@
 package com.analyzer.service.jira;
 
 import com.analyzer.domain.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -9,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +24,8 @@ import java.util.stream.Collectors;
  */
 @Component
 public class JiraIssueService extends JiraService {
+    private Logger log = LoggerFactory.getLogger(JiraIssueService.class);
+
     @Autowired
     public JiraIssueService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl) {
         super(jiraUser, jiraPassword, jiraUrl);
@@ -40,6 +49,23 @@ public class JiraIssueService extends JiraService {
         );
 
         return response.getBody();
+
+//        ResponseEntity<String> response = restTemplate.exchange(jiraUrl + requestUrl,
+//                HttpMethod.GET,
+//                request,
+//                String.class
+//        );
+//
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+//        try {
+//
+//            JsonNode node = mapper.readTree(new StringReader(response.getBody()));
+//            log.warn("-----=== {}",mapper.writeValueAsString(node.withArray("issues").get(0)));
+//        } catch(IOException ex) {
+//            throw new RuntimeException(ex);
+//        }
+//        return null;
     }
 
     public List<JiraIssue> getSprintIssues(String sprintId){
