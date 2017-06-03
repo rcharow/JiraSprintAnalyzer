@@ -4,7 +4,7 @@ import { JiraBoard } from '../jira/jira.model';
 import { JiraSprint } from "../jira/jira.model";
 import { DashboardService } from "./dashboard.service";
 import { Router } from '@angular/router';
-import { filter, each  } from 'lodash';
+import { each  } from 'lodash';
 import { IMultiSelectOption, IMultiSelectSettings } from 'angular-2-dropdown-multiselect';
 
 @Component({
@@ -69,9 +69,7 @@ export class DashboardOptionsComponent {
   }
 
   submitOptions() {
-    this.dashboardService.setCurrentSprints(this.sprintsModel);
-
-    this.router.navigate(['/dashboard/summary/'], { queryParams: {sprints: this.sprintsModel} });
+    this.router.navigate(['/dashboard/analysis/summary/'], { queryParams: {sprints: this.sprintsModel} });
   }
 
 
