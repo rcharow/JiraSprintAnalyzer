@@ -1,7 +1,11 @@
 package com.analyzer.service.jira;
 
+import com.analyzer.domain.JiraIssueResponse;
 import com.analyzer.domain.JiraSprint;
 import com.analyzer.domain.JiraSprintResponse;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -10,6 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,6 +31,43 @@ public class JiraSprintService extends JiraService{
     @Autowired
     public JiraSprintService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl) {
         super(jiraUser, jiraPassword, jiraUrl);
+    }
+
+    public JiraSprint getSprintById(String id) {
+        String requestUrl =  "/rest/agile/1.0/sprint/" + id;
+
+        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<String> response = restTemplate.exchange(jiraUrl + requestUrl,
+                HttpMethod.GET,
+                request,
+                String.class
+        );
+
+        JiraSprint sprint = new JiraSprint();
+        sprint.setId(id);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        try {
+            JsonNode node = mapper.readTree(new StringReader(response.getBody()));
+            sprint.setName(node.get("name").asText());
+            sprint.setSelf(node.get("self").asText());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            String dateString = node.get("completeDate").asText();
+
+            try {
+              sprint.setCompleteDate(dateFormat.parse(dateString));
+            } catch(ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+
+        } catch(IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return sprint;
     }
 
     private JiraSprintResponse getSprintPage(String boardId, Long startPage) {
@@ -89,15 +134,15 @@ public class JiraSprintService extends JiraService{
         Boolean lastPage;
         Long startPage = 0L;
 
-        JiraSprintResponse boardResponse = getSprintPage(boardId, startPage, sprintState);
-        lastPage = boardResponse.getIsLast();
-        sprints = boardResponse.getValues();
+        JiraSprintResponse sprintResponse = getSprintPage(boardId, startPage, sprintState);
+        lastPage = sprintResponse.getIsLast();
+        sprints = sprintResponse.getValues();
 
         while(!lastPage){
             startPage = startPage + 50;
-            boardResponse = getSprintPage(boardId, startPage, sprintState);
-            lastPage = boardResponse.getIsLast();
-            sprints.addAll(boardResponse.getValues());
+            sprintResponse = getSprintPage(boardId, startPage, sprintState);
+            lastPage = sprintResponse.getIsLast();
+            sprints.addAll(sprintResponse.getValues());
         }
 
         Collections.sort(sprints);
