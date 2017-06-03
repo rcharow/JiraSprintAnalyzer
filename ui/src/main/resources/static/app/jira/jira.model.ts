@@ -22,6 +22,7 @@ export class JiraSprintSummary {
   public id: string;
   public self: string;
   public name: string;
+  public completeDate: Date;
   public totalIssues: Number;
   public totalPoints: Number;
   public totalTimeHours: Number;
