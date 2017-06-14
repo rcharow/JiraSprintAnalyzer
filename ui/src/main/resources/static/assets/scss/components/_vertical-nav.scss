@@ -14,11 +14,13 @@
 }
 
 .vertical-nav__icon {
+  color: $gray2;
   padding: 10px;
   border-radius: 10px;
   width: 60px;
 }
 
 .vertical-nav__icon--selected {
-  background-color: $light-gray1;
+  color: $gray1;
+  background-color: $yellow1;
 }

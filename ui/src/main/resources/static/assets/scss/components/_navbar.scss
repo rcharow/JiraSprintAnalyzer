@@ -1,22 +1,22 @@
 .top-nav {
-  background-color: $black1;
-  color: $light-gray1;
+  background-color: $white1;
+  color: $gray2;
   border-bottom: 3px solid $red1;
 }
 
 .top-nav__title.navbar-brand {
-  color: $light-gray1;
+  color: $gray2;
   &:hover, &:active {
-    color: $yellow1;
+    color: $blue1;
   }
 
   &:visited {
-    color: $light-gray1;
+    color: $gray2;
   }
 }
 
 .top-nav__toggle {
-  background-color: $light-gray1;
+  background-color: $gray2;
 }
 
 .top-nav__board-form {

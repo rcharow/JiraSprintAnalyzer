@@ -1,6 +1,6 @@
 .dashboard-options__loading {
   line-height: 100px;
-  color: $green1;
+  color: $blue1;
 }
 .dashboard-options__loading-row--mobile {
   margin-bottom: 15px;
@@ -32,6 +32,7 @@
 
 .dashboard-options__select {
   width: 100%;
+  color: $gray2;
 }
 
 .dashboard-options__select--project {
@@ -43,6 +44,7 @@
 .dashboard-options__multi-select {
   .dropdown-toggle, .dropdown, .dropdown-menu {
     width: 100%;
+    color: $gray2;
   }
 }
 
