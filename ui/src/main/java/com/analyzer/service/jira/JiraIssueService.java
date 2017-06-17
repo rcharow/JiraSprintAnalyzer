@@ -26,17 +26,88 @@ import java.util.stream.Collectors;
 public class JiraIssueService extends JiraService {
     private Logger log = LoggerFactory.getLogger(JiraIssueService.class);
 
+    private enum IssueSourceType {
+        BOARD,
+        SPRINT
+    }
+
     @Autowired
     public JiraIssueService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl) {
         super(jiraUser, jiraPassword, jiraUrl);
     }
 
-    private JiraIssueResponse getSprintIssuePage(String sprintId, Long startPage){
-        String requestUrl =  "/rest/agile/1.0/sprint/" + sprintId + "/issue?limit=50&startAt=0";
+    public List<JiraIssue> getSprintIssues(String sprintId) {
+        return getIssues(IssueSourceType.SPRINT, sprintId);
+    }
+
+    public List<JiraIssue> getSprintParentIssues(String sprintId) {
+        List<JiraIssue> issues = this.getSprintIssues(sprintId);
+
+        return getParentIssues(issues);
+    }
+
+    public List<JiraIssue> getBoardIssues(String boardId) {
+        return getIssues(IssueSourceType.BOARD, boardId);
+    }
+
+    public List<JiraIssue> getBoardParentIssues(String boardId) {
+        List<JiraIssue> issues = this.getBoardIssues(boardId);
+
+        return getParentIssues(issues);
+    }
+
+    public List<JiraWorklog> getIssueWorklog(String issueId) {
+        String requestUrl = "/rest/api/2/issue/" + issueId + "/worklog";
+
+        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<JiraWorklogResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                HttpMethod.GET,
+                request,
+                JiraWorklogResponse.class
+        );
+
+        return response.getBody().getWorklogs();
+    }
+
+    private List<JiraIssue> getIssues(IssueSourceType sourceType, String sourceId) {
+        List<JiraIssue> issues;
+        Boolean lastPage;
+        Long startPage = 0L;
+        JiraIssueResponse issueResponse;
+
+        if (sourceType.equals(IssueSourceType.BOARD)) {
+            issueResponse = getBoardIssuePage(sourceId, startPage);
+        } else if (sourceType.equals(IssueSourceType.SPRINT)) {
+            issueResponse = getSprintIssuePage(sourceId, startPage);
+        } else {
+            throw new RuntimeException("IssueSourceType does not match any known source types.");
+        }
+
+        issues = issueResponse.getIssues();
+        lastPage = issues.size() == 0;
+
+        while (!lastPage) {
+            startPage = startPage + 1000;
+            if (sourceType.equals(IssueSourceType.BOARD)) {
+                issueResponse = getBoardIssuePage(sourceId, startPage);
+            } else if (sourceType.equals(IssueSourceType.SPRINT)) {
+                issueResponse = getSprintIssuePage(sourceId, startPage);
+            }
+            lastPage = issueResponse.getIssues().size() == 0;
+            issues.addAll(issueResponse.getIssues());
+        }
+
+        return issues;
+    }
+
+    private JiraIssueResponse getSprintIssuePage(String sprintId, Long startPage) {
+        String requestUrl = "/rest/agile/1.0/sprint/" + sprintId + "/issue?maxResults=1000&startAt=0";
         //https://jira.portlandwebworks.com:8443/rest/agile/1.0/sprint/697/issue?limit=50&startAt=100
 
-        if(startPage != 0L){
-            requestUrl =  "/rest/agile/1.0/sprint/" + sprintId + "/issue?limit=50&startAt=" + startPage;
+        if (startPage != 0L) {
+            requestUrl = "/rest/agile/1.0/sprint/" + sprintId + "/issue?maxResults=1000&startAt=" + startPage;
         }
 
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
@@ -68,45 +139,35 @@ public class JiraIssueService extends JiraService {
 //        return null;
     }
 
-    public List<JiraIssue> getSprintIssues(String sprintId){
-        List<JiraIssue> issues;
-        Boolean lastPage;
-        Long startPage = 0L;
+//    public List<JiraIssue> getBoardIssues(String boardId) {
+//
+//    }
 
-        JiraIssueResponse issueResponse = getSprintIssuePage(sprintId, startPage);
-        issues = issueResponse.getIssues();
-        lastPage = issues.size() == 0;
+    private JiraIssueResponse getBoardIssuePage(String boardId, Long startPage) {
+        String requestUrl = "/rest/agile/1.0/board/" + boardId + "/issue?maxResults=1000&startAt=0";
 
-        while(!lastPage){
-            startPage = startPage + 50;
-            issueResponse = getSprintIssuePage(sprintId, startPage);
-            lastPage = issueResponse.getIssues().size() == 0;
-            issues.addAll(issueResponse.getIssues());
+        if (startPage != 0L) {
+            requestUrl = "/rest/agile/1.0/board/" + boardId + "/issue?maxResults=1000&startAt=" + startPage;
         }
 
-        return issues;
+        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<JiraIssueResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                HttpMethod.GET,
+                request,
+                JiraIssueResponse.class
+        );
+
+        return response.getBody();
+
     }
 
-    public List<JiraIssue> getSprintParentIssues(String sprintId){
-        List<JiraIssue> issues = this.getSprintIssues(sprintId);
-
+    private List<JiraIssue> getParentIssues(List<JiraIssue> issues) {
         return issues.stream()
                 .filter(p -> p.getFields().getIssueType().isSubtask() == false)
                 .collect(Collectors.toList());
     }
 
-    public List<JiraWorklog> getIssueWorklog(String issueId) {
-        String requestUrl =  "/rest/api/2/issue/" + issueId + "/worklog";
 
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<JiraWorklogResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                HttpMethod.GET,
-                request,
-                JiraWorklogResponse.class
-        );
-
-        return response.getBody().getWorklogs();
-    }
 }
