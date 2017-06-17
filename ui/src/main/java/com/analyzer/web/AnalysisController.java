@@ -1,7 +1,9 @@
 package com.analyzer.web;
 
+import com.analyzer.domain.JiraSprintPointAnalysis;
 import com.analyzer.domain.JiraSprintSummary;
 import com.analyzer.domain.JiraWorklogSummary;
+import com.analyzer.service.analysis.PointAnalysisService;
 import com.analyzer.service.analysis.SummaryAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
 /**
  * Created by rcharow on 2/19/17.
@@ -21,10 +24,12 @@ import javax.ws.rs.core.MediaType;
 public class AnalysisController {
 
     private final SummaryAnalysisService summaryAnalysisService;
+    private final PointAnalysisService pointAnalysisService;
 
     @Autowired
-    public AnalysisController(SummaryAnalysisService summaryAnalysisService) {
+    public AnalysisController(SummaryAnalysisService summaryAnalysisService, PointAnalysisService pointAnalysisService) {
         this.summaryAnalysisService = summaryAnalysisService;
+        this.pointAnalysisService = pointAnalysisService;
     }
 
     @GET
@@ -40,6 +45,12 @@ public class AnalysisController {
     @GET
     @Path("/summary/worklogs/{sprintId}")
     public JiraSprintSummary getSprintSummaryWithWorklogs(@PathParam("sprintId") String sprintId) { return summaryAnalysisService.getSprintSummaryWithWorklogs(sprintId); }
+
+    @GET
+    @Path("/point/{boardId}")
+    public List<JiraSprintPointAnalysis> getSprintPointAnalyses(@PathParam("boardId") String boardId) {
+        return pointAnalysisService.getBoardPointAnalysis(boardId);
+    }
 
 }
 //    @GET
