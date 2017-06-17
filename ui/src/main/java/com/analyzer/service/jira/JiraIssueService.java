@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 @Component
 public class JiraIssueService extends JiraService {
     private Logger log = LoggerFactory.getLogger(JiraIssueService.class);
+    private JiraSprintService jiraSprintService;
 
     private enum IssueSourceType {
         BOARD,
@@ -32,8 +34,9 @@ public class JiraIssueService extends JiraService {
     }
 
     @Autowired
-    public JiraIssueService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl) {
+    public JiraIssueService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl, JiraSprintService jiraSprintService) {
         super(jiraUser, jiraPassword, jiraUrl);
+        this.jiraSprintService = jiraSprintService;
     }
 
     public List<JiraIssue> getSprintIssues(String sprintId) {
@@ -46,14 +49,30 @@ public class JiraIssueService extends JiraService {
         return getParentIssues(issues);
     }
 
-    public List<JiraIssue> getBoardIssues(String boardId) {
-        return getIssues(IssueSourceType.BOARD, boardId);
+    public List<JiraSprintIssues> getBoardIssues(String boardId, Boolean parentIssuesOnly) {
+//        return getIssues(IssueSourceType.BOARD, boardId);
+        List<JiraSprintIssues> sprintIssues = new ArrayList<JiraSprintIssues>();
+        List<JiraSprint> closedSprints = jiraSprintService.getSprints(boardId, "closed");
+        for(JiraSprint sprint : closedSprints) {
+            String sprintId = sprint.getId();
+            List<JiraIssue> issues = getSprintParentIssues(sprintId);
+            if(parentIssuesOnly) {
+                issues = getParentIssues(issues);
+            }
+            JiraSprintIssues singleSprintIssues = new JiraSprintIssues();
+            singleSprintIssues.setSprint(sprint);
+            singleSprintIssues.setParentIssues(issues);
+            sprintIssues.add(singleSprintIssues);
+        }
+
+        return sprintIssues;
+
     }
 
-    public List<JiraIssue> getBoardParentIssues(String boardId) {
-        List<JiraIssue> issues = this.getBoardIssues(boardId);
 
-        return getParentIssues(issues);
+    public List<JiraSprintIssues> getBoardParentIssues(String boardId) {
+        List<JiraSprintIssues> issues = this.getBoardIssues(boardId, Boolean.TRUE);
+        return issues;
     }
 
     public List<JiraWorklog> getIssueWorklog(String issueId) {
