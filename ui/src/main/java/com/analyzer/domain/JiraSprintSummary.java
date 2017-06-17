@@ -12,7 +12,7 @@ public class JiraSprintSummary {
     private String name;
     private Date completeDate;
     private Integer totalIssues;
-    private Integer totalPoints;
+    private double totalPoints;
     private double totalTimeHours;
     private double clientTotalCost;
     private double internalTotalCost;
@@ -53,11 +53,11 @@ public class JiraSprintSummary {
         this.totalIssues = totalIssues;
     }
 
-    public Integer getTotalPoints() {
+    public double getTotalPoints() {
         return totalPoints;
     }
 
-    public void setTotalPoints(Integer totalPoints) {
+    public void setTotalPoints(double totalPoints) {
         this.totalPoints = totalPoints;
     }
 

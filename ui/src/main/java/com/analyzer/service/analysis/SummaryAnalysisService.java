@@ -95,13 +95,13 @@ public class SummaryAnalysisService {
 
     private JiraSprintSummary calculateStats(List<JiraIssue> issues) {
         JiraSprintSummary summary = new JiraSprintSummary();
-        Integer totalPoints = 0;
+        double totalPoints = 0;
         Integer totalSeconds = 0;
 
         summary.setTotalIssues(issues.size());
 
         for (JiraIssue issue : issues) {
-            Integer points = issue.getFields().getPoints();
+            Double points = issue.getFields().getPoints();
             points = points != null ? points : 0;
             totalPoints = totalPoints + points;
 

@@ -3,25 +3,23 @@ package com.analyzer.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 /**
  * Created by rcharow on 10/9/16.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JiraIssueFields {
-    private Integer points;
+    private Double points;
     private JiraIssueTypeFields issueType;
     private Integer timeSpent;
     private Integer aggregateTimeSpent;
 
     @JsonProperty("points")
-    public Integer getPoints() {
+    public Double getPoints() {
         return points;
     }
 
     @JsonProperty("customfield_10063")
-    public void setPoints(Integer points) {
+    public void setPoints(Double points) {
         this.points = points;
     }
 
