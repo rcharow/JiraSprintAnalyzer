@@ -77,13 +77,13 @@ public class JiraController {
 
     @GET
     @Path("/board/{boardId}/issues")
-    public List<JiraIssue> getBoardIssues(@PathParam("boardId") String boardId) {
-        return jiraIssueService.getBoardIssues(boardId);
+    public List<JiraSprintIssues> getBoardIssues(@PathParam("boardId") String boardId) {
+        return jiraIssueService.getBoardIssues(boardId, Boolean.FALSE);
     }
 
     @GET
     @Path("/board/{boardId}/issues/parent")
-    public List<JiraIssue> getBoardParentIssues(@PathParam("boardId") String boardId) {
+    public List<JiraSprintIssues> getBoardParentIssues(@PathParam("boardId") String boardId) {
         return jiraIssueService.getBoardParentIssues(boardId);
     }
 }
