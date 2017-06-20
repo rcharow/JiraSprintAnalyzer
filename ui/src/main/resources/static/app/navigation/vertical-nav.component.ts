@@ -26,6 +26,13 @@ export class VerticalNavComponent{
         this.dashboardService.currentSprints.subscribe((sprints:string[]) => {
             this.currentSprints = sprints;
         });
+
+        this.dashboardService.currentView.subscribe((view:string) => {
+            this.summarySelected = false;
+            this.moneySelected = false;
+            this.timeSelected = false;
+            this[view + 'Selected'] = true;
+        });
     }
 
     selectView(view:string) {
@@ -34,6 +41,6 @@ export class VerticalNavComponent{
         this.timeSelected = false;
         this[view + 'Selected'] = true;
 
-        this.router.navigate([`/dashboard/analysis/${view}/`], { queryParams: {sprints: this.currentSprints} });
+        this.router.navigate([`/dashboard/analysis/${view}/`], { queryParams: {board: this.currentBoard, sprints: this.currentSprints} });
     }
 }
