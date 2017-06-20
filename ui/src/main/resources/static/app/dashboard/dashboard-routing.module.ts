@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
-import { StatsResolveService } from './stats-resolve.service';
+import { DashboardResolveService } from './dashboard-resolve.service';
 import { SprintSummaryComponent } from './analysis/sprint-summary/sprint-summary.component';
 import { AnalysisComponent } from './analysis/analysis.component';
 import { MoneyComponent } from './analysis/money/money.component';
@@ -17,11 +17,14 @@ const routes:Routes = [
         children: [
           {
             path: 'summary',
-            component: SprintSummaryComponent
+            component: SprintSummaryComponent,
+            resolve: { updateView: DashboardResolveService }
           },
           {
             path: 'money',
-            component: MoneyComponent
+            component: MoneyComponent,
+            resolve: { updateView: DashboardResolveService }
+
           }
         ]
       }
@@ -32,7 +35,7 @@ const routes:Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  providers: [StatsResolveService]
+  providers: [DashboardResolveService]
 })
 export class DashboardRoutingModule {
 }
