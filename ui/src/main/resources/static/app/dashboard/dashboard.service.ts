@@ -10,10 +10,12 @@ export class DashboardService {
   private _currentBoard: BehaviorSubject<JiraBoard> = new BehaviorSubject(null);
   private _currentSprints: BehaviorSubject<Array<string>> = new BehaviorSubject([]);
   private _isDashboardLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _currentView: BehaviorSubject<string> = new BehaviorSubject('summary');
 
   public currentBoard: Observable<JiraBoard> = this._currentBoard.asObservable();
   public currentSprints: Observable<Array<string>> = this._currentSprints.asObservable();
   public isDashboardLoading: Observable<boolean> = this._isDashboardLoading.asObservable();
+  public currentView: Observable<string> = this._currentView.asObservable();
 
   setCurrentBoard(board: JiraBoard) {
     this._currentBoard.next(board);
@@ -26,6 +28,10 @@ export class DashboardService {
 
   setDashboardLoading(loading: boolean) {
     this._isDashboardLoading.next(loading);
+  }
+
+  setCurrenView(view: string) {
+    this._currentView.next(view);
   }
 
 }
