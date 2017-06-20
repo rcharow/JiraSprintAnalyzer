@@ -69,7 +69,7 @@ export class DashboardOptionsComponent {
   }
 
   submitOptions() {
-    this.router.navigate(['/dashboard/analysis/summary/'], { queryParams: {sprints: this.sprintsModel} });
+    this.router.navigate(['/dashboard/analysis/summary/'], { queryParams: {board: this.selectedBoard.id, sprints: this.sprintsModel} });
   }
 
 
