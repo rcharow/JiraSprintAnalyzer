@@ -3,16 +3,18 @@ import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { JiraBoard, JiraSprint } from './jira.model';
-import { JiraSprintSummary, JiraWorklogSummary } from "./jira.model";
+import { JiraSprintSummary, JiraWorklogSummary, JiraSprintPointAnalysis } from "./jira.model";
 import { each, join } from "lodash";
 
 @Injectable()
 export class JiraService {
   private _currentSummary:BehaviorSubject<JiraSprintSummary[]> = new BehaviorSubject(null);
   private _currentWorklogSummary:BehaviorSubject<JiraWorklogSummary[]> = new BehaviorSubject(null);
+  private _currentPointAnalysis:BehaviorSubject<JiraSprintPointAnalysis[]> = new BehaviorSubject(null);
 
   public currentSummary:Observable<JiraSprintSummary[]> = this._currentSummary.asObservable();
   public currentWorklogSummary:Observable<JiraWorklogSummary[]> = this._currentWorklogSummary.asObservable();
+  public currentPointAnalysis:Observable<JiraSprintPointAnalysis[]> = this._currentPointAnalysis.asObservable();
 
   constructor(private http:Http) {
   }
@@ -65,6 +67,13 @@ export class JiraService {
         .map(res => res.json())
         .subscribe((summary:JiraWorklogSummary[]) => this._currentWorklogSummary.next(summary));
     }
+  }
+
+  setCurrentPointAnalysis(boardId:string) {
+    this._currentPointAnalysis.next(null);
+    this.http.get('/api/analysis/point/' + boardId)
+      .map(res => res.json())
+      .subscribe((data:JiraSprintPointAnalysis[]) => this._currentPointAnalysis.next(data));
   }
 
 }
