@@ -41,3 +41,17 @@ export class JiraWorklogSummary {
   public sprintId:string;
   public worklogs:Array<JiraWorklog>;
 }
+
+export class JiraPointAnalysis {
+  public pointValue:number;
+  public avgTimeSeconds:number;
+  public avgDollarsSpent:number;
+}
+
+export class JiraSprintPointAnalysis {
+  public sprintId:string;
+  public sprintName:string;
+  public startDate:Date;
+  public endDate:Date;
+  public pointAnalysis:Array<JiraPointAnalysis>;
+}
