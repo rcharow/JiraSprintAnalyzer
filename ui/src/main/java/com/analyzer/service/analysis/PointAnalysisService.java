@@ -1,10 +1,8 @@
 package com.analyzer.service.analysis;
 
-import com.analyzer.domain.JiraIssue;
-import com.analyzer.domain.JiraPointAnalysis;
-import com.analyzer.domain.JiraSprintIssues;
-import com.analyzer.domain.JiraSprintPointAnalysis;
+import com.analyzer.domain.*;
 import com.analyzer.service.jira.JiraIssueService;
+import com.analyzer.service.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,17 +15,28 @@ import java.util.List;
 @Component
 public class PointAnalysisService {
     private JiraIssueService jiraIssueService;
+    private JiraSprintService jiraSprintService;
     private final double[] pointValues = new double[]{0, 0.5, 1, 2, 3, 5, 8, 13, 21, 42, 101};
 
     @Autowired
-    public PointAnalysisService(JiraIssueService jiraIssueService) {
+    public PointAnalysisService(JiraIssueService jiraIssueService, JiraSprintService jiraSprintService) {
         this.jiraIssueService = jiraIssueService;
+        this.jiraSprintService = jiraSprintService;
     }
 
     public List<JiraSprintPointAnalysis> getBoardPointAnalysis(String boardId) {
-        List<JiraSprintPointAnalysis> pointAnalyses = new ArrayList<JiraSprintPointAnalysis>();
         List<JiraSprintIssues> sprintIssues = jiraIssueService.getBoardParentIssues(boardId);
 
+        List<JiraSprintPointAnalysis> pointAnalyses = getPointAnalysis(sprintIssues);
+
+
+
+        return pointAnalyses;
+    }
+
+    private List<JiraSprintPointAnalysis> getPointAnalysis(List<JiraSprintIssues> sprintIssues) {
+
+        List<JiraSprintPointAnalysis> pointAnalyses = new ArrayList<JiraSprintPointAnalysis>();
         for (JiraSprintIssues sprint : sprintIssues) {
             JiraSprintPointAnalysis analysis = new JiraSprintPointAnalysis();
             analysis.setSprintId(sprint.getSprint().getId());
@@ -45,8 +54,9 @@ public class PointAnalysisService {
                     if (issue.getFields().getPoints() != null && issue.getFields().getPoints().equals(pointValue)) {
                         count += 1;
                         if (issue.getFields().getTimeSpent() != null) {
+                            float hours = issue.getFields().getTimeSpent() / 60 / 60;
                             totalTime = totalTime + (float) issue.getFields().getTimeSpent();
-                            totalDollars = totalDollars + (float) (issue.getFields().getTimeSpent() * 60);
+                            totalDollars = totalDollars + (float) (hours * 60);
                         }
                     }
                 }
@@ -66,5 +76,20 @@ public class PointAnalysisService {
         }
 
         return pointAnalyses;
+    }
+
+    public JiraSprintPointAnalysis getSprintPointAnalysis(String sprintId) {
+        List<JiraIssue> issues = jiraIssueService.getSprintParentIssues(sprintId);
+        JiraSprint fullSprint = jiraSprintService.getSprintById(sprintId);
+
+        JiraSprintIssues sprintIssues = new JiraSprintIssues();
+        sprintIssues.setParentIssues(issues);
+        sprintIssues.setSprint(fullSprint);
+
+        List<JiraSprintIssues> sprintIssueList = new ArrayList<JiraSprintIssues>();
+        sprintIssueList.add(sprintIssues);
+
+        //TODO: Fix this hack
+        return getPointAnalysis(sprintIssueList).get(0);
     }
 }
