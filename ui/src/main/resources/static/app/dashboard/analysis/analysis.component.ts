@@ -33,10 +33,11 @@ export class AnalysisComponent implements OnInit {
       if(difference(sprints, this.currentSprints).length || difference(this.currentSprints, sprints).length) {
         this.dashboardService.setCurrentSprints(sprints);
         this.jiraService.setCurrentSummary(sprints);
+        this.jiraService.setCurrentPointAnalysisBySprints(sprints);
       }
 
       if(this.currentBoardId !== board) {
-        this.jiraService.setCurrentPointAnalysis(board);
+        // this.jiraService.setCurrentPointAnalysisByBoard(board);
         this.currentBoardId = board;
       }
     });
