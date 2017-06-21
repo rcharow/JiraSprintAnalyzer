@@ -18,14 +18,29 @@ export class MoneyComponent {
   chartColors: string[] = ['#F19F4D', '#4484CE', '#344D68', '#9FD356', '#034748', '#3C1518', '#A14EBF', '#A63D40', '#EE6C4D'];
   chartOptions:object = {
     responsive: true,
+    title: {
+      display: true,
+      text: 'Dollars Spent by Point Estimate',
+      position: 'top'
+    },
     scales: {
       yAxes: [{
         ticks: {
           callback(value:number){
-            return '$' + value.toFixed(2);
+            return '$' + value;
           }
         }
       }]
+    },
+    legend: {
+      position: 'bottom'
+    },
+    tooltips: {
+      callbacks: {
+        label(tooltipItem:any, data:any){
+          return '$' + tooltipItem.yLabel.toFixed(2);
+        }
+      }
     }
   };
 
