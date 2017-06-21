@@ -44,7 +44,7 @@ export class JiraWorklogSummary {
 
 export class JiraPointAnalysis {
   public pointValue:number;
-  public avgTimeSeconds:number;
+  public avgTimeSpentSeconds:number;
   public avgDollarsSpent:number;
 }
 
