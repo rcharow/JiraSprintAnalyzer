@@ -69,11 +69,30 @@ export class JiraService {
     }
   }
 
-  setCurrentPointAnalysis(boardId:string) {
+  setCurrentPointAnalysisByBoard(boardId:string) {
     this._currentPointAnalysis.next(null);
     this.http.get('/api/analysis/point/' + boardId)
       .map(res => res.json())
       .subscribe((data:JiraSprintPointAnalysis[]) => this._currentPointAnalysis.next(data));
+  }
+
+  setCurrentPointAnalysisBySprints(sprintIds:string[]) {
+    sprintIds = typeof sprintIds === 'string' ? [sprintIds] : sprintIds;
+    this._currentPointAnalysis.next(null);
+
+    let requests:Observable<JiraSprintPointAnalysis>[] = [];
+    each(sprintIds, (sprintId) => {
+      requests.push(this.http.get('/api/analysis/point/sprint/' + sprintId).map(res => res.json()));
+    });
+
+    Observable.forkJoin(requests).subscribe((results:JiraSprintPointAnalysis[]) => {
+      results.sort((a:JiraSprintPointAnalysis, b: JiraSprintPointAnalysis) => {
+        if(a.endDate > b.endDate) return 1;
+        if(a.endDate < b.endDate) return -1;
+        return 0;
+      });
+      this._currentPointAnalysis.next(results);
+    });
   }
 
 }
