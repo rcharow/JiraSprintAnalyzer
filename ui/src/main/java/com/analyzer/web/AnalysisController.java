@@ -48,8 +48,14 @@ public class AnalysisController {
 
     @GET
     @Path("/point/{boardId}")
-    public List<JiraSprintPointAnalysis> getSprintPointAnalyses(@PathParam("boardId") String boardId) {
+    public List<JiraSprintPointAnalysis> getBoardPointAnalyses(@PathParam("boardId") String boardId) {
         return pointAnalysisService.getBoardPointAnalysis(boardId);
+    }
+
+    @GET
+    @Path("/point/sprint/{sprintId}")
+    public JiraSprintPointAnalysis getSprintPointAnalyses(@PathParam("sprintId") String sprintId) {
+        return pointAnalysisService.getSprintPointAnalysis(sprintId);
     }
 
 }
