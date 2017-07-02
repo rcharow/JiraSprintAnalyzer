@@ -48,10 +48,18 @@ export class JiraPointAnalysis {
   public avgDollarsSpent:number;
 }
 
+export class JiraSprintAverages {
+  public sprintId:string;
+  public sprintName:string;
+  public averageHoursSpentPerPoint:number;
+  public averageDollarsSpentPerPoint:number;
+}
+
 export class JiraSprintPointAnalysis {
   public sprintId:string;
   public sprintName:string;
   public startDate:Date;
   public endDate:Date;
   public pointAnalysis:Array<JiraPointAnalysis>;
+  public pointAverages:JiraSprintAverages;
 }
