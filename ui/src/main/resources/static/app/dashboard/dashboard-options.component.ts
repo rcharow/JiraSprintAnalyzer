@@ -28,6 +28,7 @@ export class DashboardOptionsComponent {
 
   };
   sprintsModel:string[] = [];
+  chartAll:boolean = false;
 
   constructor(private jiraService:JiraService, private dashboardService:DashboardService, private router:Router) {
 
@@ -69,7 +70,7 @@ export class DashboardOptionsComponent {
   }
 
   submitOptions() {
-    this.router.navigate(['/dashboard/analysis/summary/'], { queryParams: {board: this.selectedBoard.id, sprints: this.sprintsModel} });
+    this.router.navigate(['/dashboard/analysis/summary/'], { queryParams: {board: this.selectedBoard.id, sprints: this.sprintsModel, allSprints: this.chartAll} });
   }
 
 

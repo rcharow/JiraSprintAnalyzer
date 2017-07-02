@@ -13,10 +13,11 @@ import {difference} from "lodash";
 
 export class AnalysisComponent implements OnInit {
 
-  private currentBoardId:string;
-  private currentSprints:string[] = [];
+  private currentBoardId: string;
+  private currentSprints: string[] = [];
+  private chartAll: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router:Router, private location: Location, private dashboardService: DashboardService, private jiraService: JiraService) {
+  constructor(private route: ActivatedRoute, private router: Router, private location: Location, private dashboardService: DashboardService, private jiraService: JiraService) {
   }
 
   ngOnInit() {
@@ -25,21 +26,33 @@ export class AnalysisComponent implements OnInit {
       this.currentSprints = sprints;
     });
 
+    this.dashboardService.chartAllSprints.subscribe((chartAll: boolean) => this.chartAll = chartAll );
+
     this.route.queryParams.subscribe((queryParams: any) => {
       let sprints = typeof queryParams['sprints'] === 'string' ? [queryParams['sprints']] : queryParams['sprints'];
       let board = queryParams['board'];
+      let chartAll = queryParams['allSprints'] === "true";
 
       //TODO: Is there a better way to do this? Can angular handle it?
-      if(difference(sprints, this.currentSprints).length || difference(this.currentSprints, sprints).length) {
+      if (this.requestParamsChanged(sprints,chartAll)) {
         this.dashboardService.setCurrentSprints(sprints);
+        this.dashboardService.setChartAll((chartAll));
         this.jiraService.setCurrentSummary(sprints);
-        this.jiraService.setCurrentPointAnalysisBySprints(sprints);
+
+        if (chartAll) {
+          this.jiraService.setCurrentPointAnalysisByBoard(board);
+        } else {
+          this.jiraService.setCurrentPointAnalysisBySprints(sprints);
+        }
       }
 
-      if(this.currentBoardId !== board) {
-        // this.jiraService.setCurrentPointAnalysisByBoard(board);
+      if (this.currentBoardId !== board) {
         this.currentBoardId = board;
       }
     });
+  }
+
+  requestParamsChanged(sprints: string[], chartAll: boolean) {
+    return difference(sprints, this.currentSprints).length || difference(this.currentSprints, sprints).length || this.chartAll !== chartAll;
   }
 }

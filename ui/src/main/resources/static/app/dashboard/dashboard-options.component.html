@@ -27,7 +27,7 @@
           </div>
         </div>
 
-        <div class="col-md-6 dashboard-options__option">
+        <div class="col-md-4 dashboard-options__option">
           <label for="sprintSelect">Select Sprints</label>
           <ss-multiselect-dropdown
               id="sprintSelect" name="sprintSelect"
@@ -38,7 +38,19 @@
               [disabled]="loading || !selectedBoard">
           </ss-multiselect-dropdown>
         </div>
-        <div class="col-md-3 dashboard-options__option">
+        <div class="col-md-2 dashboard-options__option">
+          <div class="form-check dashboard-options__check">
+            <label class="form-check-label">
+              <input type="checkbox" name="allSprintsCheck" id="allSprintsCheck" class="form-check-input"
+                     [(ngModel)]="chartAll">
+              Chart all sprints?
+            </label>
+            <i class="fa fa-question-circle" aria-hidden="true"
+               aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Include all sprints from selected board in chart, not just the selected sprints.">
+            </i>
+          </div>
+        </div>
+        <div class="col-md-2 dashboard-options__option">
           <button type="submit"
                   class="btn btn-primary dashboard-options__submit align-middle"
                   [disabled]="!submitEnabled()"

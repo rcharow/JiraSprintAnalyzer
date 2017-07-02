@@ -10,11 +10,12 @@ import { JiraSprint } from "../jira/jira.model";
 })
 
 export class VerticalNavComponent{
-    currentBoard:string;
-    currentSprints:string[];
-    summarySelected:boolean = true;
-    moneySelected:boolean = false;
-    timeSelected:boolean = false;
+    private currentBoard:string;
+    private currentSprints:string[];
+    private summarySelected:boolean = true;
+    private moneySelected:boolean = false;
+    private timeSelected:boolean = false;
+    private chartAll:boolean = false;
 
     constructor(private router:Router, private dashboardService:DashboardService){}
 
@@ -26,6 +27,8 @@ export class VerticalNavComponent{
         this.dashboardService.currentSprints.subscribe((sprints:string[]) => {
             this.currentSprints = sprints;
         });
+
+        this.dashboardService.chartAllSprints.subscribe((chartAll:boolean) => this.chartAll = chartAll);
 
         this.dashboardService.currentView.subscribe((view:string) => {
             this.summarySelected = false;
@@ -41,6 +44,6 @@ export class VerticalNavComponent{
         this.timeSelected = false;
         this[view + 'Selected'] = true;
 
-        this.router.navigate([`/dashboard/analysis/${view}/`], { queryParams: {board: this.currentBoard, sprints: this.currentSprints} });
+        this.router.navigate([`/dashboard/analysis/${view}/`], { queryParams: {board: this.currentBoard, sprints: this.currentSprints, allSprints: this.chartAll} });
     }
 }
