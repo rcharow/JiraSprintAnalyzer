@@ -21,7 +21,8 @@ export class MoneyComponent {
     title: {
       display: true,
       text: 'Dollars Spent by Point Estimate',
-      position: 'top'
+      position: 'top',
+      fontSize: 16
     },
     scales: {
       yAxes: [{
