@@ -2,6 +2,7 @@ package com.analyzer.domain;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by rcharow on 6/17/17.
@@ -12,6 +13,7 @@ public class JiraSprintPointAnalysis {
     private Date startDate;
     private Date endDate;
     private List<JiraPointAnalysis> pointAnalysis;
+    private JiraSprintPointAverage pointAverages;
 
     public String getSprintId() {
         return sprintId;
@@ -53,4 +55,11 @@ public class JiraSprintPointAnalysis {
         this.pointAnalysis = pointAnalysis;
     }
 
+    public JiraSprintPointAverage getPointAverages() {
+        return pointAverages;
+    }
+
+    public void setPointAverages(JiraSprintPointAverage pointAverages) {
+        this.pointAverages = pointAverages;
+    }
 }

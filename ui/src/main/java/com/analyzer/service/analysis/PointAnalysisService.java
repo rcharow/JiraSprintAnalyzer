@@ -3,10 +3,12 @@ package com.analyzer.service.analysis;
 import com.analyzer.domain.*;
 import com.analyzer.service.jira.JiraIssueService;
 import com.analyzer.service.jira.JiraSprintService;
+import com.sun.org.apache.xerces.internal.xs.StringList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,13 +32,29 @@ public class PointAnalysisService {
         List<JiraSprintPointAnalysis> pointAnalyses = getPointAnalysis(sprintIssues);
 
 
-
         return pointAnalyses;
+    }
+
+    public JiraSprintPointAnalysis getSprintPointAnalysis(String sprintId) {
+        List<JiraIssue> issues = jiraIssueService.getSprintParentIssues(sprintId);
+        JiraSprint fullSprint = jiraSprintService.getSprintById(sprintId);
+
+        JiraSprintIssues sprintIssues = new JiraSprintIssues();
+        sprintIssues.setParentIssues(issues);
+        sprintIssues.setSprint(fullSprint);
+
+        List<JiraSprintIssues> sprintIssueList = new ArrayList<JiraSprintIssues>();
+        sprintIssueList.add(sprintIssues);
+
+        //TODO: Fix this hack
+        return getPointAnalysis(sprintIssueList).get(0);
     }
 
     private List<JiraSprintPointAnalysis> getPointAnalysis(List<JiraSprintIssues> sprintIssues) {
 
         List<JiraSprintPointAnalysis> pointAnalyses = new ArrayList<JiraSprintPointAnalysis>();
+
+
         for (JiraSprintIssues sprint : sprintIssues) {
             JiraSprintPointAnalysis analysis = new JiraSprintPointAnalysis();
             analysis.setSprintId(sprint.getSprint().getId());
@@ -71,6 +89,7 @@ public class PointAnalysisService {
 
             }
 
+            analysis.setPointAverages(getPointAverages(sprint));
             pointAnalyses.add(analysis);
 
         }
@@ -78,18 +97,33 @@ public class PointAnalysisService {
         return pointAnalyses;
     }
 
-    public JiraSprintPointAnalysis getSprintPointAnalysis(String sprintId) {
-        List<JiraIssue> issues = jiraIssueService.getSprintParentIssues(sprintId);
-        JiraSprint fullSprint = jiraSprintService.getSprintById(sprintId);
+    private JiraSprintPointAverage getPointAverages(JiraSprintIssues sprintIssues) {
 
-        JiraSprintIssues sprintIssues = new JiraSprintIssues();
-        sprintIssues.setParentIssues(issues);
-        sprintIssues.setSprint(fullSprint);
+        Double totalTime = 0D;
+        Double totalPoints = 0D;
 
-        List<JiraSprintIssues> sprintIssueList = new ArrayList<JiraSprintIssues>();
-        sprintIssueList.add(sprintIssues);
+        for (JiraIssue issue : sprintIssues.getParentIssues()) {
+            if(issue.getFields().getTimeSpent() != null) {
+                totalTime += issue.getFields().getTimeSpent();
+            }
+        }
 
-        //TODO: Fix this hack
-        return getPointAnalysis(sprintIssueList).get(0);
+        JiraSprintPointAverage average = new JiraSprintPointAverage();
+        average.setSprintId(sprintIssues.getSprint().getId());
+        average.setSprintName(sprintIssues.getSprint().getName());
+        Double totalHours = totalTime / 60 / 60;
+
+        if (sprintIssues.getParentIssues().size() > 0) {
+            average.setAverageHoursPerPoint(totalHours / sprintIssues.getParentIssues().size());
+            average.setAverageDollarsPerPoint(totalHours / sprintIssues.getParentIssues().size() * 60);
+        } else {
+            average.setAverageHoursPerPoint(0D);
+            average.setAverageDollarsPerPoint(0D);
+        }
+
+
+        return average;
     }
+
+
 }
