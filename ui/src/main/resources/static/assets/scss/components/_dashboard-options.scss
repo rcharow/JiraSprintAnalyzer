@@ -41,6 +41,14 @@
   }
 }
 
+.dashboard-options__check {
+  font-size: .85rem;
+
+  @include media-breakpoint-up(md) {
+    margin-top: 40px;
+  }
+}
+
 .dashboard-options__multi-select {
   .dropdown-toggle, .dropdown, .dropdown-menu {
     width: 100%;
