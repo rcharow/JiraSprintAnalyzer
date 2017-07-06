@@ -48,7 +48,7 @@ export class MoneyChartService {
         yAxes: [{
           ticks: {
             callback(value: number){
-              return '$' + value;
+              return '$' + value.toFixed(2);
             }
           }
         }]
@@ -111,7 +111,7 @@ export class MoneyChartService {
 
       each(data, sprint => {
         labels.push(sprint.sprintName);
-        dataset.push(parseInt(sprint.pointAverages.averageDollarsPerPoint.toFixed(2)));
+        dataset.push(sprint.pointAverages.averageDollarsPerPoint);
       });
 
       return {
