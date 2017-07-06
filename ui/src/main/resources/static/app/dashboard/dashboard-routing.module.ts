@@ -4,7 +4,8 @@ import { DashboardComponent } from './dashboard.component';
 import { DashboardResolveService } from './dashboard-resolve.service';
 import { SprintSummaryComponent } from './analysis/sprint-summary/sprint-summary.component';
 import { AnalysisComponent } from './analysis/analysis.component';
-import { MoneyComponent } from './analysis/money/money.component';
+import { EstimateCostComponent } from './analysis/money/estimate-cost.component';
+import { PointCostComponent } from './analysis/money/point-cost.component';
 
 const routes:Routes = [
   {
@@ -21,10 +22,14 @@ const routes:Routes = [
             resolve: { updateView: DashboardResolveService }
           },
           {
-            path: 'money',
-            component: MoneyComponent,
+            path: 'estimate-cost',
+            component: EstimateCostComponent,
             resolve: { updateView: DashboardResolveService }
-
+          },
+          {
+            path: 'point-cost',
+            component: PointCostComponent,
+            resolve: { updateView: DashboardResolveService }
           }
         ]
       }

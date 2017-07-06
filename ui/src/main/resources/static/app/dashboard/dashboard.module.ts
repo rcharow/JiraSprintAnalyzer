@@ -5,7 +5,8 @@ import { JiraService } from "../jira/jira.service";
 import { DashboardComponent } from "./dashboard.component";
 import { SprintSummaryComponent } from './analysis/sprint-summary/sprint-summary.component';
 import { AnalysisComponent } from './analysis/analysis.component';
-import { MoneyComponent } from './analysis/money/money.component';
+import { EstimateCostComponent } from './analysis/money/estimate-cost.component';
+import { PointCostComponent } from './analysis/money/point-cost.component';
 import { NavigationModule } from "../navigation/navigation.module";
 import { DashboardOptionsComponent } from "./dashboard-options.component";
 import { SharedModule } from "../shared/shared.module";
@@ -27,7 +28,8 @@ import { ChartModule } from 'angular2-chartjs';
     SprintSummaryComponent,
     DashboardOptionsComponent,
     AnalysisComponent,
-    MoneyComponent
+    EstimateCostComponent,
+    PointCostComponent
   ],
   exports: [
     DashboardComponent,
