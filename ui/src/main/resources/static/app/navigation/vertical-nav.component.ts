@@ -1,49 +1,60 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
-import { JiraBoard } from "../jira/jira.model";
-import { DashboardService } from "../dashboard/dashboard.service";
-import { JiraSprint } from "../jira/jira.model";
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Router} from '@angular/router';
+import {JiraBoard} from "../jira/jira.model";
+import {DashboardService} from "../dashboard/dashboard.service";
+import {JiraSprint} from "../jira/jira.model";
 
 @Component({
-    selector: 'vertical-nav',
-    templateUrl: '/app/navigation/vertical-nav.component.html'
+  selector: 'vertical-nav',
+  templateUrl: '/app/navigation/vertical-nav.component.html'
 })
 
-export class VerticalNavComponent{
-    private currentBoard:string;
-    private currentSprints:string[];
-    private summarySelected:boolean = true;
-    private moneySelected:boolean = false;
-    private timeSelected:boolean = false;
-    private chartAll:boolean = false;
+export class VerticalNavComponent {
+  private currentBoard: string;
+  private currentSprints: string[];
+  private currentView: string;
+  private urlMap: object = {
+    'money': 'estimate-cost',
+    'summary': 'summary',
+    'time': 'time'
+  };
+  private chartAll: boolean = false;
 
-    constructor(private router:Router, private dashboardService:DashboardService){}
+  constructor(private router: Router, private dashboardService: DashboardService) {
+  }
 
-    ngOnInit(){
-        this.dashboardService.currentBoard.subscribe((board:JiraBoard) => {
-            this.currentBoard = board ? board.id : null;
-        });
+  ngOnInit() {
+    this.dashboardService.currentBoard.subscribe((board: JiraBoard) => {
+      this.currentBoard = board ? board.id : null;
+    });
 
-        this.dashboardService.currentSprints.subscribe((sprints:string[]) => {
-            this.currentSprints = sprints;
-        });
+    this.dashboardService.currentSprints.subscribe((sprints: string[]) => {
+      this.currentSprints = sprints;
+    });
 
-        this.dashboardService.chartAllSprints.subscribe((chartAll:boolean) => this.chartAll = chartAll);
+    this.dashboardService.chartAllSprints.subscribe((chartAll: boolean) => this.chartAll = chartAll);
 
-        this.dashboardService.currentView.subscribe((view:string) => {
-            this.summarySelected = false;
-            this.moneySelected = false;
-            this.timeSelected = false;
-            this[view + 'Selected'] = true;
-        });
+    this.dashboardService.currentView.subscribe((view: string) => {
+     this.currentView = view;
+    });
+  }
+
+  viewSelected(view:string) {
+    if(this.currentView === 'estimate-cost' || this.currentView === 'point-cost') {
+      return view === 'money';
     }
+    return this.currentView === view;
+  }
 
-    selectView(view:string) {
-        this.summarySelected = false;
-        this.moneySelected = false;
-        this.timeSelected = false;
-        this[view + 'Selected'] = true;
+  selectView(view: string) {
+    this.currentView = view;
 
-        this.router.navigate([`/dashboard/analysis/${view}/`], { queryParams: {board: this.currentBoard, sprints: this.currentSprints, allSprints: this.chartAll} });
-    }
+    this.router.navigate([`/dashboard/analysis/${this.urlMap[view]}/`], {
+      queryParams: {
+        board: this.currentBoard,
+        sprints: this.currentSprints,
+        allSprints: this.chartAll
+      }
+    });
+  }
 }
