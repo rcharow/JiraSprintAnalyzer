@@ -3,6 +3,7 @@ package com.analyzer.web;
 import com.analyzer.domain.*;
 import com.analyzer.service.jira.JiraBoardService;
 import com.analyzer.service.jira.JiraIssueService;
+import com.analyzer.service.jira.JiraRapidViewService;
 import com.analyzer.service.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,11 +29,14 @@ public class JiraController {
 
     private final JiraIssueService jiraIssueService;
 
+    private final JiraRapidViewService jiraRapidViewService;
+
     @Autowired
-    public JiraController(JiraBoardService jiraBoardService, JiraSprintService jiraSprintService, JiraIssueService jiraIssueService) {
+    public JiraController(JiraBoardService jiraBoardService, JiraSprintService jiraSprintService, JiraIssueService jiraIssueService, JiraRapidViewService jiraRapidViewService) {
         this.jiraBoardService = jiraBoardService;
         this.jiraSprintService = jiraSprintService;
         this.jiraIssueService = jiraIssueService;
+        this.jiraRapidViewService = jiraRapidViewService;
     }
 
     @GET
@@ -85,5 +89,11 @@ public class JiraController {
     @Path("/board/{boardId}/issues/parent")
     public List<JiraSprintIssues> getBoardParentIssues(@PathParam("boardId") String boardId) {
         return jiraIssueService.getBoardParentIssues(boardId);
+    }
+
+    @GET
+    @Path("/rapid/{boardId}/{sprintId}")
+    public JiraSprintRapidView getSprintRapidView(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
+        return jiraRapidViewService.getSprintRapidView(boardId,sprintId);
     }
 }
