@@ -106,6 +106,9 @@ public class PointAnalysisService {
             if(issue.getFields().getTimeSpent() != null) {
                 totalTime += issue.getFields().getTimeSpent();
             }
+            if(issue.getFields().getPoints() != null) {
+                totalPoints += issue.getFields().getPoints();
+            }
         }
 
         JiraSprintPointAverage average = new JiraSprintPointAverage();
@@ -114,8 +117,8 @@ public class PointAnalysisService {
         Double totalHours = totalTime / 60 / 60;
 
         if (sprintIssues.getParentIssues().size() > 0) {
-            average.setAverageHoursPerPoint(totalHours / sprintIssues.getParentIssues().size());
-            average.setAverageDollarsPerPoint(totalHours / sprintIssues.getParentIssues().size() * 60);
+            average.setAverageHoursPerPoint(totalHours / totalPoints);
+            average.setAverageDollarsPerPoint(totalHours / totalPoints * 60);
         } else {
             average.setAverageHoursPerPoint(0D);
             average.setAverageDollarsPerPoint(0D);
