@@ -9,7 +9,7 @@ export class MoneyChartService {
       responsive: true,
       title: {
         display: true,
-        text: 'Dollars Spent by Point Estimate',
+        text: 'Dollars Spent by Completed Point Estimate',
         position: 'top',
         fontSize: 16
       },
@@ -40,7 +40,7 @@ export class MoneyChartService {
       responsive: true,
       title: {
         display: true,
-        text: 'Average Dollars Spent per Point',
+        text: 'Average Dollars Spent per Completed Point',
         position: 'top',
         fontSize: 16
       },
