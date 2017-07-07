@@ -33,18 +33,22 @@ public class AnalysisController {
     }
 
     @GET
-    @Path("/summary/{sprintId}")
-    public JiraSprintSummary getSingleSprintSummary(@PathParam("sprintId") String sprintId) { return summaryAnalysisService.getSprintSummary(sprintId); }
-
-    @GET
-    @Path("/worklogs/{sprintId}")
-    public JiraWorklogSummary getSingleSprintWorklogSummary(@PathParam("sprintId") String sprintId) {
-        return summaryAnalysisService.getSprintWorklogSummary(sprintId);
+    @Path("/summary/{boardId}/{sprintId}")
+    public JiraSprintSummary getSingleSprintSummary(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
+        return summaryAnalysisService.getSprintSummary(boardId, sprintId);
     }
 
     @GET
-    @Path("/summary/worklogs/{sprintId}")
-    public JiraSprintSummary getSprintSummaryWithWorklogs(@PathParam("sprintId") String sprintId) { return summaryAnalysisService.getSprintSummaryWithWorklogs(sprintId); }
+    @Path("/worklogs/{boardId}/{sprintId}")
+    public JiraWorklogSummary getSingleSprintWorklogSummary(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
+        return summaryAnalysisService.getSprintWorklogSummary(boardId, sprintId);
+    }
+
+    @GET
+    @Path("/summary/worklogs/{boardId}/{sprintId}")
+    public JiraSprintSummary getSprintSummaryWithWorklogs(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
+        return summaryAnalysisService.getSprintSummaryWithWorklogs(boardId, sprintId);
+    }
 
     @GET
     @Path("/point/{boardId}")
@@ -53,9 +57,9 @@ public class AnalysisController {
     }
 
     @GET
-    @Path("/point/sprint/{sprintId}")
-    public JiraSprintPointAnalysis getSprintPointAnalyses(@PathParam("sprintId") String sprintId) {
-        return pointAnalysisService.getSprintPointAnalysis(sprintId);
+    @Path("/point/{boardId}/sprint/{sprintId}")
+    public JiraSprintPointAnalysis getSprintPointAnalyses(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
+        return pointAnalysisService.getSprintPointAnalysis(boardId, sprintId);
     }
 
 }

@@ -68,15 +68,15 @@ public class JiraController {
     }
 
     @GET
-    @Path("/sprint/{sprintId}/issues")
-    public List<JiraIssue> getSprintIssues(@PathParam("sprintId") String sprintId) {
-        return jiraIssueService.getSprintIssues(sprintId);
+    @Path("/board/{boardId}/sprint/{sprintId}/issues")
+    public List<JiraIssue> getSprintIssues(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
+        return jiraIssueService.getCompletedSprintIssues(boardId, sprintId);
     }
 
     @GET
-    @Path("/sprint/{sprintId}/issues/parent")
-    public List<JiraIssue> getSprintParentIssues(@PathParam("sprintId") String sprintId) {
-        return jiraIssueService.getSprintParentIssues(sprintId);
+    @Path("board/{boardId}/sprint/{sprintId}/issues/parent")
+    public List<JiraIssue> getSprintParentIssues(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
+        return jiraIssueService.getCompletedSprintParentIssues(boardId, sprintId);
     }
 
     @GET

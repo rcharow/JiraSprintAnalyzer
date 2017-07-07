@@ -24,14 +24,14 @@ public class SummaryAnalysisService {
         this.jiraIssueService = jiraIssueService;
     }
 
-    public JiraSprintSummary getSprintSummary(String sprintId) {
+    public JiraSprintSummary getSprintSummary(String boardId, String sprintId) {
 
         JiraSprintSummary summary;
         JiraSprint sprint;
 
         sprint = jiraSprintService.getSprintById(sprintId);
 
-        List<JiraIssue> issues = jiraIssueService.getSprintParentIssues(sprintId);
+        List<JiraIssue> issues = jiraIssueService.getCompletedSprintParentIssues(boardId, sprintId);
         summary = calculateStats(issues);
         summary.setId(sprintId);
         summary.setName(sprint.getName());
@@ -40,18 +40,18 @@ public class SummaryAnalysisService {
         return summary;
     }
 
-    public JiraSprintSummary getSprintSummaryWithWorklogs(String sprintId) {
+    public JiraSprintSummary getSprintSummaryWithWorklogs(String boardId, String sprintId) {
         //TODO: Refactor this so its not repeating code or effort.
-        JiraSprintSummary summary = getSprintSummary(sprintId);
-        JiraWorklogSummary worklogSummary = getSprintWorklogSummary(sprintId);
+        JiraSprintSummary summary = getSprintSummary(boardId, sprintId);
+        JiraWorklogSummary worklogSummary = getSprintWorklogSummary(boardId, sprintId);
 
         summary.setWorklogSummary(worklogSummary);
 
         return summary;
     }
 
-    public JiraWorklogSummary getSprintWorklogSummary(String sprintId) {
-        List<JiraIssue> issues = jiraIssueService.getSprintParentIssues(sprintId);
+    public JiraWorklogSummary getSprintWorklogSummary(String boardId, String sprintId) {
+        List<JiraIssue> issues = jiraIssueService.getCompletedSprintParentIssues(boardId, sprintId);
         Integer totalSeconds = 0;
 
         HashMap worklogMap = new HashMap();

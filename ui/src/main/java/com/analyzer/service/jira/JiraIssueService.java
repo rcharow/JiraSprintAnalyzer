@@ -1,9 +1,6 @@
 package com.analyzer.service.jira;
 
 import com.analyzer.domain.*;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +22,7 @@ import java.util.stream.Collectors;
 public class JiraIssueService extends JiraService {
     private Logger log = LoggerFactory.getLogger(JiraIssueService.class);
     private JiraSprintService jiraSprintService;
+    private JiraRapidViewService jiraRapidViewService;
 
     private enum IssueSourceType {
         BOARD,
@@ -34,31 +30,35 @@ public class JiraIssueService extends JiraService {
     }
 
     @Autowired
-    public JiraIssueService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl, JiraSprintService jiraSprintService) {
+    public JiraIssueService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl, JiraSprintService jiraSprintService, JiraRapidViewService jiraRapidViewService) {
         super(jiraUser, jiraPassword, jiraUrl);
         this.jiraSprintService = jiraSprintService;
+        this.jiraRapidViewService = jiraRapidViewService;
     }
 
-    public List<JiraIssue> getSprintIssues(String sprintId) {
-        return getIssues(IssueSourceType.SPRINT, sprintId);
+    public List<JiraIssue> getCompletedSprintIssues(String boardId, String sprintId) {
+        List<JiraIssue> issues = getIssues(IssueSourceType.SPRINT, sprintId);
+        return filterIssuesCompletedInSprint(boardId, sprintId, issues);
     }
 
-    public List<JiraIssue> getSprintParentIssues(String sprintId) {
-        List<JiraIssue> issues = this.getSprintIssues(sprintId);
+    public List<JiraIssue> getCompletedSprintParentIssues(String boardId, String sprintId) {
+        List<JiraIssue> issues = this.getCompletedSprintIssues(boardId, sprintId);
 
         return getParentIssues(issues);
     }
 
     public List<JiraSprintIssues> getBoardIssues(String boardId, Boolean parentIssuesOnly) {
-//        return getIssues(IssueSourceType.BOARD, boardId);
         List<JiraSprintIssues> sprintIssues = new ArrayList<JiraSprintIssues>();
         List<JiraSprint> closedSprints = jiraSprintService.getSprints(boardId, "closed");
         for(JiraSprint sprint : closedSprints) {
             String sprintId = sprint.getId();
-            List<JiraIssue> issues = getSprintParentIssues(sprintId);
+            List<JiraIssue> issues;
             if(parentIssuesOnly) {
-                issues = getParentIssues(issues);
+                issues = getCompletedSprintParentIssues(boardId, sprintId);
+            } else {
+                issues = getCompletedSprintIssues(boardId, sprintId);
             }
+            issues = filterIssuesCompletedInSprint(boardId, sprintId, issues);
             JiraSprintIssues singleSprintIssues = new JiraSprintIssues();
             singleSprintIssues.setSprint(sprint);
             singleSprintIssues.setParentIssues(issues);
@@ -186,6 +186,13 @@ public class JiraIssueService extends JiraService {
         return issues.stream()
                 .filter(p -> p.getFields().getIssueType().isSubtask() == false)
                 .collect(Collectors.toList());
+    }
+
+    private List<JiraIssue> filterIssuesCompletedInSprint(String boardId, String sprintId, List<JiraIssue> issues) {
+        JiraSprintRapidView rapidView = jiraRapidViewService.getSprintRapidView(boardId,sprintId);
+        List<String> completedIssueIds = rapidView.getContents().getCompletedIssues().stream().map(i -> i.getId()).collect(Collectors.toList());
+        List<JiraIssue> completedIssues = issues.stream().filter(i -> completedIssueIds.contains(i.getId())).collect(Collectors.toList());
+        return completedIssues;
     }
 
 
