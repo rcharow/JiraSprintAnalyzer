@@ -35,18 +35,18 @@ export class JiraService {
       .map(res => res.json());
   }
 
-  getSingleSprintSummary(sprintId:String):Observable<JiraSprintSummary> {
-    return this.http.get('/api/analysis/summary/' + sprintId)
+  getSingleSprintSummary(boardId:string, sprintId:string):Observable<JiraSprintSummary> {
+    return this.http.get('/api/analysis/summary/' + boardId + '/' + sprintId)
       .map(res => res.json());
   }
 
-  setCurrentSummary(sprintIds:string[]) {
+  setCurrentSummary(boardId:string, sprintIds:string[]) {
       sprintIds = typeof sprintIds === 'string' ? [sprintIds] : sprintIds;
       this._currentSummary.next(null);
 
       let requests:Observable<JiraSprintSummary>[] = [];
       each(sprintIds, (sprintId) => {
-        requests.push(this.http.get('/api/analysis/summary/worklogs/' + sprintId).map(res => res.json()));
+        requests.push(this.http.get('/api/analysis/summary/worklogs/' + boardId + '/' + sprintId).map(res => res.json()));
       });
 
       Observable.forkJoin(requests).subscribe((results:JiraSprintSummary[]) => {
@@ -59,11 +59,11 @@ export class JiraService {
       });
   }
 
-  setCurrentWorklogSummary(sprintIds:string[]) {
+  setCurrentWorklogSummary(boardId:string, sprintIds:string[]) {
     if(!this._currentWorklogSummary.getValue()){
       this._currentWorklogSummary.next(null);
 
-      this.http.get('/api/analysis/worklogs/' + join(sprintIds,','))
+      this.http.get('/api/analysis/worklogs/' + boardId + '/' + join(sprintIds,','))
         .map(res => res.json())
         .subscribe((summary:JiraWorklogSummary[]) => this._currentWorklogSummary.next(summary));
     }
@@ -76,13 +76,13 @@ export class JiraService {
       .subscribe((data:JiraSprintPointAnalysis[]) => this._currentPointAnalysis.next(data));
   }
 
-  setCurrentPointAnalysisBySprints(sprintIds:string[]) {
+  setCurrentPointAnalysisBySprints(boardId:string, sprintIds:string[]) {
     sprintIds = typeof sprintIds === 'string' ? [sprintIds] : sprintIds;
     this._currentPointAnalysis.next(null);
 
     let requests:Observable<JiraSprintPointAnalysis>[] = [];
     each(sprintIds, (sprintId) => {
-      requests.push(this.http.get('/api/analysis/point/sprint/' + sprintId).map(res => res.json()));
+      requests.push(this.http.get('/api/analysis/point/' + boardId + '/sprint/' + sprintId).map(res => res.json()));
     });
 
     Observable.forkJoin(requests).subscribe((results:JiraSprintPointAnalysis[]) => {

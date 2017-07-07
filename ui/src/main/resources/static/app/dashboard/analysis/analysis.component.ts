@@ -37,12 +37,12 @@ export class AnalysisComponent implements OnInit {
       if (this.requestParamsChanged(sprints,chartAll)) {
         this.dashboardService.setCurrentSprints(sprints);
         this.dashboardService.setChartAll((chartAll));
-        this.jiraService.setCurrentSummary(sprints);
+        this.jiraService.setCurrentSummary(board, sprints);
 
         if (chartAll) {
           this.jiraService.setCurrentPointAnalysisByBoard(board);
         } else {
-          this.jiraService.setCurrentPointAnalysisBySprints(sprints);
+          this.jiraService.setCurrentPointAnalysisBySprints(board, sprints);
         }
       }
 
