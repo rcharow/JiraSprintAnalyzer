@@ -6,6 +6,9 @@ package com.analyzer.domain;
 public class JiraSprintPointAverage {
     private String sprintId;
     private String sprintName;
+    private Integer totalCompletedIssues;
+    private Double totalHours;
+    private Double totalCompletedPoints;
     private Double averageHoursPerPoint;
     private Double averageDollarsPerPoint;
 
@@ -23,6 +26,30 @@ public class JiraSprintPointAverage {
 
     public void setSprintName(String sprintName) {
         this.sprintName = sprintName;
+    }
+
+    public Integer getTotalCompletedIssues() {
+        return totalCompletedIssues;
+    }
+
+    public void setTotalCompletedIssues(Integer totalCompletedIssues) {
+        this.totalCompletedIssues = totalCompletedIssues;
+    }
+
+    public Double getTotalHours() {
+        return totalHours;
+    }
+
+    public void setTotalHours(Double totalHours) {
+        this.totalHours = totalHours;
+    }
+
+    public Double getTotalCompletedPoints() {
+        return totalCompletedPoints;
+    }
+
+    public void setTotalCompletedPoints(Double totalCompletedPoints) {
+        this.totalCompletedPoints = totalCompletedPoints;
     }
 
     public Double getAverageHoursPerPoint() {

@@ -116,11 +116,16 @@ public class PointAnalysisService {
         average.setSprintId(sprintIssues.getSprint().getId());
         average.setSprintName(sprintIssues.getSprint().getName());
         Double totalHours = totalTime / 60 / 60;
+        average.setTotalHours(totalHours);
+        average.setTotalCompletedPoints(totalPoints);
+
 
         if (sprintIssues.getParentIssues().size() > 0) {
+            average.setTotalCompletedIssues(sprintIssues.getParentIssues().size());
             average.setAverageHoursPerPoint(totalHours / totalPoints);
             average.setAverageDollarsPerPoint(totalPoints > 0.0 ? average.getAverageHoursPerPoint() * 60 : totalHours * 60);
         } else {
+            average.setTotalCompletedIssues(0);
             average.setAverageHoursPerPoint(0D);
             average.setAverageDollarsPerPoint(0D);
         }

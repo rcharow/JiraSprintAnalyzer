@@ -51,6 +51,9 @@ export class JiraPointAnalysis {
 export class JiraSprintAverages {
   public sprintId:string;
   public sprintName:string;
+  public totalCompletedIssues:number;
+  public totalHours:number;
+  public totalCompletedPoints:number;
   public averageHoursPerPoint:number;
   public averageDollarsPerPoint:number;
 }
