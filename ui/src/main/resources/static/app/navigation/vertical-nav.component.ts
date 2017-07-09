@@ -24,8 +24,8 @@ export class VerticalNavComponent {
   }
 
   ngOnInit() {
-    this.dashboardService.currentBoard.subscribe((board: JiraBoard) => {
-      this.currentBoard = board ? board.id : null;
+    this.dashboardService.currentBoard.subscribe(board => {
+      this.currentBoard = board;
     });
 
     this.dashboardService.currentSprints.subscribe((sprints: string[]) => {
