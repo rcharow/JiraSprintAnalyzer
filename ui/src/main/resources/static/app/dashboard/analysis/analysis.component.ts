@@ -37,6 +37,7 @@ export class AnalysisComponent implements OnInit {
       if (this.requestParamsChanged(sprints,chartAll)) {
         this.dashboardService.setCurrentSprints(sprints);
         this.dashboardService.setChartAll((chartAll));
+        this.dashboardService.setCurrentBoard(board);
         this.jiraService.setCurrentSummary(board, sprints);
 
         if (chartAll) {
