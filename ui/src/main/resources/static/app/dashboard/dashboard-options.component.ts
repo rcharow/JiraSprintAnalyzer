@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { JiraService } from '../jira/jira.service';
 import { JiraBoard } from '../jira/jira.model';
 import { JiraSprint } from "../jira/jira.model";
 import { DashboardService } from "./dashboard.service";
-import { Router } from '@angular/router';
-import { each  } from 'lodash';
+import { Router, ActivatedRoute } from '@angular/router';
+import { each, find  } from 'lodash';
 import { IMultiSelectOption, IMultiSelectSettings } from 'angular-2-dropdown-multiselect';
 
 @Component({
@@ -29,22 +29,35 @@ export class DashboardOptionsComponent {
   };
   sprintsModel:string[] = [];
   chartAll:boolean = false;
+  initialized:boolean = false;
 
-  constructor(private jiraService:JiraService, private dashboardService:DashboardService, private router:Router) {
+  constructor(private jiraService:JiraService, private dashboardService:DashboardService, private router:Router, private route:ActivatedRoute) {
 
   }
 
   ngOnInit() {
     this.loading = true;
+     if (this.route.snapshot.queryParams['board']) {
+       this.dashboardService.setCurrentBoard(this.route.snapshot.queryParams['board']);
+     }
+
+
     this.jiraService.getScrumBoards()
-      .subscribe(boards => {
+      .flatMap(boards => {
         this.boards = boards;
         this.loading = false;
+        return this.dashboardService.currentBoard;
+      })
+      .subscribe(currentBoard => {
+        if(currentBoard && !this.initialized){
+          this.selectedBoard = find(this.boards, b => { return b.id === currentBoard});
+          this.dashboardService.chartAllSprints.subscribe(chartAll => this.chartAll = chartAll);
+          this.onBoardSelect();
+        }
       });
   }
 
   onBoardSelect() {
-    this.dashboardService.setCurrentBoard(this.selectedBoard);
     this.loading = true;
     this.sprints = undefined;
     this.sprintsModel = [];
@@ -61,7 +74,11 @@ export class DashboardOptionsComponent {
             name: sprint.name
           })
         });
-
+        if(!this.initialized) {
+          let routeSprints = this.route.snapshot.queryParams['sprints'] ? this.route.snapshot.queryParams['sprints'] : [];
+          this.sprintsModel = typeof routeSprints === 'string' ? [routeSprints] : routeSprints;
+          this.initialized = true;
+        }
       })
   }
 
