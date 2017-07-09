@@ -7,19 +7,19 @@ import {difference} from "lodash";
 
 @Injectable()
 export class DashboardService {
-  private _currentBoard: BehaviorSubject<JiraBoard> = new BehaviorSubject(null);
+  private _currentBoard: BehaviorSubject<string> = new BehaviorSubject(null);
   private _currentSprints: BehaviorSubject<Array<string>> = new BehaviorSubject([]);
   private _isDashboardLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private _currentView: BehaviorSubject<string> = new BehaviorSubject('summary');
   private _chartAllSprints: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  public currentBoard: Observable<JiraBoard> = this._currentBoard.asObservable();
+  public currentBoard: Observable<string> = this._currentBoard.asObservable();
   public currentSprints: Observable<Array<string>> = this._currentSprints.asObservable();
   public isDashboardLoading: Observable<boolean> = this._isDashboardLoading.asObservable();
   public currentView: Observable<string> = this._currentView.asObservable();
   public chartAllSprints: Observable<boolean> = this._chartAllSprints.asObservable();
 
-  setCurrentBoard(board: JiraBoard) {
+  setCurrentBoard(board: string) {
     this._currentBoard.next(board);
   }
 
@@ -32,7 +32,7 @@ export class DashboardService {
     this._isDashboardLoading.next(loading);
   }
 
-  setCurrenView(view: string) {
+  setCurrentView(view: string) {
     this._currentView.next(view);
   }
 

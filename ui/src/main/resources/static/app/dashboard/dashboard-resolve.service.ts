@@ -9,7 +9,7 @@ export class DashboardResolveService implements Resolve<boolean> {
     constructor(private service: DashboardService){}
 
     resolve(route: ActivatedRouteSnapshot): boolean {
-        this.service.setCurrenView(route.url[0].path);
+        this.service.setCurrentView(route.url[0].path);
         return true;
     }
 }
