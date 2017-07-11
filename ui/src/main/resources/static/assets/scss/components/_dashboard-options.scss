@@ -50,6 +50,10 @@
 }
 
 .dashboard-options__multi-select {
+  .dropdown-toggle {
+    overflow: hidden;
+  }
+
   .dropdown-toggle, .dropdown, .dropdown-menu {
     width: 100%;
     color: $gray2;
