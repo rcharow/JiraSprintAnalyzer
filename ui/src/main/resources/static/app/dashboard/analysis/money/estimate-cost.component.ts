@@ -16,7 +16,7 @@ export class EstimateCostComponent {
   analysis: JiraSprintPointAnalysis[];
   loading: Boolean;
   type: string = 'line';
-  chartData:object = {};
+  chartData:object = undefined;
   chartColors: string[];
   chartOptions:object;
   view:string = 'estimate-cost';
@@ -29,10 +29,11 @@ export class EstimateCostComponent {
     this.chartOptions = this.chartService.getDollarsByPointEstimateOptions();
     this.chartColors = this.chartService.getChartColors();
 
+    this.jiraService.currentPointAnalysisLoading.subscribe(loading => this.loading = loading);
+
     this.jiraService.currentPointAnalysis.subscribe((analysis: JiraSprintPointAnalysis[]) => {
       this.analysis = analysis;
-      this.loading = !analysis;
-      this.chartData = analysis ? this.chartService.formatEstimateCostData(analysis) : null;
+      this.chartData = analysis ? this.chartService.formatEstimateCostData(analysis) : undefined;
     });
   }
 

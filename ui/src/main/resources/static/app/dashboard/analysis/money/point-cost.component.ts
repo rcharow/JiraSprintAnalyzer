@@ -16,7 +16,7 @@ export class PointCostComponent {
   analysis: JiraSprintPointAnalysis[];
   loading: Boolean;
   type: string = 'bar';
-  chartData: object = {};
+  chartData: object = undefined;
   chartColors: string[];
   chartOptions: object;
   view:string = 'point-cost';
@@ -25,14 +25,15 @@ export class PointCostComponent {
   }
 
   ngOnInit() {
-    this.loading = true;
     this.chartOptions = this.chartService.getAveragePointCostOptions();
     this.chartColors = this.chartService.getChartColors();
+
+    this.jiraService.currentPointAnalysisLoading.subscribe(loading => this.loading = loading);
 
     this.jiraService.currentPointAnalysis.subscribe((analysis: JiraSprintPointAnalysis[]) => {
       this.analysis = analysis;
       this.loading = !analysis;
-      this.chartData = analysis ? this.chartService.formatPointCostData(analysis) : null;
+      this.chartData = analysis ? this.chartService.formatPointCostData(analysis) : undefined;
     });
   }
 }

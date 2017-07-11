@@ -5,7 +5,7 @@
         <loading></loading>
       </div>
     </div>
-    <div>
+    <div *ngIf="chartData">
       <div class="pull-right">
         <a [routerLink]="['/dashboard/analysis/estimate-cost']" queryParamsHandling="preserve"><i class="fa fa-line-chart" [ngClass]="{'money-analysis__icon--inactive': view==='point-cost'}" aria-hidden="true"></i></a>
         <a [routerLink]="['/dashboard/analysis/point-cost']" queryParamsHandling="preserve"><i class="fa fa-bar-chart" [ngClass]="{'money-analysis__icon--inactive': view==='estimate-cost'}" aria-hidden="true"></i></a>

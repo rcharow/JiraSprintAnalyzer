@@ -16,9 +16,10 @@ export class SprintSummaryComponent implements OnInit {
   ngOnInit(){
     this.loadingSummary = true;
 
+    this.jiraService.currentSummaryLoading.subscribe(loading => this.loadingSummary = loading);
+
     this.jiraService.currentSummary.subscribe((summary:JiraSprintSummary[]) => {
       this.summaries = summary;
-      this.loadingSummary = !summary;
     });
 
   }
