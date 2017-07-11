@@ -6,7 +6,9 @@ var gulp = require('gulp'),
   webpack = require('webpack-stream'),
   sourcemap = require('gulp-sourcemaps'),
   plumber = require('gulp-plumber'),
-  watch = require('gulp-watch');
+  watch = require('gulp-watch'),
+  karmaServer = require('karma').Server;
+
 
 
 var _output_dir = '../../../../target/classes/static/app/';
@@ -74,10 +76,14 @@ gulp.task('sync-html', function () {
   watch('app/**/*.html', {ignoreInitial: false}).pipe(gulp.dest(_output_dir));
 });
 
+gulp.task('test', function (done) {
+  new karmaServer({configFile: __dirname + '/conf/karma.conf.js'}, done).start();
+});
+
 function pack(config) {
   return gulp.src('./app/vendor.js')
     .pipe(plumber({errorHandler: handleError}))
-    .pipe(webpack(require(config)))
+    .pipe(webpack(require(config), require('webpack')))
     .pipe(gulp.dest(_output_dir));
 }
 
