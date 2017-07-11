@@ -61,6 +61,7 @@ export class DashboardOptionsComponent {
     this.loading = true;
     this.sprints = undefined;
     this.sprintsModel = [];
+    this.chartAll = false;
 
     this.jiraService.getClosedSprintsByBoardId(this.selectedBoard.id)
       .subscribe(sprints => {
