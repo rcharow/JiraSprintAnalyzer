@@ -13,6 +13,7 @@ import { SharedModule } from "../shared/shared.module";
 import { DashboardService } from "./dashboard.service";
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartModule } from 'angular2-chartjs';
+import { AnalysisChartComponent } from './analysis/analysis-chart.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { ChartModule } from 'angular2-chartjs';
     DashboardOptionsComponent,
     AnalysisComponent,
     EstimateCostComponent,
-    PointCostComponent
+    PointCostComponent,
+    AnalysisChartComponent
   ],
   exports: [
     DashboardComponent,

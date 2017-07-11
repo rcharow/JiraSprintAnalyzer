@@ -1,13 +1,11 @@
 import {Component} from '@angular/core';
-import {JiraBoard, JiraSprintPointAnalysis} from "../../../jira/jira.model";
-import {JiraService} from "../../../jira/jira.service";
-import {MoneyChartService} from "./money-chart.service";
-import {forIn, each} from "lodash";
-
+import {JiraBoard, JiraSprintPointAnalysis} from '../../../jira/jira.model';
+import {JiraService} from '../../../jira/jira.service';
+import {MoneyChartService} from './money-chart.service';
 
 @Component({
   selector: 'money',
-  templateUrl: '/app/dashboard/analysis/money/money-chart.html',
+  template: '<analysis-chart [loading]="loading" [view]="view" [chartType]="type" [chartData]="chartData" [chartOptions]="chartOptions"></analysis-chart>',
   providers: [MoneyChartService]
 })
 
