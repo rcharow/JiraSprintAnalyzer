@@ -16,7 +16,7 @@ export class VerticalNavComponent {
   private urlMap: object = {
     'money': 'estimate-cost',
     'summary': 'summary',
-    'time': 'time'
+    'time': 'estimate-hours'
   };
   private chartAll: boolean = false;
 
@@ -42,6 +42,9 @@ export class VerticalNavComponent {
   viewSelected(view:string) {
     if(this.currentView === 'estimate-cost' || this.currentView === 'point-cost') {
       return view === 'money';
+    }
+    if(this.currentView === 'estimate-hours' || this.currentView === 'hours-cost') {
+      return view === 'time';
     }
     return this.currentView === view;
   }

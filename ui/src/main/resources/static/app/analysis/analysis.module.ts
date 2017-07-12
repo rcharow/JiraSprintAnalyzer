@@ -10,6 +10,9 @@ import { DashboardService } from "../dashboard/dashboard.service";
 import { ChartModule } from 'angular2-chartjs';
 import { AnalysisChartComponent } from '../analysis/analysis-chart.component';
 import {MoneyChartService} from "./money/money-chart.service";
+import {EstimateHoursComponent} from "./time/estimate-hours.component";
+import {PointHoursComponent} from "./time/point-hours.component";
+import {TimeChartService} from "./time/time-chart.service";
 
 @NgModule({
   imports: [
@@ -20,21 +23,26 @@ import {MoneyChartService} from "./money/money-chart.service";
   declarations: [
     SprintSummaryComponent,
     AnalysisComponent,
+    AnalysisChartComponent,
     EstimateCostComponent,
     PointCostComponent,
-    AnalysisChartComponent
+    EstimateHoursComponent,
+    PointHoursComponent
   ],
   exports: [
     SprintSummaryComponent,
     AnalysisComponent,
+    AnalysisChartComponent,
     EstimateCostComponent,
     PointCostComponent,
-    AnalysisChartComponent
+    EstimateHoursComponent,
+    PointHoursComponent
   ],
   providers: [
     JiraService,
     DashboardService,
-    MoneyChartService
+    MoneyChartService,
+    TimeChartService
   ]
 })
 export class AnalysisModule {

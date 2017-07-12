@@ -6,6 +6,8 @@ import { SprintSummaryComponent } from '../analysis/sprint-summary/sprint-summar
 import { AnalysisComponent } from '../analysis/analysis.component';
 import { EstimateCostComponent } from '../analysis/money/estimate-cost.component';
 import { PointCostComponent } from '../analysis/money/point-cost.component';
+import { PointHoursComponent } from '../analysis/time/point-hours.component';
+import { EstimateHoursComponent } from '../analysis/time/estimate-hours.component';
 
 const routes:Routes = [
   {
@@ -29,6 +31,16 @@ const routes:Routes = [
           {
             path: 'point-cost',
             component: PointCostComponent,
+            resolve: { updateView: DashboardResolveService }
+          },
+          {
+            path: 'estimate-hours',
+            component: EstimateHoursComponent,
+            resolve: { updateView: DashboardResolveService }
+          },
+          {
+            path: 'point-hours',
+            component: PointHoursComponent,
             resolve: { updateView: DashboardResolveService }
           }
         ]
