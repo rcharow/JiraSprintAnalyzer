@@ -9,7 +9,7 @@ export class MoneyChartService {
       responsive: true,
       title: {
         display: true,
-        text: 'Dollars Spent by Completed Point Estimate',
+        text: 'Client Dollars Spent by Completed Point Estimate',
         position: 'top',
         fontSize: 16
       },
@@ -40,21 +40,38 @@ export class MoneyChartService {
       responsive: true,
       title: {
         display: true,
-        text: 'Average Dollars Spent per Completed Point',
+        text: 'Average Client Dollars Spent per Completed Point',
         position: 'top',
         fontSize: 16
       },
       scales: {
         yAxes: [{
+          type: 'linear',
+          display: true,
+          position: 'left',
+          id: 'y-axis-avg',
           ticks: {
             callback(value: number){
               return '$' + value.toFixed(2);
             }
           }
-        }]
+        },
+          {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            id: 'y-axis-total',
+            ticks: {
+              callback(value: number){
+                return '$' + value.toFixed(2);
+              }
+            }
+          }
+        ]
       },
       legend: {
-        display: false
+        display: true,
+        position: 'bottom'
       },
       tooltips: {
         callbacks: {
@@ -107,20 +124,30 @@ export class MoneyChartService {
   formatPointCostData(data: JiraSprintPointAnalysis[]): { labels: string[], datasets: object[] } {
     let labels: string[] = [];
     {
-      let dataset: number[] = [];
+      let avgDataset: number[] = [];
+      let totalDataset: number[] = [];
 
       each(data, sprint => {
         labels.push(sprint.sprintName);
-        dataset.push(sprint.pointAverages.averageDollarsPerPoint);
+        avgDataset.push(sprint.pointAverages.averageDollarsPerPoint);
+        totalDataset.push(sprint.pointAverages.totalDollars);
       });
 
       return {
         labels: labels,
         datasets: [
           {
-            data: dataset,
+            label: 'Average Cost per Point',
+            data: avgDataset,
             backgroundColor: 'rgba(68, 132, 206, 0.5)',
-            borderColor: '#4484CE'
+            borderColor: '#4484CE',
+            yAxisID: 'y-axis-avg'
+          },
+          {
+            label: 'Total Client Cost',
+            data: totalDataset,
+            type: 'line',
+            yAxisID: 'y-axis-total'
           }
         ]
       }

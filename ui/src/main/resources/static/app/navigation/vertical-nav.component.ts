@@ -43,7 +43,7 @@ export class VerticalNavComponent {
     if(this.currentView === 'estimate-cost' || this.currentView === 'point-cost') {
       return view === 'money';
     }
-    if(this.currentView === 'estimate-hours' || this.currentView === 'hours-cost') {
+    if(this.currentView === 'estimate-hours' || this.currentView === 'point-hours') {
       return view === 'time';
     }
     return this.currentView === view;

@@ -2,7 +2,6 @@ package com.analyzer.domain;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rcharow on 6/17/17.

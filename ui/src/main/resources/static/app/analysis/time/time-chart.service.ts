@@ -35,8 +35,23 @@ export class TimeChartService {
         position: 'top',
         fontSize: 16
       },
+      scales: {
+        yAxes: [{
+          type: 'linear',
+          display: true,
+          position: 'left',
+          id: 'y-axis-avg'
+        },
+          {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            id: 'y-axis-total'
+          }
+        ]
+      },
       legend: {
-        display: false
+        position: 'bottom'
       },
       tooltips: {
         callbacks: {
@@ -89,20 +104,30 @@ export class TimeChartService {
   formatPointHoursData(data: JiraSprintPointAnalysis[]): { labels: string[], datasets: object[] } {
     let labels: string[] = [];
     {
-      let dataset: number[] = [];
+      let avgDataset: number[] = [];
+      let totalDataset: number[] = [];
 
       each(data, sprint => {
         labels.push(sprint.sprintName);
-        dataset.push(sprint.pointAverages.averageHoursPerPoint);
+        avgDataset.push(sprint.pointAverages.averageHoursPerPoint);
+        totalDataset.push(sprint.pointAverages.totalHours);
       });
 
       return {
         labels: labels,
         datasets: [
           {
-            data: dataset,
+            label: 'Average Hours per Point',
+            data: avgDataset,
             backgroundColor: 'rgba(68, 132, 206, 0.5)',
-            borderColor: '#4484CE'
+            borderColor: '#4484CE',
+            yAxisID: 'y-axis-avg'
+          },
+          {
+            label: 'Total Hours',
+            data: totalDataset,
+            type: 'line',
+            yAxisID: 'y-axis-total'
           }
         ]
       }

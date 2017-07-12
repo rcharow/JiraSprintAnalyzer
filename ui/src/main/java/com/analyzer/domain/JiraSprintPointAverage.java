@@ -8,6 +8,7 @@ public class JiraSprintPointAverage {
     private String sprintName;
     private Integer totalCompletedIssues;
     private Double totalHours;
+    private Double totalDollars;
     private Double totalCompletedPoints;
     private Double averageHoursPerPoint;
     private Double averageDollarsPerPoint;
@@ -42,6 +43,14 @@ public class JiraSprintPointAverage {
 
     public void setTotalHours(Double totalHours) {
         this.totalHours = totalHours;
+    }
+
+    public Double getTotalDollars() {
+        return totalDollars;
+    }
+
+    public void setTotalDollars(Double totalDollars) {
+        this.totalDollars = totalDollars;
     }
 
     public Double getTotalCompletedPoints() {

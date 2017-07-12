@@ -17,7 +17,7 @@ export class EstimateHoursComponent {
   chartData:object = undefined;
   chartColors: string[];
   chartOptions:object;
-  view:string = 'estimate-cost';
+  view:string = 'estimate-hours';
   chartLinks:object[] = [
     {route: '/dashboard/analysis/estimate-hours', classes: 'fa fa-line-chart'},
     {route: '/dashboard/analysis/point-hours', classes: 'fa fa-bar-chart analysis__icon--inactive pl-1'}
