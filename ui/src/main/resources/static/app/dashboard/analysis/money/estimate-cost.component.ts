@@ -5,7 +5,7 @@ import {MoneyChartService} from "./money-chart.service";
 
 @Component({
   selector: 'money',
-  template: '<analysis-chart [loading]="loading" [view]="view" [chartType]="type" [chartData]="chartData" [chartOptions]="chartOptions"></analysis-chart>',
+  template: '<analysis-chart [loading]="loading" [routeLinks]="chartLinks" [chartType]="type" [chartData]="chartData" [chartOptions]="chartOptions"></analysis-chart>',
   providers: [MoneyChartService]
 })
 
@@ -18,6 +18,10 @@ export class EstimateCostComponent {
   chartColors: string[];
   chartOptions:object;
   view:string = 'estimate-cost';
+  chartLinks:object[] = [
+    {route: '/dashboard/analysis/estimate-cost', classes: 'fa fa-line-chart'},
+    {route: '/dashboard/analysis/point-cost', classes: 'fa fa-bar-chart analysis__icon--inactive pl-1'}
+  ];
 
   constructor(private jiraService: JiraService, private chartService: MoneyChartService) {
   }

@@ -7,9 +7,8 @@ import {Component, Input} from '@angular/core';
 
 export class AnalysisChartComponent {
   @Input() loading:boolean;
-  @Input() routerLinks:string[];
+  @Input() routeLinks:string[];
   @Input() chartType:string;
   @Input() chartData:any;
   @Input() chartOptions:object;
-  @Input() view:string;
 }
