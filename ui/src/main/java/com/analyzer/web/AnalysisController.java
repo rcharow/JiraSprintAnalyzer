@@ -35,19 +35,13 @@ public class AnalysisController {
     @GET
     @Path("/summary/{boardId}/{sprintId}")
     public JiraSprintSummary getSingleSprintSummary(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
-        return summaryAnalysisService.getSprintSummary(boardId, sprintId);
-    }
-
-    @GET
-    @Path("/worklogs/{boardId}/{sprintId}")
-    public JiraWorklogSummary getSingleSprintWorklogSummary(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
-        return summaryAnalysisService.getSprintWorklogSummary(boardId, sprintId);
+        return summaryAnalysisService.getSprintSummary(boardId, sprintId, false);
     }
 
     @GET
     @Path("/summary/worklogs/{boardId}/{sprintId}")
     public JiraSprintSummary getSprintSummaryWithWorklogs(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
-        return summaryAnalysisService.getSprintSummaryWithWorklogs(boardId, sprintId);
+        return summaryAnalysisService.getSprintSummary(boardId, sprintId, true);
     }
 
     @GET

@@ -3,6 +3,7 @@ package com.analyzer.service.analysis;
 import com.analyzer.domain.*;
 import com.analyzer.service.jira.JiraIssueService;
 import com.analyzer.service.jira.JiraSprintService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -31,7 +32,7 @@ public class SummaryAnalysisService {
         this.internalCostPerHour = Integer.parseInt(internalCost);
     }
 
-    public JiraSprintSummary getSprintSummary(String boardId, String sprintId) {
+    public JiraSprintSummary getSprintSummary(String boardId, String sprintId, boolean includeWorklogs) {
 
         JiraSprintSummary summary;
         JiraSprint sprint;
@@ -44,21 +45,15 @@ public class SummaryAnalysisService {
         summary.setName(sprint.getName());
         summary.setCompleteDate(sprint.getCompleteDate());
 
-        return summary;
-    }
-
-    public JiraSprintSummary getSprintSummaryWithWorklogs(String boardId, String sprintId) {
-        //TODO: Refactor this so its not repeating code or effort.
-        JiraSprintSummary summary = getSprintSummary(boardId, sprintId);
-        JiraWorklogSummary worklogSummary = getSprintWorklogSummary(boardId, sprintId);
-
-        summary.setWorklogSummary(worklogSummary);
+        if(includeWorklogs) {
+            summary.setWorklogSummary(getSprintWorklogSummary(sprintId, issues));
+        }
 
         return summary;
     }
 
-    public JiraWorklogSummary getSprintWorklogSummary(String boardId, String sprintId) {
-        List<JiraIssue> issues = jiraIssueService.getCompletedSprintParentIssues(boardId, sprintId);
+
+    public JiraWorklogSummary getSprintWorklogSummary(String sprintId, List<JiraIssue> issues) {
         Integer totalSeconds = 0;
 
         HashMap worklogMap = new HashMap();

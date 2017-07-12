@@ -47,7 +47,8 @@ public class JiraIssueService extends JiraService {
         return getParentIssues(issues);
     }
 
-    public List<JiraSprintIssues> getBoardIssues(String boardId, Boolean parentIssuesOnly) {
+    public List<JiraSprintIssues> getBoardIssuesOLD(String boardId, Boolean parentIssuesOnly) {
+        long start = System.nanoTime();
         List<JiraSprintIssues> sprintIssues = new ArrayList<JiraSprintIssues>();
         List<JiraSprint> closedSprints = jiraSprintService.getSprints(boardId, "closed");
         for(JiraSprint sprint : closedSprints) {
@@ -64,11 +65,29 @@ public class JiraIssueService extends JiraService {
             singleSprintIssues.setParentIssues(issues);
             sprintIssues.add(singleSprintIssues);
         }
-
+        log.warn("-------------GET BOARD ISSUES -  Board ID: {} - Time: {}", boardId, (double)(System.nanoTime() - start)/1000000000.0);
         return sprintIssues;
 
     }
 
+    public List<JiraSprintIssues> getBoardIssues(String boardId, Boolean parentIssuesOnly) {
+        long start = System.nanoTime();
+        List<JiraIssue> issues = getIssues(IssueSourceType.BOARD, boardId);
+        if(parentIssuesOnly) {
+            issues = getParentIssues(issues);
+        }
+        List<JiraSprint> sprints = jiraSprintService.getSprints(boardId, "closed");
+        List<JiraSprintIssues> sprintIssues = new ArrayList<>();
+        for(JiraSprint sprint : sprints) {
+            JiraSprintIssues singleSprintIssues = new JiraSprintIssues();
+            singleSprintIssues.setSprint(sprint);
+            singleSprintIssues.setParentIssues(filterIssuesCompletedInSprint(boardId, sprint.getId(), issues));
+            sprintIssues.add(singleSprintIssues);
+        }
+
+        log.warn("-------------GET BOARD ISSUES BY BOARD -  Board ID: {} - Time: {}", boardId, (double)(System.nanoTime() - start)/1000000000.0);
+        return sprintIssues;
+    }
 
     public List<JiraSprintIssues> getBoardParentIssues(String boardId) {
         List<JiraSprintIssues> issues = this.getBoardIssues(boardId, Boolean.TRUE);
@@ -94,6 +113,7 @@ public class JiraIssueService extends JiraService {
         List<JiraIssue> issues;
         Boolean lastPage;
         Long startPage = 0L;
+        long start = System.nanoTime();
         JiraIssueResponse issueResponse;
 
         if (sourceType.equals(IssueSourceType.BOARD)) {
@@ -118,6 +138,7 @@ public class JiraIssueService extends JiraService {
             issues.addAll(issueResponse.getIssues());
         }
 
+        log.warn("-------------GET ISSUES -  Source type: {} sourceId: {} Time: {}", sourceType, sourceId, (double)(System.nanoTime() - start)/1000000000.0);
         return issues;
     }
 

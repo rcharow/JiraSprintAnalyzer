@@ -9,17 +9,13 @@ import {each, join} from "lodash";
 @Injectable()
 export class JiraService {
   private _currentSummary: BehaviorSubject<JiraSprintSummary[]> = new BehaviorSubject(null);
-  private _currentWorklogSummary: BehaviorSubject<JiraWorklogSummary[]> = new BehaviorSubject(null);
   private _currentPointAnalysis: BehaviorSubject<JiraSprintPointAnalysis[]> = new BehaviorSubject(null);
   private _currentSummaryLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private _currentWorklogSummaryLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private _currentPointAnalysisLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   public currentSummary: Observable<JiraSprintSummary[]> = this._currentSummary.asObservable();
-  public currentWorklogSummary: Observable<JiraWorklogSummary[]> = this._currentWorklogSummary.asObservable();
   public currentPointAnalysis: Observable<JiraSprintPointAnalysis[]> = this._currentPointAnalysis.asObservable();
   public currentSummaryLoading: Observable<boolean> = this._currentSummaryLoading.asObservable();
-  public currentWorklogSummaryLoading: Observable<boolean> = this._currentWorklogSummaryLoading.asObservable();
   public currentPointAnalysisLoading: Observable<boolean> = this._currentPointAnalysisLoading.asObservable();
 
   constructor(private http: Http) {
@@ -71,25 +67,7 @@ export class JiraService {
       }
     );
   }
-
-  setCurrentWorklogSummary(boardId: string, sprintIds: string[]) {
-    if (!this._currentWorklogSummary.getValue()) {
-      this._currentWorklogSummary.next(null);
-      this._currentWorklogSummaryLoading.next(true);
-
-      this.http.get('/api/analysis/worklogs/' + boardId + '/' + join(sprintIds, ','))
-        .map(res => res.json())
-        .subscribe((summary: JiraWorklogSummary[]) => {
-          this._currentWorklogSummary.next(summary);
-          this._currentWorklogSummaryLoading.next(false);
-        },
-          error => {
-            this._currentWorklogSummaryLoading.next(false);
-            console.log('Error getting sprint worklog summary data.');
-          });
-    }
-  }
-
+  
   setCurrentPointAnalysisByBoard(boardId: string) {
     this._currentPointAnalysis.next(null);
     this._currentPointAnalysisLoading.next(true);
