@@ -5,6 +5,8 @@ import com.analyzer.service.jira.JiraIssueService;
 import com.analyzer.service.jira.JiraRapidViewService;
 import com.analyzer.service.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,17 +16,28 @@ import java.util.List;
  * Created by rcharow on 6/16/17.
  */
 @Component
+@PropertySource(value = "domain.properties")
 public class PointAnalysisService {
     private JiraIssueService jiraIssueService;
     private JiraSprintService jiraSprintService;
     private JiraRapidViewService jiraRapidViewService;
+    private Integer clientCostPerHour;
+    private Integer internalCostPerHour;
     private final double[] pointValues = new double[]{0, 0.5, 1, 2, 3, 5, 8, 13, 21, 42, 101};
 
     @Autowired
-    public PointAnalysisService(JiraIssueService jiraIssueService, JiraSprintService jiraSprintService, JiraRapidViewService jiraRapidViewService) {
+    public PointAnalysisService(
+            JiraIssueService jiraIssueService,
+            JiraSprintService jiraSprintService,
+            JiraRapidViewService jiraRapidViewService,
+            @Value("${hourlyCost.client}") String clientCost,
+            @Value("${hourlyCost.internal}") String internalCost
+    ) {
         this.jiraIssueService = jiraIssueService;
         this.jiraSprintService = jiraSprintService;
         this.jiraRapidViewService = jiraRapidViewService;
+        this.clientCostPerHour = Integer.parseInt(clientCost);
+        this.internalCostPerHour = Integer.parseInt(internalCost);
     }
 
     public List<JiraSprintPointAnalysis> getBoardPointAnalysis(String boardId) {
@@ -76,7 +89,7 @@ public class PointAnalysisService {
                         if (issue.getFields().getTimeSpent() != null) {
                             float hours = issue.getFields().getTimeSpent() / 60 / 60;
                             totalTime = totalTime + (float) issue.getFields().getTimeSpent();
-                            totalDollars = totalDollars + (float) (hours * 60);
+                            totalDollars = totalDollars + (float) (hours * clientCostPerHour);
                         }
                     }
                 }
@@ -104,10 +117,10 @@ public class PointAnalysisService {
         Double totalPoints = 0D;
 
         for (JiraIssue issue : sprintIssues.getParentIssues()) {
-            if(issue.getFields().getTimeSpent() != null) {
+            if (issue.getFields().getTimeSpent() != null) {
                 totalTime += issue.getFields().getTimeSpent();
             }
-            if(issue.getFields().getPoints() != null) {
+            if (issue.getFields().getPoints() != null) {
                 totalPoints += issue.getFields().getPoints();
             }
         }
@@ -123,7 +136,7 @@ public class PointAnalysisService {
         if (sprintIssues.getParentIssues().size() > 0) {
             average.setTotalCompletedIssues(sprintIssues.getParentIssues().size());
             average.setAverageHoursPerPoint(totalHours / totalPoints);
-            average.setAverageDollarsPerPoint(totalPoints > 0.0 ? average.getAverageHoursPerPoint() * 60 : totalHours * 60);
+            average.setAverageDollarsPerPoint(totalPoints > 0.0 ? average.getAverageHoursPerPoint() * internalCostPerHour : totalHours * internalCostPerHour);
         } else {
             average.setTotalCompletedIssues(0);
             average.setAverageHoursPerPoint(0D);

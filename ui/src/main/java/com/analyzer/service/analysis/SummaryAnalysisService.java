@@ -4,6 +4,7 @@ import com.analyzer.domain.*;
 import com.analyzer.service.jira.JiraIssueService;
 import com.analyzer.service.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -15,13 +16,19 @@ import java.util.*;
 public class SummaryAnalysisService {
     private final JiraSprintService jiraSprintService;
     private final JiraIssueService jiraIssueService;
-    private final Integer clientCostPerHour = 125;
-    private final Integer internalCostPerHour = 65;
+    private Integer clientCostPerHour;
+    private Integer internalCostPerHour;
 
     @Autowired
-    public SummaryAnalysisService(JiraSprintService jiraSprintService, JiraIssueService jiraIssueService){
+    public SummaryAnalysisService(
+            JiraSprintService jiraSprintService,
+            JiraIssueService jiraIssueService,
+            @Value("${hourlyCost.client}") String clientCost,
+            @Value("${hourlyCost.internal}") String internalCost){
         this.jiraSprintService = jiraSprintService;
         this.jiraIssueService = jiraIssueService;
+        this.clientCostPerHour = Integer.parseInt(clientCost);
+        this.internalCostPerHour = Integer.parseInt(internalCost);
     }
 
     public JiraSprintSummary getSprintSummary(String boardId, String sprintId) {
