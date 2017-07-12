@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {JiraSprintPointAnalysis} from '../../../jira/jira.model';
+import {JiraSprintPointAnalysis} from '../../jira/jira.model';
 import {each, forIn} from 'lodash';
 
 @Injectable()

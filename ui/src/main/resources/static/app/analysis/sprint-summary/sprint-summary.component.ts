@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { JiraSprintSummary } from "../../../jira/jira.model";
-import { JiraService } from "../../../jira/jira.service";
+import { JiraSprintSummary } from "../../jira/jira.model";
+import { JiraService } from "../../jira/jira.service";
 
 @Component({
   selector: 'sprint-stats',
-  templateUrl: '/app/dashboard/analysis/sprint-summary/sprint-summary.component.html'
+  templateUrl: '/app/analysis/sprint-summary/sprint-summary.component.html'
 })
 
 export class SprintSummaryComponent implements OnInit {

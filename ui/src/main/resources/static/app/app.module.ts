@@ -12,6 +12,7 @@ import { AuthService } from "./shared/auth.service";
 import { AppRoutingModule } from "./app.routing.module";
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartModule } from 'angular2-chartjs';
+import {AnalysisModule} from "./analysis/analysis.module";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ChartModule } from 'angular2-chartjs';
     HttpModule,
     DashboardModule,
     NavigationModule,
+    AnalysisModule,
     AppRoutingModule,
     MultiselectDropdownModule,
     ChartModule

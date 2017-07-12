@@ -1,14 +1,14 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DashboardService} from "../../dashboard/dashboard.service";
-import {JiraService} from "../../jira/jira.service";
+import {DashboardService} from "../dashboard/dashboard.service";
+import {JiraService} from "../jira/jira.service";
 import {difference} from "lodash";
 
 
 @Component({
   selector: 'analysis',
-  templateUrl: '/app/dashboard/analysis/analysis.component.html'
+  templateUrl: '/app/analysis/analysis.component.html'
 })
 
 export class AnalysisComponent implements OnInit {

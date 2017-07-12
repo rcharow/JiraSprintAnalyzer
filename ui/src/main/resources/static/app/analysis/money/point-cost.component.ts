@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {JiraBoard, JiraSprintPointAnalysis} from '../../../jira/jira.model';
-import {JiraService} from '../../../jira/jira.service';
+import {JiraBoard, JiraSprintPointAnalysis} from '../../jira/jira.model';
+import {JiraService} from '../../jira/jira.service';
 import {MoneyChartService} from './money-chart.service';
 
 @Component({

@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardResolveService } from './dashboard-resolve.service';
-import { SprintSummaryComponent } from './analysis/sprint-summary/sprint-summary.component';
-import { AnalysisComponent } from './analysis/analysis.component';
-import { EstimateCostComponent } from './analysis/money/estimate-cost.component';
-import { PointCostComponent } from './analysis/money/point-cost.component';
+import { SprintSummaryComponent } from '../analysis/sprint-summary/sprint-summary.component';
+import { AnalysisComponent } from '../analysis/analysis.component';
+import { EstimateCostComponent } from '../analysis/money/estimate-cost.component';
+import { PointCostComponent } from '../analysis/money/point-cost.component';
 
 const routes:Routes = [
   {
