@@ -9,17 +9,7 @@
   border-bottom: solid 1px $blue1;
 }
 
-.sprint-summary__overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10;
-  background-color: $gray1;
-}
-
-.sprint-summary__loading {
+sprint-summary__loading {
   width: 100px;
   margin: 40px auto 0 auto;
 }
@@ -43,5 +33,17 @@
 
   @include media-breakpoint-up(lg) {
     margin: 0;
+  }
+}
+
+.sprint-summary__no-data {
+  width: 288px;
+  margin: 150px auto 0 auto;
+  color: $gray2;
+  font-size: 12px;
+  text-align: center;
+
+  i {
+    display: inline-block;
   }
 }

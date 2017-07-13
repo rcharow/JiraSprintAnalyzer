@@ -1,9 +1,13 @@
 <div class="analysis-chart">
   <div class="container">
-    <div class="row sprint-summary__overlay" [hidden]="!loading">
+    <div class="row dashboard__overlay" [hidden]="!loading">
       <div class="sprint-summary__loading">
         <loading></loading>
       </div>
+    </div>
+    <div class="analysis-chart__no-data" *ngIf="!chartData">
+      <i class="fa fa-5x fa-bar-chart"></i>
+      <div>No data to show.</div>
     </div>
     <div *ngIf="chartData">
       <div class="pull-right">
