@@ -7,7 +7,8 @@ var gulp = require('gulp'),
   sourcemap = require('gulp-sourcemaps'),
   plumber = require('gulp-plumber'),
   watch = require('gulp-watch'),
-  karmaServer = require('karma').Server;
+  karmaServer = require('karma').Server,
+  stream = require('merge-stream');
 
 
 
@@ -38,7 +39,9 @@ gulp.task('fonts', function () {
 
 //compile sass files
 gulp.task('build-css', ['fonts'], function () {
-  return gulp.src('./assets/scss/*.scss')
+  var sassStream, cssStream;
+
+  sassStream =  gulp.src('./assets/scss/*.scss')
     .pipe(plumber({errorHandler: handleError}))
     .pipe(sourcemap.init())
     .pipe(sass({
@@ -47,6 +50,7 @@ gulp.task('build-css', ['fonts'], function () {
       includePaths: [
         './node_modules/bootstrap/scss/',
         './node_modules/font-awesome/scss/',
+        './node_modules/ng2-toastr/',
         require('bourbon').includePaths
 
       ],
