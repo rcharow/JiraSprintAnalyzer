@@ -1,9 +1,9 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Location} from '@angular/common';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DashboardService} from "../dashboard/dashboard.service";
 import {JiraService} from "../jira/jira.service";
 import {difference} from "lodash";
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 
 @Component({
@@ -17,10 +17,23 @@ export class AnalysisComponent implements OnInit {
   private currentSprints: string[] = [];
   private chartAll: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router: Router, private location: Location, private dashboardService: DashboardService, private jiraService: JiraService) {
+  constructor(
+    private route: ActivatedRoute,
+    private dashboardService: DashboardService,
+    private jiraService: JiraService,
+    private vcr: ViewContainerRef,
+    private toastr: ToastsManager
+  ) {
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
+
+    this.jiraService.jiraServiceError.subscribe(error => {
+      if(error) {this.toastr.error(error.userMessage,error.title);}
+    });
+
+    this.jiraService.currentPointAnalysis.subscribe(data => console.log('got point data'));
 
     this.dashboardService.currentSprints.subscribe((sprints: string[]) => {
       this.currentSprints = sprints;

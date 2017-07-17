@@ -28,10 +28,6 @@ import {AnalysisModule} from "../analysis/analysis.module";
   exports: [
     DashboardComponent,
     DashboardOptionsComponent
-  ],
-  providers: [
-    JiraService,
-    DashboardService
   ]
 })
 export class DashboardModule {

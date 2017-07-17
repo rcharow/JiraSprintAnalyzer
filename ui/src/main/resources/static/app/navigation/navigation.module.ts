@@ -21,9 +21,6 @@ import { DashboardService } from "../dashboard/dashboard.service";
       NavBarComponent,
       PillNavComponent,
       VerticalNavComponent
-    ],
-    providers: [
-      JiraService
     ]
 })
 export class NavigationModule { }

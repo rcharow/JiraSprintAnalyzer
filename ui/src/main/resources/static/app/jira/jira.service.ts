@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {JiraBoard, JiraSprint} from './jira.model';
+import {JiraBoard, JiraSprint, JiraServiceError} from './jira.model';
 import {JiraSprintSummary, JiraWorklogSummary, JiraSprintPointAnalysis} from "./jira.model";
 import {each, join} from "lodash";
 
@@ -12,11 +12,13 @@ export class JiraService {
   private _currentPointAnalysis: BehaviorSubject<JiraSprintPointAnalysis[]> = new BehaviorSubject(null);
   private _currentSummaryLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private _currentPointAnalysisLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _jiraServiceError: BehaviorSubject<JiraServiceError> = new BehaviorSubject(null);
 
   public currentSummary: Observable<JiraSprintSummary[]> = this._currentSummary.asObservable();
   public currentPointAnalysis: Observable<JiraSprintPointAnalysis[]> = this._currentPointAnalysis.asObservable();
   public currentSummaryLoading: Observable<boolean> = this._currentSummaryLoading.asObservable();
   public currentPointAnalysisLoading: Observable<boolean> = this._currentPointAnalysisLoading.asObservable();
+  public jiraServiceError: Observable<JiraServiceError> = this._jiraServiceError.asObservable();
 
   constructor(private http: Http) {
   }
@@ -63,11 +65,11 @@ export class JiraService {
       },
       error => {
         this._currentSummaryLoading.next(false);
-        console.log('Error getting sprint summary data.');
+        this.setErrorMessage(error, 'Sprint Summary Error');
       }
     );
   }
-  
+
   setCurrentPointAnalysisByBoard(boardId: string) {
     this._currentPointAnalysis.next(null);
     this._currentPointAnalysisLoading.next(true);
@@ -80,7 +82,7 @@ export class JiraService {
       },
         error => {
           this._currentPointAnalysisLoading.next(false);
-          console.log('Error getting point analysis data by board.');
+          this.setErrorMessage(error, 'Point Analysis Error');
         });
   }
 
@@ -106,7 +108,13 @@ export class JiraService {
       error => {
         this._currentPointAnalysisLoading.next(false);
         console.log('Error getting point analysis data by sprints.');
+        this.setErrorMessage(error, 'Point Analysis Error');
       });
+  }
+
+  private setErrorMessage(error:Response, title:string) {
+    let errorDetails = error.json();
+    this._jiraServiceError.next({title: title, status: errorDetails.status, userMessage: errorDetails.message, errorMessage: errorDetails.error});
   }
 
 }

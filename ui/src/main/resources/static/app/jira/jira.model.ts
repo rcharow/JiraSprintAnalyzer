@@ -69,3 +69,10 @@ export class JiraSprintPointAnalysis {
   public pointAnalysis:Array<JiraPointAnalysis>;
   public pointAverages:JiraSprintAverages;
 }
+
+export class JiraServiceError {
+  public status:number;
+  public title:string;
+  public errorMessage: string;
+  public userMessage: string;
+}

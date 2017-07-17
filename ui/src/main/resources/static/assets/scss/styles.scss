@@ -1,8 +1,9 @@
 @import "shared/variables";
-@import "shared/bootstrap";
+@import "shared/override";
 @import "bootstrap";
 @import "font-awesome";
 @import "bourbon";
+@import "ng2-toastr";
 @import "components/home";
 @import "components/navbar";
 @import "components/vertical-nav";
@@ -13,4 +14,4 @@
 @import "components/sprint-summary";
 @import "components/loading";
 @import "components/analysis";
-@import "components/analysis-chart";
+@import "components/analysis-message";

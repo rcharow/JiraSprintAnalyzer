@@ -4,3 +4,9 @@ $tooltip-bg: $orange1;
 $tooltip-arrow-color: $orange1;
 $border-radius: 0;
 $font-family-sans-serif: 'Raleway', sans-serif;
+
+
+////Override toastr styles
+.global-toast__message {
+  font-size: 12px;
+}

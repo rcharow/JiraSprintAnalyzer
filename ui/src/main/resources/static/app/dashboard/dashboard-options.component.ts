@@ -9,10 +9,7 @@ import { IMultiSelectOption, IMultiSelectSettings } from 'angular-2-dropdown-mul
 
 @Component({
   selector: 'dashboard-options',
-  templateUrl: '/app/dashboard/dashboard-options.component.html',
-  providers: [
-    JiraService
-  ]
+  templateUrl: '/app/dashboard/dashboard-options.component.html'
 })
 
 export class DashboardOptionsComponent {

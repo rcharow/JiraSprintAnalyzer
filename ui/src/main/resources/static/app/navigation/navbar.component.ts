@@ -3,10 +3,7 @@ import { AuthService } from "../shared/auth.service";
 
 @Component({
   selector: 'navbar',
-  templateUrl: '/app/navigation/navbar.component.html',
-  providers: [
-    AuthService
-  ]
+  templateUrl: '/app/navigation/navbar.component.html'
 })
 
 export class NavBarComponent {
