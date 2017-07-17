@@ -11,4 +11,7 @@ export class AnalysisChartComponent {
   @Input() chartType:string;
   @Input() chartData:any;
   @Input() chartOptions:object;
+
+  noDataMessage:{} = {title: null, body: 'No data to show.'};
+  noDataClasses:string[] = ['fa', 'fa-5x', 'fa-bar-chart'];
 }
