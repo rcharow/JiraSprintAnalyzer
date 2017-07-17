@@ -5,10 +5,6 @@
         <loading></loading>
       </div>
     </div>
-    <div class="analysis-chart__no-data" *ngIf="!chartData">
-      <i class="fa fa-5x fa-bar-chart"></i>
-      <div>No data to show.</div>
-    </div>
     <div *ngIf="chartData">
       <div class="pull-right">
         <a *ngFor="let link of routeLinks" [routerLink]="link.route" queryParamsHandling="preserve"><i [ngClass]="link.classes" aria-hidden="true"></i></a>

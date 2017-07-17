@@ -5,10 +5,7 @@
         <loading></loading>
       </div>
     </div>
-    <div class="sprint-summary__no-data" *ngIf="!summaries || !summaries.length">
-      <i class="fa fa-5x fa-table"></i>
-      <div>No data to show.</div>
-    </div>
+    <analysis-message *ngIf="!summaries || !summaries.length" [message]="noDataMessage" [iconClasses]="noDataClasses"></analysis-message>
     <div class="row sprint-summary__row" *ngFor="let summary of summaries">
       <div class="sprint-summary__column col-md">
 

@@ -10,6 +10,9 @@ import { JiraService } from "../../jira/jira.service";
 export class SprintSummaryComponent implements OnInit {
   summaries:JiraSprintSummary[] = null;
   loadingSummary:boolean;
+  noDataMessage:{} = {title: null, body: 'No data to show.'};
+  noDataClasses:string[] = ['fa', 'fa-5x', 'fa-table'];
+  error:boolean = false;
 
   constructor(private jiraService: JiraService){}
 
@@ -21,6 +24,11 @@ export class SprintSummaryComponent implements OnInit {
     this.jiraService.currentSummary.subscribe((summary:JiraSprintSummary[]) => {
       this.summaries = summary;
     });
+
+    this.jiraService.jiraServiceError.subscribe(error => {
+      console.log(error.status + ' - ' + error.errorMessage + ' - ' + error.userMessage);
+
+    })
 
   }
 
