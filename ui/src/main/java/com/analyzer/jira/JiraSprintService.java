@@ -74,54 +74,6 @@ public class JiraSprintService extends JiraService {
         }
     }
 
-    private JiraSprintResponse getSprintPage(String boardId, Long startPage) {
-        String requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?limit=50";
-
-        if (startPage != 0L) {
-            requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?limit=50&startAt=" + startPage;
-        }
-
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-
-            ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                    HttpMethod.GET,
-                    request,
-                    JiraSprintResponse.class
-            );
-
-            return response.getBody();
-        } catch (Exception e) {
-            throw new JiraException();
-        }
-    }
-
-    private JiraSprintResponse getSprintPage(String boardId, Long startPage, String sprintStates) {
-        String requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates + "&limit=50";
-
-        if (startPage != 0L) {
-            requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates + "&limit=50&startAt=" + startPage;
-        }
-
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-
-            ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                    HttpMethod.GET,
-                    request,
-                    JiraSprintResponse.class
-            );
-
-            return response.getBody();
-        } catch (Exception e) {
-            throw new JiraException();
-        }
-    }
-
     public List<JiraSprint> getSprints(String boardId) {
 
         List<JiraSprint> sprints;
@@ -172,4 +124,54 @@ public class JiraSprintService extends JiraService {
             throw new JiraException();
         }
     }
+
+    private JiraSprintResponse getSprintPage(String boardId, Long startPage) {
+        String requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?limit=50";
+
+        if (startPage != 0L) {
+            requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?limit=50&startAt=" + startPage;
+        }
+
+        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+
+            ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraSprintResponse.class
+            );
+
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
+    }
+
+    private JiraSprintResponse getSprintPage(String boardId, Long startPage, String sprintStates) {
+        String requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates + "&limit=50";
+
+        if (startPage != 0L) {
+            requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates + "&limit=50&startAt=" + startPage;
+        }
+
+        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+
+        try {
+
+            ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraSprintResponse.class
+            );
+
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
+    }
+
+
 }

@@ -25,30 +25,6 @@ public class JiraBoardService extends JiraService {
         super(jiraUser, jiraPassword, jiraUrl);
     }
 
-    private JiraBoardResponse getBoardPage(Long startPage) {
-        try {
-            String requestUrl = "/rest/agile/1.0/board?limit=50";
-
-            HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-            RestTemplate restTemplate = new RestTemplate();
-
-            if (startPage != 0L) {
-                requestUrl = "/rest/agile/1.0/board?limit=50&startAt=" + startPage;
-            }
-
-            ResponseEntity<JiraBoardResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                    HttpMethod.GET,
-                    request,
-                    JiraBoardResponse.class
-            );
-
-
-            return response.getBody();
-        } catch (Exception e) {
-            throw new JiraException();
-        }
-    }
-
     public List<JiraBoard> getAllBoards() {
         List<JiraBoard> boards;
         Boolean lastPage;
@@ -92,6 +68,30 @@ public class JiraBoardService extends JiraService {
                     request,
                     JiraBoard.class
             );
+
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
+    }
+
+    private JiraBoardResponse getBoardPage(Long startPage) {
+        try {
+            String requestUrl = "/rest/agile/1.0/board?limit=50";
+
+            HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+            RestTemplate restTemplate = new RestTemplate();
+
+            if (startPage != 0L) {
+                requestUrl = "/rest/agile/1.0/board?limit=50&startAt=" + startPage;
+            }
+
+            ResponseEntity<JiraBoardResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraBoardResponse.class
+            );
+
 
             return response.getBody();
         } catch (Exception e) {
