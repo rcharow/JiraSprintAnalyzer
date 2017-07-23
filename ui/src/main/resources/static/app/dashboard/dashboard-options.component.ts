@@ -76,7 +76,7 @@ export class DashboardOptionsComponent {
           this.sprintsModel = typeof routeSprints === 'string' ? [routeSprints] : routeSprints;
           this.initialized = true;
         }
-      })
+      }, error => this.loading = false)
   }
 
   submitEnabled() {
