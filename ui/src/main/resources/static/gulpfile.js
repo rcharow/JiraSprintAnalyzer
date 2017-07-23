@@ -39,9 +39,7 @@ gulp.task('fonts', function () {
 
 //compile sass files
 gulp.task('build-css', ['fonts'], function () {
-  var sassStream, cssStream;
-
-  sassStream =  gulp.src('./assets/scss/*.scss')
+  return gulp.src('./assets/scss/*.scss')
     .pipe(plumber({errorHandler: handleError}))
     .pipe(sourcemap.init())
     .pipe(sass({
@@ -72,7 +70,6 @@ gulp.task('copy-sass', ['build-css'], function () {
 
 gulp.task('copy-html', function () {
   return gulp.src('app/**/*.html')
-    .pipe(plumber({errorHandler: handleError}))
     .pipe(gulp.dest(_output_dir));
 });
 
