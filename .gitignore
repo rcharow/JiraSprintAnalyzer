@@ -1,7 +1,7 @@
 .DS_Store
 .idea/
+/ui/node
 /ui/node_modules
 /ui/target
-ui.iml
 analyzer.iml
 src/main/resources/static/npm-debug.log
