@@ -26,12 +26,16 @@ public class JiraRapidViewService extends JiraService {
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<JiraSprintRapidView> response = restTemplate.exchange(jiraUrl + requestUrl,
-                HttpMethod.GET,
-                request,
-                JiraSprintRapidView.class
-        );
+        try {
+            ResponseEntity<JiraSprintRapidView> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraSprintRapidView.class
+            );
 
-        return response.getBody();
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
     }
 }

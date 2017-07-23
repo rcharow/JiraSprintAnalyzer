@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value= HttpStatus.INTERNAL_SERVER_ERROR,reason="Jira Error")
 public class JiraException extends RuntimeException {
     public JiraException() {
-        super("Jira Message");
+        super("Error retrieving data from Jira.");
     }
 }

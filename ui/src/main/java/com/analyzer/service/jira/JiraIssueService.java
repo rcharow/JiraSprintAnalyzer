@@ -47,45 +47,22 @@ public class JiraIssueService extends JiraService {
         return getParentIssues(issues);
     }
 
-    public List<JiraSprintIssues> getBoardIssuesOLD(String boardId, Boolean parentIssuesOnly) {
-        long start = System.nanoTime();
-        List<JiraSprintIssues> sprintIssues = new ArrayList<JiraSprintIssues>();
-        List<JiraSprint> closedSprints = jiraSprintService.getSprints(boardId, "closed");
-        for(JiraSprint sprint : closedSprints) {
-            String sprintId = sprint.getId();
-            List<JiraIssue> issues;
-            if(parentIssuesOnly) {
-                issues = getCompletedSprintParentIssues(boardId, sprintId);
-            } else {
-                issues = getCompletedSprintIssues(boardId, sprintId);
-            }
-            issues = filterIssuesCompletedInSprint(boardId, sprintId, issues);
-            JiraSprintIssues singleSprintIssues = new JiraSprintIssues();
-            singleSprintIssues.setSprint(sprint);
-            singleSprintIssues.setParentIssues(issues);
-            sprintIssues.add(singleSprintIssues);
-        }
-        log.warn("-------------GET BOARD ISSUES -  Board ID: {} - Time: {}", boardId, (double)(System.nanoTime() - start)/1000000000.0);
-        return sprintIssues;
-
-    }
-
     public List<JiraSprintIssues> getBoardIssues(String boardId, Boolean parentIssuesOnly) {
         long start = System.nanoTime();
         List<JiraIssue> issues = getIssues(IssueSourceType.BOARD, boardId);
-        if(parentIssuesOnly) {
+        if (parentIssuesOnly) {
             issues = getParentIssues(issues);
         }
         List<JiraSprint> sprints = jiraSprintService.getSprints(boardId, "closed");
         List<JiraSprintIssues> sprintIssues = new ArrayList<>();
-        for(JiraSprint sprint : sprints) {
+        for (JiraSprint sprint : sprints) {
             JiraSprintIssues singleSprintIssues = new JiraSprintIssues();
             singleSprintIssues.setSprint(sprint);
             singleSprintIssues.setParentIssues(filterIssuesCompletedInSprint(boardId, sprint.getId(), issues));
             sprintIssues.add(singleSprintIssues);
         }
 
-        log.warn("-------------GET BOARD ISSUES BY BOARD -  Board ID: {} - Time: {}", boardId, (double)(System.nanoTime() - start)/1000000000.0);
+        log.warn("-------------GET BOARD ISSUES BY BOARD -  Board ID: {} - Time: {}", boardId, (double) (System.nanoTime() - start) / 1000000000.0);
         return sprintIssues;
     }
 
@@ -100,13 +77,18 @@ public class JiraIssueService extends JiraService {
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<JiraWorklogResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                HttpMethod.GET,
-                request,
-                JiraWorklogResponse.class
-        );
+        try {
 
-        return response.getBody().getWorklogs();
+            ResponseEntity<JiraWorklogResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraWorklogResponse.class
+            );
+
+            return response.getBody().getWorklogs();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
     }
 
     private List<JiraIssue> getIssues(IssueSourceType sourceType, String sourceId) {
@@ -138,7 +120,7 @@ public class JiraIssueService extends JiraService {
             issues.addAll(issueResponse.getIssues());
         }
 
-        log.warn("-------------GET ISSUES -  Source type: {} sourceId: {} Time: {}", sourceType, sourceId, (double)(System.nanoTime() - start)/1000000000.0);
+        log.warn("-------------GET ISSUES -  Source type: {} sourceId: {} Time: {}", sourceType, sourceId, (double) (System.nanoTime() - start) / 1000000000.0);
         return issues;
     }
 
@@ -153,14 +135,17 @@ public class JiraIssueService extends JiraService {
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<JiraIssueResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                HttpMethod.GET,
-                request,
-                JiraIssueResponse.class
-        );
+        try {
+            ResponseEntity<JiraIssueResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraIssueResponse.class
+            );
 
-        return response.getBody();
-
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
 //        ResponseEntity<String> response = restTemplate.exchange(jiraUrl + requestUrl,
 //                HttpMethod.GET,
 //                request,
@@ -193,14 +178,17 @@ public class JiraIssueService extends JiraService {
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<JiraIssueResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                HttpMethod.GET,
-                request,
-                JiraIssueResponse.class
-        );
+        try {
+            ResponseEntity<JiraIssueResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraIssueResponse.class
+            );
 
-        return response.getBody();
-
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
     }
 
     private List<JiraIssue> getParentIssues(List<JiraIssue> issues) {
@@ -210,7 +198,7 @@ public class JiraIssueService extends JiraService {
     }
 
     private List<JiraIssue> filterIssuesCompletedInSprint(String boardId, String sprintId, List<JiraIssue> issues) {
-        JiraSprintRapidView rapidView = jiraRapidViewService.getSprintRapidView(boardId,sprintId);
+        JiraSprintRapidView rapidView = jiraRapidViewService.getSprintRapidView(boardId, sprintId);
         List<String> completedIssueIds = rapidView.getContents().getCompletedIssues().stream().map(i -> i.getId()).collect(Collectors.toList());
         List<JiraIssue> completedIssues = issues.stream().filter(i -> completedIssueIds.contains(i.getId())).collect(Collectors.toList());
         return completedIssues;

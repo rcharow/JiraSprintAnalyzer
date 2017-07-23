@@ -26,23 +26,27 @@ public class JiraBoardService extends JiraService {
     }
 
     private JiraBoardResponse getBoardPage(Long startPage) {
-        String requestUrl = "/rest/agile/1.0/board?limit=50";
+        try {
+            String requestUrl = "/rest/agile/1.0/board?limit=50";
 
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-        RestTemplate restTemplate = new RestTemplate();
+            HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
+            RestTemplate restTemplate = new RestTemplate();
 
-        if(startPage != 0L){
-            requestUrl = "/rest/agile/1.0/board?limit=50&startAt=" + startPage;
+            if (startPage != 0L) {
+                requestUrl = "/rest/agile/1.0/board?limit=50&startAt=" + startPage;
+            }
+
+            ResponseEntity<JiraBoardResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraBoardResponse.class
+            );
+
+
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
         }
-
-        ResponseEntity<JiraBoardResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                HttpMethod.GET,
-                request,
-                JiraBoardResponse.class
-        );
-
-
-        return response.getBody();
     }
 
     public List<JiraBoard> getAllBoards() {
@@ -50,22 +54,27 @@ public class JiraBoardService extends JiraService {
         Boolean lastPage;
         Long startPage = 0L;
 
-        JiraBoardResponse boardResponse = getBoardPage(startPage);
-        lastPage = boardResponse.getIsLast();
-        boards = boardResponse.getValues();
+        try {
 
-        while(!lastPage){
-            startPage = startPage + 50;
-            boardResponse = getBoardPage(startPage);
+            JiraBoardResponse boardResponse = getBoardPage(startPage);
             lastPage = boardResponse.getIsLast();
-            boards.addAll(boardResponse.getValues());
-        }
+            boards = boardResponse.getValues();
 
-        Collections.sort(boards);
-        return boards;
+            while (!lastPage) {
+                startPage = startPage + 50;
+                boardResponse = getBoardPage(startPage);
+                lastPage = boardResponse.getIsLast();
+                boards.addAll(boardResponse.getValues());
+            }
+
+            Collections.sort(boards);
+            return boards;
+        } catch (Exception e) {
+            throw new JiraException();
+        }
     }
 
-    public List<JiraBoard> getAllBoardsByType(String type){
+    public List<JiraBoard> getAllBoardsByType(String type) {
         List<JiraBoard> boards = getAllBoards();
         List<JiraBoard> filteredBoards = boards.stream().filter(b -> b.getType().equals("scrum")).collect(Collectors.toList());
 
@@ -76,12 +85,17 @@ public class JiraBoardService extends JiraService {
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<JiraBoard> response = restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board/" + boardId,
-                HttpMethod.GET,
-                request,
-                JiraBoard.class
-        );
 
-        return response.getBody();
+        try {
+            ResponseEntity<JiraBoard> response = restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board/" + boardId,
+                    HttpMethod.GET,
+                    request,
+                    JiraBoard.class
+            );
+
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
     }
 }

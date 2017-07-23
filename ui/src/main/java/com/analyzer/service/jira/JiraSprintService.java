@@ -26,7 +26,7 @@ import java.util.List;
  */
 
 @Component
-public class JiraSprintService extends JiraService{
+public class JiraSprintService extends JiraService {
 
     @Autowired
     public JiraSprintService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl) {
@@ -34,78 +34,93 @@ public class JiraSprintService extends JiraService{
     }
 
     public JiraSprint getSprintById(String id) {
-        String requestUrl =  "/rest/agile/1.0/sprint/" + id;
+        String requestUrl = "/rest/agile/1.0/sprint/" + id;
 
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<String> response = restTemplate.exchange(jiraUrl + requestUrl,
-                HttpMethod.GET,
-                request,
-                String.class
-        );
-
-        JiraSprint sprint = new JiraSprint();
-        sprint.setId(id);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-
         try {
-            JsonNode node = mapper.readTree(new StringReader(response.getBody()));
-            sprint.setName(node.get("name").asText());
-            sprint.setSelf(node.get("self").asText());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-            String dateString = node.get("completeDate").asText();
+
+            ResponseEntity<String> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    String.class
+            );
+
+            JiraSprint sprint = new JiraSprint();
+            sprint.setId(id);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
             try {
-              sprint.setCompleteDate(dateFormat.parse(dateString));
-            } catch(ParseException ex) {
+                JsonNode node = mapper.readTree(new StringReader(response.getBody()));
+                sprint.setName(node.get("name").asText());
+                sprint.setSelf(node.get("self").asText());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                String dateString = node.get("completeDate").asText();
+
+                try {
+                    sprint.setCompleteDate(dateFormat.parse(dateString));
+                } catch (ParseException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
 
-        } catch(IOException ex) {
-            throw new RuntimeException(ex);
+            return sprint;
+        } catch (Exception e) {
+            throw new JiraException();
         }
-
-        return sprint;
     }
 
     private JiraSprintResponse getSprintPage(String boardId, Long startPage) {
-        String requestUrl =  "/rest/agile/1.0/board/" + boardId + "/sprint?limit=50";
+        String requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?limit=50";
 
-        if(startPage != 0L){
-            requestUrl =  "/rest/agile/1.0/board/" + boardId + "/sprint?limit=50&startAt=" + startPage;
+        if (startPage != 0L) {
+            requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?limit=50&startAt=" + startPage;
         }
 
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                HttpMethod.GET,
-                request,
-                JiraSprintResponse.class
-        );
+        try {
 
-        return response.getBody();
+            ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraSprintResponse.class
+            );
+
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
     }
 
     private JiraSprintResponse getSprintPage(String boardId, Long startPage, String sprintStates) {
         String requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates + "&limit=50";
 
-        if(startPage != 0L){
+        if (startPage != 0L) {
             requestUrl = "/rest/agile/1.0/board/" + boardId + "/sprint?state=" + sprintStates + "&limit=50&startAt=" + startPage;
         }
 
         HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
-                HttpMethod.GET,
-                request,
-                JiraSprintResponse.class
-        );
+        try {
 
-        return response.getBody();
+            ResponseEntity<JiraSprintResponse> response = restTemplate.exchange(jiraUrl + requestUrl,
+                    HttpMethod.GET,
+                    request,
+                    JiraSprintResponse.class
+            );
+
+            return response.getBody();
+        } catch (Exception e) {
+            throw new JiraException();
+        }
     }
 
     public List<JiraSprint> getSprints(String boardId) {
@@ -114,18 +129,23 @@ public class JiraSprintService extends JiraService{
         Boolean lastPage;
         Long startPage = 0L;
 
-        JiraSprintResponse boardResponse = getSprintPage(boardId, startPage);
-        lastPage = boardResponse.getIsLast();
-        sprints = boardResponse.getValues();
+        try {
 
-        while(!lastPage){
-            startPage = startPage + 50;
-            boardResponse = getSprintPage(boardId, startPage);
+            JiraSprintResponse boardResponse = getSprintPage(boardId, startPage);
             lastPage = boardResponse.getIsLast();
-            sprints.addAll(boardResponse.getValues());
-        }
+            sprints = boardResponse.getValues();
 
-        return sprints;
+            while (!lastPage) {
+                startPage = startPage + 50;
+                boardResponse = getSprintPage(boardId, startPage);
+                lastPage = boardResponse.getIsLast();
+                sprints.addAll(boardResponse.getValues());
+            }
+
+            return sprints;
+        } catch (Exception e) {
+            throw new JiraException();
+        }
     }
 
     public List<JiraSprint> getSprints(String boardId, String sprintState) {
@@ -134,18 +154,23 @@ public class JiraSprintService extends JiraService{
         Boolean lastPage;
         Long startPage = 0L;
 
-        JiraSprintResponse sprintResponse = getSprintPage(boardId, startPage, sprintState);
-        lastPage = sprintResponse.getIsLast();
-        sprints = sprintResponse.getValues();
+        try {
 
-        while(!lastPage){
-            startPage = startPage + 50;
-            sprintResponse = getSprintPage(boardId, startPage, sprintState);
+            JiraSprintResponse sprintResponse = getSprintPage(boardId, startPage, sprintState);
             lastPage = sprintResponse.getIsLast();
-            sprints.addAll(sprintResponse.getValues());
-        }
+            sprints = sprintResponse.getValues();
 
-        Collections.sort(sprints);
-        return sprints;
+            while (!lastPage) {
+                startPage = startPage + 50;
+                sprintResponse = getSprintPage(boardId, startPage, sprintState);
+                lastPage = sprintResponse.getIsLast();
+                sprints.addAll(sprintResponse.getValues());
+            }
+
+            Collections.sort(sprints);
+            return sprints;
+        } catch (Exception e) {
+            throw new JiraException();
+        }
     }
 }
