@@ -38,7 +38,6 @@ export class DashboardOptionsComponent {
        this.dashboardService.setCurrentBoard(this.route.snapshot.queryParams['board']);
      }
 
-
     this.jiraService.getScrumBoards()
       .flatMap(boards => {
         this.boards = boards;
@@ -51,7 +50,7 @@ export class DashboardOptionsComponent {
           this.dashboardService.chartAllSprints.subscribe(chartAll => this.chartAll = chartAll);
           this.onBoardSelect();
         }
-      });
+      }, error => this.loading = false);
   }
 
   onBoardSelect() {

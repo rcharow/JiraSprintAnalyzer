@@ -27,21 +27,33 @@ export class JiraService {
   getBoards(): Observable<JiraBoard[]> {
     return this.http.get('/api/jira/board')
       .map(res => res.json())
+      .catch(error => {
+        return this.setErrorMessage(error,'Error Loading Options');
+      });
   }
 
   getScrumBoards(): Observable<JiraBoard[]> {
     return this.http.get('/api/jira/board/type/scrum')
       .map(res => res.json())
+      .catch(error => {
+        return this.setErrorMessage(error,'Error Loading Options');
+      });
   }
 
   getClosedSprintsByBoardId(boardId: String): Observable<JiraSprint[]> {
     return this.http.get('/api/jira/board/' + boardId + '/sprints/closed')
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => {
+        return this.setErrorMessage(error,'Error Loading Options');
+      });
   }
 
   getSingleSprintSummary(boardId: string, sprintId: string): Observable<JiraSprintSummary> {
     return this.http.get('/api/analysis/summary/' + boardId + '/' + sprintId)
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => {
+        return this.setErrorMessage(error,'Single Sprint Summary Error');
+      });
   }
 
   setCurrentSummary(boardId: string, sprintIds: string[]) {
@@ -112,9 +124,10 @@ export class JiraService {
       });
   }
 
-  private setErrorMessage(error:Response, title:string) {
+  private setErrorMessage(error:any, title:string):Promise<any> {
     let errorDetails = error.json();
     this._jiraServiceError.next({title: title, status: errorDetails.status, userMessage: errorDetails.message, errorMessage: errorDetails.error});
+    return Promise.reject(errorDetails.message);
   }
 
 }
