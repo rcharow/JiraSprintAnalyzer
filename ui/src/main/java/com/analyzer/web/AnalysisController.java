@@ -2,9 +2,8 @@ package com.analyzer.web;
 
 import com.analyzer.domain.JiraSprintPointAnalysis;
 import com.analyzer.domain.JiraSprintSummary;
-import com.analyzer.domain.JiraWorklogSummary;
-import com.analyzer.service.analysis.PointAnalysisService;
-import com.analyzer.service.analysis.SummaryAnalysisService;
+import com.analyzer.analysis.PointAnalysisService;
+import com.analyzer.analysis.SummaryAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

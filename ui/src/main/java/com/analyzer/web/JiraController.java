@@ -1,10 +1,10 @@
 package com.analyzer.web;
 
 import com.analyzer.domain.*;
-import com.analyzer.service.jira.JiraBoardService;
-import com.analyzer.service.jira.JiraIssueService;
-import com.analyzer.service.jira.JiraRapidViewService;
-import com.analyzer.service.jira.JiraSprintService;
+import com.analyzer.jira.JiraBoardService;
+import com.analyzer.jira.JiraIssueService;
+import com.analyzer.jira.JiraRapidViewService;
+import com.analyzer.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

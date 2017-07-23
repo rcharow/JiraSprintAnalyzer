@@ -1,6 +1,5 @@
-package com.analyzer.service.jira;
+package com.analyzer.jira;
 
-import com.analyzer.domain.JiraIssueResponse;
 import com.analyzer.domain.JiraSprint;
 import com.analyzer.domain.JiraSprintResponse;
 import com.fasterxml.jackson.databind.JsonNode;

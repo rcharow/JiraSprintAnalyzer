@@ -1,4 +1,4 @@
-package com.analyzer.service.jira;
+package com.analyzer.jira;
 
 import com.analyzer.domain.*;
 import org.slf4j.Logger;

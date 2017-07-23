@@ -1,9 +1,9 @@
-package com.analyzer.service.analysis;
+package com.analyzer.analysis;
 
 import com.analyzer.domain.*;
-import com.analyzer.service.jira.JiraIssueService;
-import com.analyzer.service.jira.JiraRapidViewService;
-import com.analyzer.service.jira.JiraSprintService;
+import com.analyzer.jira.JiraIssueService;
+import com.analyzer.jira.JiraRapidViewService;
+import com.analyzer.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;

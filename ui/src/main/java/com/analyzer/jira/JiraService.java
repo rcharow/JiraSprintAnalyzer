@@ -1,4 +1,4 @@
-package com.analyzer.service.jira;
+package com.analyzer.jira;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;

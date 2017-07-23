@@ -1,4 +1,4 @@
-package com.analyzer.service.jira;
+package com.analyzer.jira;
 
 import com.analyzer.domain.JiraBoard;
 import com.analyzer.domain.JiraBoardResponse;

@@ -1,4 +1,4 @@
-package com.analyzer.service.jira;
+package com.analyzer.jira;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

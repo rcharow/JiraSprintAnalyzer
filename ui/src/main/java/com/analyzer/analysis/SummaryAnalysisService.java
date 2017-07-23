@@ -1,9 +1,8 @@
-package com.analyzer.service.analysis;
+package com.analyzer.analysis;
 
 import com.analyzer.domain.*;
-import com.analyzer.service.jira.JiraIssueService;
-import com.analyzer.service.jira.JiraSprintService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.analyzer.jira.JiraIssueService;
+import com.analyzer.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
