@@ -1,16 +1,27 @@
-<div class="vertical-nav">
-  <ul class="nav flex-column nav-justified">
-    <li class="nav-item vertical-nav__item">
-      <a class="nav-link active vertical-nav__link" href="#">Active</a>
-    </li>
-    <li class="nav-item vertical-nav__item">
-      <a class="nav-link vertical-nav__link" href="#">Link</a>
-    </li>
-    <li class="nav-item vertical-nav__item">
-      <a class="nav-link vertical-nav__link" href="#">Link</a>
-    </li>
-    <li class="nav-item vertical-nav__item">
-      <a class="nav-link disabled vertical-nav__link" href="#">Disabled</a>
-    </li>
-  </ul>
+<div class="vertical-nav container">
+  <div class="row">
+    <div class="col-4 col-md-4 col-lg-12 vertical-nav__item">
+      <a class="nav-link vertical-nav__link"
+         (click)="selectView('summary')">
+        <i class="fa fa-table vertical-nav__icon" [ngClass]="{'vertical-nav__icon--selected': viewSelected('summary')}"
+           aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Sprint Summary"></i>
+      </a>
+    </div>
+    <div class="col-4 col-md-4 col-lg-12 vertical-nav__item">
+      <a class="nav-link vertical-nav__link"
+         (click)="selectView('money')"
+         data-toggle="tooltip" data-placement="bottom" title="Monetary Stats">
+        <i class="fa fa-dollar vertical-nav__icon" [ngClass]="{'vertical-nav__icon--selected': viewSelected('money')}"
+           aria-hidden="true"></i>
+      </a>
+    </div>
+    <div class="col-4 col-md-4 col-lg-12 vertical-nav__item">
+      <a class="nav-link vertical-nav__link"
+         (click)="selectView('time')"
+         data-toggle="tooltip" data-placement="bottom" title="Hourly Stats">
+        <i class="fa fa-clock-o vertical-nav__icon" [ngClass]="{'vertical-nav__icon--selected': viewSelected('time')}"
+           aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
 </div>

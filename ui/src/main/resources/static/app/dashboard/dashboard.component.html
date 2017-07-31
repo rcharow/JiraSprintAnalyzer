@@ -1,4 +1,13 @@
-<pill-nav class="dashboard-menu"></pill-nav>
 <div class="dashboard container">
-    <router-outlet></router-outlet>
+  <dashboard-options class="dashboard__options"></dashboard-options>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-1">
+        <vertical-nav></vertical-nav>
+      </div>
+      <div class="dashboard__view col-md-11">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
 </div>

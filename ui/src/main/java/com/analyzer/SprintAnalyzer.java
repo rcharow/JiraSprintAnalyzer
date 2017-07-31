@@ -1,5 +1,6 @@
 package com.analyzer;
 
+import com.analyzer.web.AnalysisController;
 import com.analyzer.web.IndexController;
 import com.analyzer.web.JiraController;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -58,6 +59,7 @@ public class SprintAnalyzer extends ResourceConfig {
     public SprintAnalyzer(){
         register(IndexController.class);
         register(JiraController.class);
+        register(AnalysisController.class);
     }
 
     public static void main(String[] args) {

@@ -1,0 +1,34 @@
+.dashboard{
+  background-color: $gray1;
+}
+
+.dashboard__options {
+  margin: 0 auto;
+  display: block;
+}
+
+.dashboard__view {
+  @include media-breakpoint-up(md) {
+    padding-left: 2.5rem;
+  }
+}
+
+.dashboard__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: $gray1;
+  margin-left: 20px;
+}
+
+.dashboard__loading {
+  width: 100px;
+  margin: 20px auto 0 auto;
+}
+
+.dashboard__loading-icon {
+  color: $blue1;
+}

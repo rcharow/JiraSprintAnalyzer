@@ -1,0 +1,12 @@
+.analysis {
+  margin: 40px auto;
+
+  @include media-breakpoint-up(lg) {
+    margin-top: 20px;
+  }
+
+}
+
+.analysis__icon--inactive {
+  color: $gray2;
+}

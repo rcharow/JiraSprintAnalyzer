@@ -3,11 +3,20 @@ $white1: white;
 $black1: black;
 
 $green1: rgba(11, 110, 79, 1);
-$red1: rgba(239, 100, 97, 1);
-$yellow1: rgba(228, 179, 99, 1);
+$orange1: #F19F4D;
+$blue1: #4484CE;
+$blue2: #344D68;
+$gray1: lighten(#D9D9D9, 10%);
+$gray2: #A9A9A9;
+$yellow1: #F9CF00;
 
 
 
+//chart colors
+$green2: #9FD356;
+$green3: #034748;
+$purple1: #3C1518;
+$purple1: #A14EBF;
+$red1: #A63D40;
+$orange2: #EE6C4D;
 
-////Override bootstrap variables
-$brand-primary: $green1;

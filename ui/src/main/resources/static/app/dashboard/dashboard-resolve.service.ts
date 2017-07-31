@@ -1,16 +1,15 @@
 
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { JiraService, JiraSprint} from '../jira/jira.service';
+import { DashboardService } from './dashboard.service';
 
 @Injectable()
-export class DashboardResolveService implements Resolve<Observable<JiraSprint[]>> {
+export class DashboardResolveService implements Resolve<boolean> {
 
-    constructor(private service: JiraService){}
+    constructor(private service: DashboardService){}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<JiraSprint[]> {
-        let boardId: String = route.params['boardId'];
-        return this.service.getSprintsByBoardId(boardId);
+    resolve(route: ActivatedRouteSnapshot): boolean {
+        this.service.setCurrentView(route.url[0].path);
+        return true;
     }
 }

@@ -1,5 +1,15 @@
+body {
+  background-color: $gray1;
+  color: darken($gray2, 25%);
+}
+
 .app-content {
-  margin-top: 100px;
+  margin-top: 20px;
+  background-color: $gray1;
+
+  @include media-breakpoint-up(md) {
+    margin-top: 100px;
+  }
 }
 .dashboard {
   width: 100%;
@@ -15,7 +25,7 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1030;
-  color: $green1;
+  color: $blue1;
 
   @include media-breakpoint-up(lg) {
     top: 75px;

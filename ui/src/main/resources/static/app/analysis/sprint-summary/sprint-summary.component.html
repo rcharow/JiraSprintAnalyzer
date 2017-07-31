@@ -1,0 +1,67 @@
+<div class="sprint-summary">
+  <div class="container">
+    <div class="row dashboard__overlay" [hidden]="!loadingSummary">
+      <div class="sprint-summary__loading">
+        <loading></loading>
+      </div>
+    </div>
+    <analysis-message *ngIf="!summaries || !summaries.length" [message]="noDataMessage" [iconClasses]="noDataClasses"></analysis-message>
+    <div class="row sprint-summary__row" *ngFor="let summary of summaries">
+      <div class="sprint-summary__column col-md">
+
+        <div class="sprint-summary__heading">{{summary.name}} Summary</div>
+        <table class="sprint-summary__table table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Completed Issues</td>
+            <td>{{summary.totalIssues}}</td>
+          </tr>
+          <tr>
+            <td>Completed Points</td>
+            <td>{{summary.totalPoints}}</td>
+          </tr>
+          <tr>
+            <td>Hours Worked</td>
+            <td>{{summary.totalTimeHours|number:'1.0-2'}}</td>
+          </tr>
+          <tr>
+            <td>Client Cost</td>
+            <td>{{summary.clientTotalCost|currency:USD:true }}</td>
+          </tr>
+          <tr>
+            <td>Internal Cost</td>
+            <td>{{summary.internalTotalCost|currency:USD:true}}</td>
+          </tr>
+          <tr>
+            <td>Margin</td>
+            <td>{{summary.margin}}%</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sprint-summary__column col-md-6">
+        <div class="sprint-summary__heading">Sprint Team &amp; Hours Worked</div>
+        <table class="sprint-summary__table table table-striped">
+          <thead>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of summary.worklogSummary.worklogs">
+            <td>{{item.author}}</td>
+            <td>{{item.totalTimeHours|number:'1.0-2'}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

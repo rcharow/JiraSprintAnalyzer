@@ -1,3 +1,5 @@
+import './polyfill';
+
 // Angular
 import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
@@ -16,7 +18,6 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/publishReplay';
-import 'rxjs/add/operator/cache';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 

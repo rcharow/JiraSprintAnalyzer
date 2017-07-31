@@ -1,0 +1,64 @@
+<form>
+  <div class="form-group">
+    <div class="container">
+      <div class="row dashboard-options__loading-row--mobile">
+        <div class="col dashboard-options__loading-container--mobile">
+          <i class="fa fa-circle-o-notch fa-spin fa-lg fa-fw dashboard-options__loading dashboard-options__loading--mobile"
+             [hidden]="!loading"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 dashboard-options__option">
+          <div class="row">
+            <div class="col-md-1">
+              <i class="fa fa-circle-o-notch fa-spin fa-lg fa-fw dashboard-options__loading dashboard-options__loading--desktop"
+                 [hidden]="!loading"></i>
+            </div>
+            <div class="col">
+              <label for="boardSelect">Select Project</label>
+              <select id="boardSelect" name="boardSelect" placeholder="Jira Project"
+                      class="custom-select dashboard-options__select dashboard-options__select--project"
+                      (change)="onBoardSelect($event)"
+                      [(ngModel)]="selectedBoard"
+                      [disabled]="loading">
+                <option *ngFor="let board of boards" [ngValue]="board">{{board.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 dashboard-options__option">
+          <label for="sprintSelect">Select Sprints</label>
+          <ss-multiselect-dropdown
+              id="sprintSelect" name="sprintSelect"
+              class="dashboard-options__multi-select"
+              [options]="sprintOptions"
+              [settings]="sprintOptionSettings"
+              [(ngModel)]="sprintsModel"
+              [disabled]="loading || !selectedBoard">
+          </ss-multiselect-dropdown>
+        </div>
+        <div class="col-md-2 dashboard-options__option">
+          <div class="form-check dashboard-options__check">
+            <label class="form-check-label">
+              <input type="checkbox" name="allSprintsCheck" id="allSprintsCheck" class="form-check-input"
+                     [(ngModel)]="chartAll">
+              Chart all sprints?
+            </label>
+            <i class="fa fa-question-circle" aria-hidden="true"
+               aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Include all sprints from selected board in chart, not just the selected sprints.">
+            </i>
+          </div>
+        </div>
+        <div class="col dashboard-options__option">
+          <button type="submit"
+                  class="btn btn-primary dashboard-options__submit align-middle"
+                  [disabled]="!submitEnabled()"
+                  (click)="submitOptions()">
+            Go
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
