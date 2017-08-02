@@ -62,6 +62,10 @@
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
+                <excludes>
+                    <exclude>static/node_modules/**</exclude>
+                    <exclude>static/node/**</exclude>
+                </excludes>
             </resource>
             <resource>
                 <directory>${project.build.directory}/generated-resources</directory>
