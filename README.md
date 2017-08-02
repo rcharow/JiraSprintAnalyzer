@@ -14,11 +14,20 @@ jira.password=[password for authenticating requests to jira api]
 
 ## Running the app
 1. ``cd /JiraSprintAnalyzer/ui/src/main/resources/static``
-2. ``npm install``
-3. ``gulp``
+2. ``rm -rf node_modules``
+3. ``npm install``
+4. ``gulp``
     - Gulp will compile the ts to js using webpack, and the sass to css
     - Run `gulp watch` during development
-4. ``mvn spring-boot:run``
-5. Visit localhost:9000
+5. ``mvn spring-boot:run``
+6. Visit [localhost:900](http://localhost:9000)
 
-
+## Building app for deployment
+1. ``cd /JiraSprintAnalyzer/ui/src/main/resources/static``
+2. ``rm -rf node_modules``
+3. ``npm install``
+4. ``gulp``
+5. ``cd /JiraSprintAnalyzer/ui``
+6. ``mvn package``
+7. ``java -jar target/ui-0.0.1-SNAPSHOT.jar``
+6. Visit [localhost:900](http://localhost:9000)
