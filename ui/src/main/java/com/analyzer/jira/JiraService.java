@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * Created by rcharow on 9/30/16.
  */
 @Component
-@PropertySource(value = "config.properties")
+// @PropertySource(value = "config.properties")
 abstract class JiraService {
     private String jiraUser;
 
