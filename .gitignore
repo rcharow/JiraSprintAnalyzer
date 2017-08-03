@@ -6,3 +6,5 @@
 analyzer.iml
 src/main/resources/static/npm-debug.log
 ui/src/main/resources/static/node/
+*.swp
+*.swo
