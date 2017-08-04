@@ -23,8 +23,8 @@ public class SummaryAnalysisService {
     public SummaryAnalysisService(
             JiraSprintService jiraSprintService,
             JiraIssueService jiraIssueService,
-            @Value("${hourlyCost.client}") String clientCost,
-            @Value("${hourlyCost.internal}") String internalCost){
+            @Value("${domain.hourlyCost.client}") String clientCost,
+            @Value("${domain.hourlyCost.internal}") String internalCost){
         this.jiraSprintService = jiraSprintService;
         this.jiraIssueService = jiraIssueService;
         this.clientCostPerHour = Integer.parseInt(clientCost);

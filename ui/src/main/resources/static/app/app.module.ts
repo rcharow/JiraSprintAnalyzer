@@ -19,10 +19,12 @@ import {JiraService} from './jira/jira.service';
 import {DashboardService} from './dashboard/dashboard.service';
 import {AuthService} from './shared/auth.service';
 import { GlobalToastOptions } from './shared/toast-options';
+import {HealthComponent} from "./health.component";
 
 @NgModule({
   declarations: [
     HomeComponent,
+    HealthComponent,
     LoginComponent
   ],
   imports: [

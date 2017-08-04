@@ -16,7 +16,6 @@ import java.util.List;
  * Created by rcharow on 6/16/17.
  */
 @Component
-@PropertySource(value = "domain.properties")
 public class PointAnalysisService {
     private JiraIssueService jiraIssueService;
     private JiraSprintService jiraSprintService;
@@ -30,8 +29,8 @@ public class PointAnalysisService {
             JiraIssueService jiraIssueService,
             JiraSprintService jiraSprintService,
             JiraRapidViewService jiraRapidViewService,
-            @Value("${hourlyCost.client}") String clientCost,
-            @Value("${hourlyCost.internal}") String internalCost
+            @Value("${domain.hourlyCost.client}") String clientCost,
+            @Value("${domain.hourlyCost.internal}") String internalCost
     ) {
         this.jiraIssueService = jiraIssueService;
         this.jiraSprintService = jiraSprintService;
