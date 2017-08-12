@@ -55,7 +55,7 @@ public class SummaryAnalysisService {
     public JiraWorklogSummary getSprintWorklogSummary(String sprintId, List<JiraIssue> issues) {
         Integer totalSeconds = 0;
 
-        HashMap worklogMap = new HashMap();
+        HashMap worklogMap = new HashMap<String,Double>();
         for (JiraIssue issue : issues) {
 
             List<JiraWorklog> worklogs = jiraIssueService.getIssueWorklog(issue.getId());
