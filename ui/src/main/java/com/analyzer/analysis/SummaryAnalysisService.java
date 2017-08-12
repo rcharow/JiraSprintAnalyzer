@@ -62,7 +62,7 @@ public class SummaryAnalysisService {
 
             if(worklogs != null){
                 for(JiraWorklog item : worklogs){
-                    String author = item.getAuthor().getDisplayName();
+                    String author = item.getAuthor().getDisplayName() == null ? item.getAuthor().getName() : item.getAuthor().getDisplayName();
                     double time = Optional.ofNullable(item.getTimeSpentSeconds()).orElse(0);
                     time = time/60/60;
                     if(worklogMap.containsKey(author)){
