@@ -8,9 +8,26 @@
             <column name="board_id" type="varchar(100)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="jira_url" type="varchar(255)"/>
-            <column name="board_name" type="varchar(255)"/>
-            <column name="board_type" type="varchar(100)"/>
+            <column name="jira_url" type="VARCHAR(255)"/>
+            <column name="board_name" type="VARCHAR(255)"/>
+            <column name="board_type" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="rcharow">
+        <createTable tableName="jira_sprint">
+            <column name="sprint_id" type="varchar(100)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="jira_url" type="VARCHAR(255)"/>
+            <column name="sprint_name" type="VARCHAR(255)"/>
+            <column name="state" type="VARCHAR(25)"/>
+            <column name="start_date" type="DATE"/>
+            <column name="end_date" type="DATE"/>
+            <column name="complete_date" type="DATE"/>
+            <column name="origin_board" type="VARCHAR(100)"/>
+            <column name="issues_synced" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -1,8 +1,8 @@
 package com.analyzer.analysis;
 
+import com.analyzer.dao.JiraSprintDao;
 import com.analyzer.domain.*;
 import com.analyzer.jira.JiraIssueService;
-import com.analyzer.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,18 +14,18 @@ import java.util.*;
  */
 @Component
 public class SummaryAnalysisService {
-    private final JiraSprintService jiraSprintService;
+    private final JiraSprintDao jiraSprintService;
     private final JiraIssueService jiraIssueService;
     private Integer clientCostPerHour;
     private Integer internalCostPerHour;
 
     @Autowired
     public SummaryAnalysisService(
-            JiraSprintService jiraSprintService,
+            JiraSprintDao jiraSprintDao,
             JiraIssueService jiraIssueService,
             @Value("${domain.hourlyCost.client}") String clientCost,
             @Value("${domain.hourlyCost.internal}") String internalCost){
-        this.jiraSprintService = jiraSprintService;
+        this.jiraSprintService = jiraSprintDao;
         this.jiraIssueService = jiraIssueService;
         this.clientCostPerHour = Integer.parseInt(clientCost);
         this.internalCostPerHour = Integer.parseInt(internalCost);
@@ -36,7 +36,7 @@ public class SummaryAnalysisService {
         JiraSprintSummary summary;
         JiraSprint sprint;
 
-        sprint = jiraSprintService.getSprintById(sprintId);
+        sprint = jiraSprintService.getSprint(sprintId);
 
         List<JiraIssue> issues = jiraIssueService.getCompletedSprintParentIssues(boardId, sprintId);
         summary = calculateStats(issues);

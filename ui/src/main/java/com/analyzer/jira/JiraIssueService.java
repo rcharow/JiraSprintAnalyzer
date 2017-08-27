@@ -1,5 +1,6 @@
 package com.analyzer.jira;
 
+import com.analyzer.dao.JiraSprintDao;
 import com.analyzer.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @Component
 public class JiraIssueService extends JiraService {
     private Logger log = LoggerFactory.getLogger(JiraIssueService.class);
-    private JiraSprintService jiraSprintService;
+    private JiraSprintDao jiraSprintDao;
     private JiraRapidViewService jiraRapidViewService;
 
     private enum IssueSourceType {
@@ -30,9 +31,9 @@ public class JiraIssueService extends JiraService {
     }
 
     @Autowired
-    public JiraIssueService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl, JiraSprintService jiraSprintService, JiraRapidViewService jiraRapidViewService) {
+    public JiraIssueService(@Value("${jira.username}") String jiraUser, @Value("${jira.password}") String jiraPassword, @Value("${jira.self}") String jiraUrl, JiraSprintDao jiraSprintDao, JiraRapidViewService jiraRapidViewService) {
         super(jiraUser, jiraPassword, jiraUrl);
-        this.jiraSprintService = jiraSprintService;
+        this.jiraSprintDao = jiraSprintDao;
         this.jiraRapidViewService = jiraRapidViewService;
     }
 
@@ -53,7 +54,7 @@ public class JiraIssueService extends JiraService {
         if (parentIssuesOnly) {
             issues = getParentIssues(issues);
         }
-        List<JiraSprint> sprints = jiraSprintService.getSprints(boardId, "closed");
+        List<JiraSprint> sprints = jiraSprintDao.getSprints(boardId, "closed");
         List<JiraSprintIssues> sprintIssues = new ArrayList<>();
         for (JiraSprint sprint : sprints) {
             JiraSprintIssues singleSprintIssues = new JiraSprintIssues();

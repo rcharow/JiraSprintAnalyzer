@@ -33,10 +33,10 @@ public class JiraBoardDao {
         return boards;
     }
 
-    public List<JiraBoard> getBoardsByType(String type) {
-        String query = "FROM JiraBoard as board WHERE board.type = ?";
+    public List<JiraBoard> getBoardsByType(String boardType) {
+        String query = "FROM JiraBoard as board WHERE board.type = :boardType";
         List<JiraBoard> boards = em.createQuery(query, JiraBoard.class)
-                .setParameter(1, type)
+                .setParameter("boardType", boardType)
                 .getResultList();
         Collections.sort(boards);
         return boards;

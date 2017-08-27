@@ -1,12 +1,11 @@
 package com.analyzer.analysis;
 
+import com.analyzer.dao.JiraSprintDao;
 import com.analyzer.domain.*;
 import com.analyzer.jira.JiraIssueService;
 import com.analyzer.jira.JiraRapidViewService;
-import com.analyzer.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
 @Component
 public class PointAnalysisService {
     private JiraIssueService jiraIssueService;
-    private JiraSprintService jiraSprintService;
+    private JiraSprintDao jiraSprintDao;
     private JiraRapidViewService jiraRapidViewService;
     private Integer clientCostPerHour;
     private Integer internalCostPerHour;
@@ -27,13 +26,13 @@ public class PointAnalysisService {
     @Autowired
     public PointAnalysisService(
             JiraIssueService jiraIssueService,
-            JiraSprintService jiraSprintService,
+            JiraSprintDao jiraSprintService,
             JiraRapidViewService jiraRapidViewService,
             @Value("${domain.hourlyCost.client}") String clientCost,
             @Value("${domain.hourlyCost.internal}") String internalCost
     ) {
         this.jiraIssueService = jiraIssueService;
-        this.jiraSprintService = jiraSprintService;
+        this.jiraSprintDao = jiraSprintService;
         this.jiraRapidViewService = jiraRapidViewService;
         this.clientCostPerHour = Integer.parseInt(clientCost);
         this.internalCostPerHour = Integer.parseInt(internalCost);
@@ -50,7 +49,7 @@ public class PointAnalysisService {
 
     public JiraSprintPointAnalysis getSprintPointAnalysis(String boardId, String sprintId) {
         List<JiraIssue> issues = jiraIssueService.getCompletedSprintParentIssues(boardId, sprintId);
-        JiraSprint fullSprint = jiraSprintService.getSprintById(sprintId);
+        JiraSprint fullSprint = jiraSprintDao.getSprint(sprintId);
 
         JiraSprintIssues sprintIssues = new JiraSprintIssues();
         sprintIssues.setParentIssues(issues);
@@ -69,7 +68,7 @@ public class PointAnalysisService {
 
         for (JiraSprintIssues sprint : sprintIssues) {
             JiraSprintPointAnalysis analysis = new JiraSprintPointAnalysis();
-            JiraSprintRapidView rapidView = jiraRapidViewService.getSprintRapidView(boardId, sprint.getSprint().getId());
+//            JiraSprintRapidView rapidView = jiraRapidViewService.getSprintRapidView(boardId, sprint.getSprint().getId());
 
             analysis.setSprintId(sprint.getSprint().getId());
             analysis.setSprintName(sprint.getSprint().getName());

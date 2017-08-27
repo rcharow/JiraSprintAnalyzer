@@ -1,10 +1,10 @@
 package com.analyzer.web;
 
 import com.analyzer.dao.JiraBoardDao;
+import com.analyzer.dao.JiraSprintDao;
 import com.analyzer.domain.*;
 import com.analyzer.jira.JiraIssueService;
 import com.analyzer.jira.JiraRapidViewService;
-import com.analyzer.jira.JiraSprintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,16 +25,16 @@ public class JiraController {
 
     private final JiraBoardDao jiraBoardDao;
 
-    private final JiraSprintService jiraSprintService;
+    private final JiraSprintDao jiraSprintDao;
 
     private final JiraIssueService jiraIssueService;
 
     private final JiraRapidViewService jiraRapidViewService;
 
     @Autowired
-    public JiraController(JiraBoardDao jiraBoardDao, JiraSprintService jiraSprintService, JiraIssueService jiraIssueService, JiraRapidViewService jiraRapidViewService) {
+    public JiraController(JiraBoardDao jiraBoardDao, JiraSprintDao jiraSprintDao, JiraIssueService jiraIssueService, JiraRapidViewService jiraRapidViewService) {
         this.jiraBoardDao = jiraBoardDao;
-        this.jiraSprintService = jiraSprintService;
+        this.jiraSprintDao = jiraSprintDao;
         this.jiraIssueService = jiraIssueService;
         this.jiraRapidViewService = jiraRapidViewService;
     }
@@ -58,13 +58,13 @@ public class JiraController {
     @GET
     @Path("/board/{boardId}/sprints/")
     public List<JiraSprint> getSprints(@PathParam("boardId") String boardId) {
-        return jiraSprintService.getSprints(boardId);
+        return jiraSprintDao.getSprints(boardId);
     }
 
     @GET
     @Path("/board/{boardId}/sprints/{sprintState}")
     public List<JiraSprint> getSprints(@PathParam("boardId") String boardId, @PathParam("sprintState") String sprintState) {
-        return jiraSprintService.getSprints(boardId, sprintState);
+        return jiraSprintDao.getSprints(boardId, sprintState);
     }
 
     @GET
