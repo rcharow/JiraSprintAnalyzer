@@ -82,11 +82,11 @@ public class PointAnalysisService {
                 float totalDollars = 0F;
 
                 for (JiraIssue issue : sprint.getParentIssues()) {
-                    if (issue.getFields().getPoints() != null && issue.getFields().getPoints().equals(pointValue)) {
+                    if (issue.getDetails().getPoints() != null && issue.getDetails().getPoints().equals(pointValue)) {
                         count += 1;
-                        if (issue.getFields().getTimeSpent() != null) {
-                            float hours = issue.getFields().getTimeSpent() / 60 / 60;
-                            totalTime = totalTime + (float) issue.getFields().getTimeSpent();
+                        if (issue.getDetails().getTimeSpent() != null) {
+                            float hours = issue.getDetails().getTimeSpent() / 60 / 60;
+                            totalTime = totalTime + (float) issue.getDetails().getTimeSpent();
                             totalDollars = totalDollars + (float) (hours * clientCostPerHour);
                         }
                     }
@@ -115,11 +115,11 @@ public class PointAnalysisService {
         Double totalPoints = 0D;
 
         for (JiraIssue issue : sprintIssues.getParentIssues()) {
-            if (issue.getFields().getTimeSpent() != null) {
-                totalTime += issue.getFields().getTimeSpent();
+            if (issue.getDetails().getTimeSpent() != null) {
+                totalTime += issue.getDetails().getTimeSpent();
             }
-            if (issue.getFields().getPoints() != null) {
-                totalPoints += issue.getFields().getPoints();
+            if (issue.getDetails().getPoints() != null) {
+                totalPoints += issue.getDetails().getPoints();
             }
         }
 

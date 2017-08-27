@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Created by rcharow on 10/9/16.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JiraIssueFields {
+public class JiraIssueDetails {
     private Double points;
     private JiraIssueTypeFields issueType;
     private Integer timeSpent;
@@ -55,7 +55,7 @@ public class JiraIssueFields {
 
     @Override
     public String toString() {
-        return "JiraIssueFields{" +
+        return "JiraIssueDetails{" +
                 "points=" + points +
                 ", issueType=" + issueType +
                 ", timeSpent=" + timeSpent +

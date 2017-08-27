@@ -194,7 +194,7 @@ public class JiraIssueService extends JiraService {
 
     private List<JiraIssue> getParentIssues(List<JiraIssue> issues) {
         return issues.stream()
-                .filter(p -> p.getFields().getIssueType().isSubtask() == false)
+                .filter(p -> p.getDetails().getIssueType().isSubtask() == false)
                 .collect(Collectors.toList());
     }
 

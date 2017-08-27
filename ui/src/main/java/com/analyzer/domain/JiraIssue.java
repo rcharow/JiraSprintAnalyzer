@@ -1,6 +1,7 @@
 package com.analyzer.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by rcharow on 10/9/16.
@@ -10,7 +11,7 @@ public class JiraIssue {
     private String id;
     private String self;
     private String key;
-    private JiraIssueFields fields;
+    private JiraIssueDetails details;
 
     public String getId() {
         return id;
@@ -36,12 +37,14 @@ public class JiraIssue {
         this.key = key;
     }
 
-    public JiraIssueFields getFields() {
-        return fields;
+    @JsonProperty("details")
+    public JiraIssueDetails getDetails() {
+        return details;
     }
 
-    public void setFields(JiraIssueFields fields) {
-        this.fields = fields;
+    @JsonProperty("fields")
+    public void setDetails(JiraIssueDetails details) {
+        this.details = details;
     }
 
     @Override

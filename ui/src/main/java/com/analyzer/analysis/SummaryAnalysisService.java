@@ -102,11 +102,11 @@ public class SummaryAnalysisService {
         summary.setTotalIssues(issues.size());
 
         for (JiraIssue issue : issues) {
-            Double points = issue.getFields().getPoints();
+            Double points = issue.getDetails().getPoints();
             points = points != null ? points : 0;
             totalPoints = totalPoints + points;
 
-            Integer seconds = issue.getFields().getTimeSpent();
+            Integer seconds = issue.getDetails().getTimeSpent();
             seconds = seconds != null ? seconds : 0;
             totalSeconds = totalSeconds + seconds;
         }
