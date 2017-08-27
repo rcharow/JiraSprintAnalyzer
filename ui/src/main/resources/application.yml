@@ -13,3 +13,15 @@ domain:
   hourlyCost:
     client: 125
     internal: 65
+liquibase:
+  change-log: classpath:/db/liquibase-changelog.xml
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sprint_analyzer
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: none

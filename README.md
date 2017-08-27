@@ -12,6 +12,14 @@ jira:
   password: [password for authenticating requests to jira api]
 ```
 
+##Database Setup
+1. Install mysql
+2. Create a new database called sprint_analyzer
+    ```
+    mysql -u root
+    CREATE DATABASE sprint_analyzer;
+    ```
+
 ## Running the app
 1. ``cd /JiraSprintAnalyzer/ui/src/main/resources/static``
 2. ``rm -rf node_modules``
