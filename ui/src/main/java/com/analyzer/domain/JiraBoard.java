@@ -2,14 +2,33 @@ package com.analyzer.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+
 /**
  * Created by rcharow on 10/1/16.
  */
+//annotations
+
+
+//id
+//use @column to rename sql reserved words
+//snake case db table names
+@Entity
+@Table(name = "jira_board")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JiraBoard implements Comparable<JiraBoard>{
+public class JiraBoard implements Comparable<JiraBoard>, Serializable{
+    @Id
+    @Column(name = "board_id")
     private String id;
+    @Column(name = "jira_url")
     private String self;
+    @Column(name = "board_name")
     private String name;
+    @Column(name = "board_type")
     private String type;
 
     public String getId() {

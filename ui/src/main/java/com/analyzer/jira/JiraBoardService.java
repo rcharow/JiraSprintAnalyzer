@@ -1,5 +1,6 @@
 package com.analyzer.jira;
 
+import com.analyzer.dao.JiraBoardDao;
 import com.analyzer.domain.JiraBoard;
 import com.analyzer.domain.JiraBoardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,33 +44,7 @@ public class JiraBoardService extends JiraService {
                 boards.addAll(boardResponse.getValues());
             }
 
-            Collections.sort(boards);
             return boards;
-        } catch (Exception e) {
-            throw new JiraException();
-        }
-    }
-
-    public List<JiraBoard> getAllBoardsByType(String type) {
-        List<JiraBoard> boards = getAllBoards();
-        List<JiraBoard> filteredBoards = boards.stream().filter(b -> b.getType().equals("scrum")).collect(Collectors.toList());
-
-        return filteredBoards;
-    }
-
-    public JiraBoard getBoard(String boardId) {
-        HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        try {
-            ResponseEntity<JiraBoard> response = restTemplate.exchange(jiraUrl + "/rest/agile/1.0/board/" + boardId,
-                    HttpMethod.GET,
-                    request,
-                    JiraBoard.class
-            );
-
-            return response.getBody();
         } catch (Exception e) {
             throw new JiraException();
         }

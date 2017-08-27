@@ -1,7 +1,7 @@
 package com.analyzer.web;
 
+import com.analyzer.dao.JiraBoardDao;
 import com.analyzer.domain.*;
-import com.analyzer.jira.JiraBoardService;
 import com.analyzer.jira.JiraIssueService;
 import com.analyzer.jira.JiraRapidViewService;
 import com.analyzer.jira.JiraSprintService;
@@ -23,7 +23,7 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class JiraController {
 
-    private final JiraBoardService jiraBoardService;
+    private final JiraBoardDao jiraBoardDao;
 
     private final JiraSprintService jiraSprintService;
 
@@ -32,8 +32,8 @@ public class JiraController {
     private final JiraRapidViewService jiraRapidViewService;
 
     @Autowired
-    public JiraController(JiraBoardService jiraBoardService, JiraSprintService jiraSprintService, JiraIssueService jiraIssueService, JiraRapidViewService jiraRapidViewService) {
-        this.jiraBoardService = jiraBoardService;
+    public JiraController(JiraBoardDao jiraBoardDao, JiraSprintService jiraSprintService, JiraIssueService jiraIssueService, JiraRapidViewService jiraRapidViewService) {
+        this.jiraBoardDao = jiraBoardDao;
         this.jiraSprintService = jiraSprintService;
         this.jiraIssueService = jiraIssueService;
         this.jiraRapidViewService = jiraRapidViewService;
@@ -42,17 +42,17 @@ public class JiraController {
     @GET
     @Path("/board")
     public List<JiraBoard> getBoards() {
-        return jiraBoardService.getAllBoards();
+        return jiraBoardDao.getAllBoards();
     }
 
     @GET
     @Path("/board/type/{type}")
-    public List<JiraBoard> getBoardsByType(@PathParam("type") String boardType) { return jiraBoardService.getAllBoardsByType(boardType); }
+    public List<JiraBoard> getBoardsByType(@PathParam("type") String boardType) { return jiraBoardDao.getBoardsByType(boardType); }
 
     @GET
     @Path("/board/{id}")
     public JiraBoard getBoard(@PathParam("id") String id) {
-        return jiraBoardService.getBoard(id);
+        return jiraBoardDao.getBoard(id);
     }
 
     @GET
