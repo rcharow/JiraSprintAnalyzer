@@ -30,4 +30,26 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="3" author="rcharow">
+        <createTable tableName="jira_issue">
+            <column name="issue_id" type="VARCHAR(100)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="board_id" type="VARCHAR(100)"></column>
+            <column name="sprint_id" type="VARCHAR(100)"></column>
+            <column name="is_subtask" type="BOOLEAN"></column>
+            <column name="jira_url" type="VARCHAR(255)"></column>
+            <column name="issue_key" type="VARCHAR(100)"></column>
+            <column name="details" type="INTEGER"></column>
+        </createTable>
+        <createTable tableName="jira_issue_details">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="points" type="DOUBLE"></column>
+            <column name="issue_type" type="VARCHAR(100)"></column>
+            <column name="time_logged_seconds" type="INTEGER"></column>
+            <column name="aggregate_time_logged_seconds" type="INTEGER"></column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

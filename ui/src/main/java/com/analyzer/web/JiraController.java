@@ -1,9 +1,9 @@
 package com.analyzer.web;
 
 import com.analyzer.dao.JiraBoardDao;
+import com.analyzer.dao.JiraIssueDao;
 import com.analyzer.dao.JiraSprintDao;
 import com.analyzer.domain.*;
-import com.analyzer.jira.JiraIssueService;
 import com.analyzer.jira.JiraRapidViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,18 +24,15 @@ import java.util.List;
 public class JiraController {
 
     private final JiraBoardDao jiraBoardDao;
-
     private final JiraSprintDao jiraSprintDao;
-
-    private final JiraIssueService jiraIssueService;
-
+    private final JiraIssueDao jiraIssueDao;
     private final JiraRapidViewService jiraRapidViewService;
 
     @Autowired
-    public JiraController(JiraBoardDao jiraBoardDao, JiraSprintDao jiraSprintDao, JiraIssueService jiraIssueService, JiraRapidViewService jiraRapidViewService) {
+    public JiraController(JiraBoardDao jiraBoardDao, JiraSprintDao jiraSprintDao, JiraIssueDao jiraIssueDao, JiraRapidViewService jiraRapidViewService) {
         this.jiraBoardDao = jiraBoardDao;
         this.jiraSprintDao = jiraSprintDao;
-        this.jiraIssueService = jiraIssueService;
+        this.jiraIssueDao = jiraIssueDao;
         this.jiraRapidViewService = jiraRapidViewService;
     }
 
@@ -67,29 +64,29 @@ public class JiraController {
         return jiraSprintDao.getSprints(boardId, sprintState);
     }
 
-    @GET
-    @Path("/board/{boardId}/sprint/{sprintId}/issues")
-    public List<JiraIssue> getSprintIssues(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
-        return jiraIssueService.getCompletedSprintIssues(boardId, sprintId);
-    }
+//    @GET
+//    @Path("/board/{boardId}/sprint/{sprintId}/issues")
+//    public List<JiraIssue> getSprintIssues(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
+//        return jiraIssueDao.getCompletedSprintIssues(boardId, sprintId);
+//    }
 
     @GET
-    @Path("board/{boardId}/sprint/{sprintId}/issues/parent")
-    public List<JiraIssue> getSprintParentIssues(@PathParam("boardId") String boardId, @PathParam("sprintId") String sprintId) {
-        return jiraIssueService.getCompletedSprintParentIssues(boardId, sprintId);
+    @Path("sprint/{sprintId}/issues/parent")
+    public List<JiraIssue> getSprintParentIssues(@PathParam("sprintId") String sprintId) {
+        return jiraIssueDao.getParentIssuesBySprint(sprintId);
     }
 
-    @GET
-    @Path("/board/{boardId}/issues")
-    public List<JiraSprintIssues> getBoardIssues(@PathParam("boardId") String boardId) {
-        return jiraIssueService.getBoardIssues(boardId, Boolean.FALSE);
-    }
+//    @GET
+//    @Path("/board/{boardId}/issues")
+//    public List<JiraSprintIssues> getBoardIssues(@PathParam("boardId") String boardId) {
+//        return jiraIssueDao.getIssuesByBoard(boardId);
+//    }
 
-    @GET
-    @Path("/board/{boardId}/issues/parent")
-    public List<JiraSprintIssues> getBoardParentIssues(@PathParam("boardId") String boardId) {
-        return jiraIssueService.getBoardParentIssues(boardId);
-    }
+//    @GET
+//    @Path("/board/{boardId}/issues/parent")
+//    public List<JiraSprintIssues> getBoardParentIssues(@PathParam("boardId") String boardId) {
+//        return jiraIssueDao.getBoardParentIssues(boardId);
+//    }
 
     @GET
     @Path("/rapid/{boardId}/{sprintId}")

@@ -7,8 +7,10 @@ import java.util.List;
  */
 public class JiraSprintIssues {
     public JiraSprint sprint;
-    public List<JiraIssue> getParentIssues() {
-        return parentIssues;
+    private List<JiraIssue> jiraIssues;
+
+    public List<JiraIssue> getJiraIssues() {
+        return jiraIssues;
     }
 
     public JiraSprint getSprint() {
@@ -19,9 +21,7 @@ public class JiraSprintIssues {
         this.sprint = sprint;
     }
 
-    public void setParentIssues(List<JiraIssue> parentIssues) {
-        this.parentIssues = parentIssues;
+    public void setJiraIssues(List<JiraIssue> jiraIssues) {
+        this.jiraIssues = jiraIssues;
     }
-
-    private List<JiraIssue> parentIssues;
 }

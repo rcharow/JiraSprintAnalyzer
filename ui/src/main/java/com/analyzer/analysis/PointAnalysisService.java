@@ -1,8 +1,8 @@
 package com.analyzer.analysis;
 
+import com.analyzer.dao.JiraIssueDao;
 import com.analyzer.dao.JiraSprintDao;
 import com.analyzer.domain.*;
-import com.analyzer.jira.JiraIssueService;
 import com.analyzer.jira.JiraRapidViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Component
 public class PointAnalysisService {
-    private JiraIssueService jiraIssueService;
+    private JiraIssueDao jiraIssueDao;
     private JiraSprintDao jiraSprintDao;
     private JiraRapidViewService jiraRapidViewService;
     private Integer clientCostPerHour;
@@ -25,13 +25,13 @@ public class PointAnalysisService {
 
     @Autowired
     public PointAnalysisService(
-            JiraIssueService jiraIssueService,
-            JiraSprintDao jiraSprintService,
-            JiraRapidViewService jiraRapidViewService,
-            @Value("${domain.hourlyCost.client}") String clientCost,
-            @Value("${domain.hourlyCost.internal}") String internalCost
+        JiraIssueDao jiraIssueDao,
+        JiraSprintDao jiraSprintService,
+        JiraRapidViewService jiraRapidViewService,
+        @Value("${domain.hourlyCost.client}") String clientCost,
+        @Value("${domain.hourlyCost.internal}") String internalCost
     ) {
-        this.jiraIssueService = jiraIssueService;
+        this.jiraIssueDao = jiraIssueDao;
         this.jiraSprintDao = jiraSprintService;
         this.jiraRapidViewService = jiraRapidViewService;
         this.clientCostPerHour = Integer.parseInt(clientCost);
@@ -39,20 +39,26 @@ public class PointAnalysisService {
     }
 
     public List<JiraSprintPointAnalysis> getBoardPointAnalysis(String boardId) {
-        List<JiraSprintIssues> sprintIssues = jiraIssueService.getBoardParentIssues(boardId);
+        List<JiraSprint> sprints = jiraSprintDao.getSprints(boardId);
+        List<JiraSprintIssues> sprintIssueList = new ArrayList<>();
+        for(JiraSprint sprint : sprints) {
+            List<JiraIssue> issues = jiraIssueDao.getParentIssuesBySprint(sprint.getId());
+            JiraSprintIssues sprintIssues = new JiraSprintIssues();
+            sprintIssues.setSprint(sprint);
+            sprintIssues.setJiraIssues(issues);
+            sprintIssueList.add(sprintIssues);
+        }
 
-        List<JiraSprintPointAnalysis> pointAnalyses = getPointAnalysis(sprintIssues, boardId);
-
-
+        List<JiraSprintPointAnalysis> pointAnalyses = getPointAnalysis(sprintIssueList, boardId);
         return pointAnalyses;
     }
 
     public JiraSprintPointAnalysis getSprintPointAnalysis(String boardId, String sprintId) {
-        List<JiraIssue> issues = jiraIssueService.getCompletedSprintParentIssues(boardId, sprintId);
+        List<JiraIssue> issues = jiraIssueDao.getParentIssuesBySprint(sprintId);
         JiraSprint fullSprint = jiraSprintDao.getSprint(sprintId);
 
         JiraSprintIssues sprintIssues = new JiraSprintIssues();
-        sprintIssues.setParentIssues(issues);
+        sprintIssues.setJiraIssues(issues);
         sprintIssues.setSprint(fullSprint);
 
         List<JiraSprintIssues> sprintIssueList = new ArrayList<JiraSprintIssues>();
@@ -68,7 +74,6 @@ public class PointAnalysisService {
 
         for (JiraSprintIssues sprint : sprintIssues) {
             JiraSprintPointAnalysis analysis = new JiraSprintPointAnalysis();
-//            JiraSprintRapidView rapidView = jiraRapidViewService.getSprintRapidView(boardId, sprint.getSprint().getId());
 
             analysis.setSprintId(sprint.getSprint().getId());
             analysis.setSprintName(sprint.getSprint().getName());
@@ -81,7 +86,7 @@ public class PointAnalysisService {
                 float totalTime = 0F;
                 float totalDollars = 0F;
 
-                for (JiraIssue issue : sprint.getParentIssues()) {
+                for (JiraIssue issue : sprint.getJiraIssues()) {
                     if (issue.getDetails().getPoints() != null && issue.getDetails().getPoints().equals(pointValue)) {
                         count += 1;
                         if (issue.getDetails().getTimeSpent() != null) {
@@ -114,7 +119,7 @@ public class PointAnalysisService {
         Double totalTime = 0D;
         Double totalPoints = 0D;
 
-        for (JiraIssue issue : sprintIssues.getParentIssues()) {
+        for (JiraIssue issue : sprintIssues.getJiraIssues()) {
             if (issue.getDetails().getTimeSpent() != null) {
                 totalTime += issue.getDetails().getTimeSpent();
             }
@@ -131,9 +136,8 @@ public class PointAnalysisService {
         average.setTotalDollars(totalHours * clientCostPerHour);
         average.setTotalCompletedPoints(totalPoints);
 
-
-        if (sprintIssues.getParentIssues().size() > 0) {
-            average.setTotalCompletedIssues(sprintIssues.getParentIssues().size());
+        if (sprintIssues.getJiraIssues().size() > 0) {
+            average.setTotalCompletedIssues(sprintIssues.getJiraIssues().size());
             average.setAverageHoursPerPoint(totalPoints > 0.0 ? totalHours / totalPoints : totalHours);
             average.setAverageDollarsPerPoint(totalPoints > 0.0 ? average.getAverageHoursPerPoint() * internalCostPerHour : totalHours * internalCostPerHour);
         } else {

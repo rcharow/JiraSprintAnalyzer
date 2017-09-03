@@ -48,22 +48,22 @@ export class JiraService {
       });
   }
 
-  getSingleSprintSummary(boardId: string, sprintId: string): Observable<JiraSprintSummary> {
-    return this.http.get('/api/analysis/summary/' + boardId + '/' + sprintId)
+  getSingleSprintSummary(sprintId: string): Observable<JiraSprintSummary> {
+    return this.http.get('/api/analysis/summary/' + sprintId)
       .map(res => res.json())
       .catch(error => {
         return this.setErrorMessage(error,'Single Sprint Summary Error');
       });
   }
 
-  setCurrentSummary(boardId: string, sprintIds: string[]) {
+  setCurrentSummary(sprintIds: string[]) {
     sprintIds = typeof sprintIds === 'string' ? [sprintIds] : sprintIds;
     this._currentSummary.next(null);
     this._currentSummaryLoading.next(true);
 
     let requests: Observable<JiraSprintSummary>[] = [];
     each(sprintIds, (sprintId) => {
-      requests.push(this.http.get('/api/analysis/summary/worklogs/' + boardId + '/' + sprintId).map(res => res.json()));
+      requests.push(this.http.get('/api/analysis/summary/worklogs/' + sprintId).map(res => res.json()));
     });
 
     Observable.forkJoin(requests).subscribe((results: JiraSprintSummary[]) => {

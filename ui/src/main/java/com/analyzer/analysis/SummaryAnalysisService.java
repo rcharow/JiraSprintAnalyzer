@@ -1,5 +1,6 @@
 package com.analyzer.analysis;
 
+import com.analyzer.dao.JiraIssueDao;
 import com.analyzer.dao.JiraSprintDao;
 import com.analyzer.domain.*;
 import com.analyzer.jira.JiraIssueService;
@@ -14,31 +15,34 @@ import java.util.*;
  */
 @Component
 public class SummaryAnalysisService {
-    private final JiraSprintDao jiraSprintService;
+    private final JiraSprintDao jiraSprintDao;
+    private final JiraIssueDao jiraIssueDao;
     private final JiraIssueService jiraIssueService;
     private Integer clientCostPerHour;
     private Integer internalCostPerHour;
 
     @Autowired
     public SummaryAnalysisService(
-            JiraSprintDao jiraSprintDao,
-            JiraIssueService jiraIssueService,
-            @Value("${domain.hourlyCost.client}") String clientCost,
-            @Value("${domain.hourlyCost.internal}") String internalCost){
-        this.jiraSprintService = jiraSprintDao;
+        JiraSprintDao jiraSprintDao,
+        JiraIssueDao jiraIssueDao,
+        JiraIssueService jiraIssueService,
+        @Value("${domain.hourlyCost.client}") String clientCost,
+        @Value("${domain.hourlyCost.internal}") String internalCost){
+        this.jiraSprintDao = jiraSprintDao;
+        this.jiraIssueDao = jiraIssueDao;
         this.jiraIssueService = jiraIssueService;
         this.clientCostPerHour = Integer.parseInt(clientCost);
         this.internalCostPerHour = Integer.parseInt(internalCost);
     }
 
-    public JiraSprintSummary getSprintSummary(String boardId, String sprintId, boolean includeWorklogs) {
+    public JiraSprintSummary getSprintSummary(String sprintId, boolean includeWorklogs) {
 
         JiraSprintSummary summary;
         JiraSprint sprint;
 
-        sprint = jiraSprintService.getSprint(sprintId);
+        sprint = jiraSprintDao.getSprint(sprintId);
 
-        List<JiraIssue> issues = jiraIssueService.getCompletedSprintParentIssues(boardId, sprintId);
+        List<JiraIssue> issues = jiraIssueDao.getParentIssuesBySprint(sprintId);
         summary = calculateStats(issues);
         summary.setId(sprintId);
         summary.setName(sprint.getName());
