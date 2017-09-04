@@ -30,14 +30,14 @@ public class JiraIssueDao {
   }
 
   public List<JiraIssue> getParentIssuesBySprint(String sprintId) {
-    String query = "FROM JiraIssue WHERE sprintId = :sprintId AND isSubtask = TRUE";
+    String query = "FROM JiraIssue WHERE sprintId = :sprintId AND isSubtask = FALSE";
     return em.createQuery(query, JiraIssue.class)
         .setParameter("sprintId", sprintId)
         .getResultList();
   }
 
   public List<JiraIssue> getIssuesByBoard(String boardId) {
-    String query = "FROM JiraIssue WHERE boardId = :boardId AND isSubtask = TRUE";
+    String query = "FROM JiraIssue WHERE boardId = :boardId AND isSubtask = FALSE";
     return em.createQuery(query, JiraIssue.class)
         .setParameter("boardId", boardId)
         .getResultList();
