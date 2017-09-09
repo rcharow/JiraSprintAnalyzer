@@ -33,6 +33,8 @@ public class JiraSprint implements Comparable<JiraSprint> {
     private String originBoardId;
     @Column(name = "issues_synced")
     private Boolean issuesSynced = false;
+    @Column(name = "worklogs_synced")
+    private Boolean worklogsSynced = false;
 
     public enum sprintStates {
         FUTURE, ACTIVE, CLOSED
@@ -100,6 +102,22 @@ public class JiraSprint implements Comparable<JiraSprint> {
 
     public void setOriginBoardId(String originBoardId) {
         this.originBoardId = originBoardId;
+    }
+
+    public Boolean getIssuesSynced() {
+        return issuesSynced;
+    }
+
+    public void setIssuesSynced(Boolean issuesSynced) {
+        this.issuesSynced = issuesSynced;
+    }
+
+    public Boolean getWorklogsSynced() {
+        return worklogsSynced;
+    }
+
+    public void setWorklogsSynced(Boolean worklogsSynced) {
+        this.worklogsSynced = worklogsSynced;
     }
 
     public int compareTo(JiraSprint sprint) {

@@ -29,7 +29,11 @@ public class JiraSprintDao {
         this.boardDao = boardDao;
     }
 
-    public List<JiraSprint> getSprints(String boardId) {
+    public List<JiraSprint> getAllSprints() {
+        return em.createQuery("FROM JiraSprint as sprint", JiraSprint.class).getResultList();
+    }
+
+    public List<JiraSprint> getSprintsByBoardId(String boardId) {
         String query = "FROM JiraSprint as sprint WHERE originBoardId = :boardId";
         List<JiraSprint> sprints = em.createQuery(query, JiraSprint.class)
                 .setParameter("boardId", boardId)
@@ -38,7 +42,7 @@ public class JiraSprintDao {
         return sprints;
     }
 
-    public List<JiraSprint> getSprints(String boardId, String sprintState) {
+    public List<JiraSprint> getSprintsByBoardId(String boardId, String sprintState) {
         String query = "FROM JiraSprint as sprint WHERE sprint.originBoardId = :boardId AND sprint.state = :sprintState";
         List<JiraSprint> sprints = em.createQuery(query, JiraSprint.class)
                 .setParameter("boardId", boardId)

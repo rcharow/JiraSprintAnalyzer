@@ -28,10 +28,10 @@ public class JiraUpdate {
         this.issueDao = issueDao;
     }
 
-    @PostConstruct
-    public void onStartup() {
-        update();
-    }
+//    @PostConstruct
+//    public void onStartup() {
+//        update();
+//    }
 
     @Scheduled(cron = "0 0 0 * * SUN")
 //    @Scheduled(fixedRate = 30000)

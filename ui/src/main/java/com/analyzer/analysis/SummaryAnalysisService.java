@@ -62,7 +62,7 @@ public class SummaryAnalysisService {
         HashMap worklogMap = new HashMap<String,Double>();
         for (JiraIssue issue : issues) {
 
-            List<JiraWorklog> worklogs = jiraIssueService.getIssueWorklog(issue.getId());
+            List<JiraWorklog> worklogs = jiraIssueService.getIssueWorklogs(issue.getId());
 
             if(worklogs != null){
                 for(JiraWorklog item : worklogs){

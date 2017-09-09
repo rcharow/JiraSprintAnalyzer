@@ -37,10 +37,10 @@ public class JiraIssueService extends JiraService {
     this.jiraRapidViewService = jiraRapidViewService;
   }
 
-//  public List<JiraIssue> getCompletedSprintIssues(String boardId, String sprintId) {
-//    List<JiraIssue> issues = getIssues(IssueSourceType.SPRINT, sprintId);
-//    return filterIssuesCompletedInSprint(boardId, sprintId, issues);
-//  }
+  public List<JiraIssue> getCompletedSprintIssues(String boardId, String sprintId) {
+    List<JiraIssue> issues = getIssues(IssueSourceType.SPRINT, sprintId);
+    return filterIssuesCompletedInSprint(boardId, sprintId, issues);
+  }
 //
 //  public List<JiraIssue> getCompletedSprintParentIssues(String boardId, String sprintId) {
 //    List<JiraIssue> issues = this.getCompletedSprintIssues(boardId, sprintId);
@@ -54,7 +54,7 @@ public class JiraIssueService extends JiraService {
     if (parentIssuesOnly) {
       issues = getParentIssues(issues);
     }
-    List<JiraSprint> sprints = jiraSprintDao.getSprints(boardId, "closed");
+    List<JiraSprint> sprints = jiraSprintDao.getSprintsByBoardId(boardId, "closed");
     List<JiraSprintIssues> sprintIssues = new ArrayList<>();
     for (JiraSprint sprint : sprints) {
       JiraSprintIssues singleSprintIssues = new JiraSprintIssues();
@@ -72,7 +72,7 @@ public class JiraIssueService extends JiraService {
 //    return issues;
 //  }
 
-  public List<JiraWorklog> getIssueWorklog(String issueId) {
+  public List<JiraWorklog> getIssueWorklogs(String issueId) {
     String requestUrl = "/rest/api/2/issue/" + issueId + "/worklog";
 
     HttpEntity<String> request = new HttpEntity<String>(this.jiraAuthHeaders);

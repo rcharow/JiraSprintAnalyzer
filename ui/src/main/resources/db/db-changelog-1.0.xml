@@ -28,6 +28,9 @@
             <column name="issues_synced" type="BOOLEAN" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
+            <column name="worklogs_synced" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     <changeSet id="3" author="rcharow">
@@ -50,6 +53,19 @@
             <column name="issue_type" type="VARCHAR(100)"></column>
             <column name="time_logged_seconds" type="INTEGER"></column>
             <column name="aggregate_time_logged_seconds" type="INTEGER"></column>
+        </createTable>
+        <createTable tableName="jira_worklog">
+            <column name="worklog_id" type="VARCHAR(100)">
+                <constraints primaryKey="true" nullable="false"></constraints>
+            </column>
+            <column name="issue_id" type="VARCHAR(100)"></column>
+            <column name="jira_url" type="VARCHAR(255)"></column>
+            <column name="author" type="VARCHAR(100)"></column>
+            <column name="comment" type="VARCHAR(255)"></column>
+            <column name="update_time" type="DATETIME"></column>
+            <column name="time_logged_seconds" type="INTEGER"></column>
+            <column name="sprint_id" type="VARCHAR(100)"></column>
+            <column name="board_id" type="VARCHAR(100)"></column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -1,8 +1,7 @@
 package com.analyzer.dao;
 
-import com.analyzer.domain.JiraBoard;
 import com.analyzer.domain.JiraIssue;
-import com.analyzer.domain.JiraSprintIssues;
+import com.analyzer.domain.JiraSprint;
 import com.analyzer.jira.JiraIssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,7 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Date;
+
+
 
 /**
  * Created by rcharow on 8/27/17.
@@ -21,12 +25,12 @@ public class JiraIssueDao {
   @PersistenceContext
   private EntityManager em;
   private JiraIssueService jiraIssueService;
-  private JiraBoardDao boardDao;
+  private JiraSprintDao sprintDao;
 
   @Autowired
-  public JiraIssueDao(JiraIssueService jiraIssueService, JiraBoardDao boardDao) {
+  public JiraIssueDao(JiraIssueService jiraIssueService, JiraSprintDao sprintDao) {
     this.jiraIssueService = jiraIssueService;
-    this.boardDao = boardDao;
+    this.sprintDao = sprintDao;
   }
 
   public List<JiraIssue> getParentIssuesBySprint(String sprintId) {
@@ -44,18 +48,21 @@ public class JiraIssueDao {
   }
 
   public void updateJiraIssues() {
-    List<JiraBoard> boards = boardDao.getAllBoards();
-    for (JiraBoard board : boards) {
-      List<JiraSprintIssues> sprints = jiraIssueService.getBoardIssues(board.getId(), Boolean.FALSE);
-      for (JiraSprintIssues sprintIssues : sprints) {
-        for (JiraIssue issue : sprintIssues.getJiraIssues()) {
-          issue.setBoardId(board.getId());
-          issue.setSprintId(sprintIssues.getSprint().getId());
-          issue.setIsSubtask(issue.getDetails().getIssueType().isSubtask());
-          JiraIssue existingIssue = em.find(JiraIssue.class, issue.getId());
-          if (existingIssue == null) {
-            em.persist(issue);
-          }
+    Date today = new Date();
+    LocalDate localToday = new java.sql.Date(today.getTime()).toLocalDate();
+    List<JiraSprint> sprints = sprintDao.getAllSprints();
+    for (JiraSprint sprint : sprints) {
+      if(!sprint.getIssuesSynced()) {
+        List<JiraIssue> sprintIssues = jiraIssueService.getCompletedSprintIssues(sprint.getOriginBoardId(), sprint.getId());
+        for (JiraIssue issue : sprintIssues) {
+          em.merge(issue);
+        }
+        Date completeDate = sprint.getCompleteDate();
+        LocalDate localComplete = new java.sql.Date(completeDate.getTime()).toLocalDate();
+        if(ChronoUnit.DAYS.between(localComplete, localToday) > 14) {
+          em.getTransaction().begin();
+          sprint.setIssuesSynced(true);
+          em.getTransaction().commit();
         }
       }
     }
