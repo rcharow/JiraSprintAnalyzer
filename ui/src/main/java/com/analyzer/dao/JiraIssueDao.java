@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Date;
 
 
-
 /**
  * Created by rcharow on 8/27/17.
  */
@@ -47,23 +46,38 @@ public class JiraIssueDao {
         .getResultList();
   }
 
+  @Transactional
   public void updateJiraIssues() {
     Date today = new Date();
     LocalDate localToday = new java.sql.Date(today.getTime()).toLocalDate();
-    List<JiraSprint> sprints = sprintDao.getAllSprints();
+    List<JiraSprint> sprints = sprintDao.getClosedSprintsWithUnsyncedIssues();
     for (JiraSprint sprint : sprints) {
-      if(!sprint.getIssuesSynced()) {
-        List<JiraIssue> sprintIssues = jiraIssueService.getCompletedSprintIssues(sprint.getOriginBoardId(), sprint.getId());
-        for (JiraIssue issue : sprintIssues) {
-          em.merge(issue);
+      //TODO: Is using the 'current board' correct? Seems like the origin board might not exist. Will this cause dupes?
+      List<JiraIssue> sprintIssues = jiraIssueService.getCompletedSprintIssues(sprint.getCurrentBoardId(), sprint.getId());
+      for (JiraIssue issue : sprintIssues) {
+        em.merge(issue);
+      }
+
+      //Remove cached issues that don't exist in jira anymore
+      List<JiraIssue> cachedIssues = getParentIssuesBySprint(sprint.getId());
+      for(JiraIssue cached : cachedIssues) {
+        Boolean exists = false;
+        for(JiraIssue issue : sprintIssues) {
+          if(cached.equals(issue)) {
+            exists = true;
+          }
         }
-        Date completeDate = sprint.getCompleteDate();
-        LocalDate localComplete = new java.sql.Date(completeDate.getTime()).toLocalDate();
-        if(ChronoUnit.DAYS.between(localComplete, localToday) > 14) {
-          em.getTransaction().begin();
-          sprint.setIssuesSynced(true);
-          em.getTransaction().commit();
+        if(!exists) {
+          em.remove(cached);
         }
+      }
+
+      Date completeDate = sprint.getCompleteDate();
+      LocalDate localComplete = new java.sql.Date(completeDate.getTime()).toLocalDate();
+      if (ChronoUnit.DAYS.between(localComplete, localToday) > 14) {
+//        em.getTransaction().begin();
+        sprint.setIssuesSynced(true);
+//        em.getTransaction().commit();
       }
     }
   }

@@ -33,6 +33,14 @@ public class JiraSprintDao {
         return em.createQuery("FROM JiraSprint as sprint", JiraSprint.class).getResultList();
     }
 
+    public List<JiraSprint> getClosedSprintsWithUnsyncedIssues() {
+        return em.createQuery("FROM JiraSprint as sprint WHERE issuesSynced = false AND state = 'closed'", JiraSprint.class).getResultList();
+    }
+
+    public List<JiraSprint> getClosedSprintsWithUnsyncedWorklogs() {
+        return em.createQuery("FROM JiraSprint as sprint WHERE worklogsSynced = false AND state = 'closed'", JiraSprint.class).getResultList();
+    }
+
     public List<JiraSprint> getSprintsByBoardId(String boardId) {
         String query = "FROM JiraSprint as sprint WHERE originBoardId = :boardId";
         List<JiraSprint> sprints = em.createQuery(query, JiraSprint.class)
@@ -65,6 +73,7 @@ public class JiraSprintDao {
                 for (JiraSprint sprint : sprints) {
                     JiraSprint existingSprint = em.find(JiraSprint.class, sprint.getId());
                     if (existingSprint == null) {
+                        sprint.setCurrentBoardId(board.getId());
                         em.persist(sprint);
                     }
                 }

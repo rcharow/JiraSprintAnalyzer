@@ -88,6 +88,7 @@ public class JiraIssueService extends JiraService {
 
       return response.getBody().getWorklogs();
     } catch (Exception e) {
+      log.error("------------------- " + e.getMessage());
       throw new JiraException();
     }
   }
@@ -145,6 +146,7 @@ public class JiraIssueService extends JiraService {
 
       return response.getBody();
     } catch (Exception e) {
+      log.error("------------------- " + e.getMessage());
       throw new JiraException();
     }
 //        ResponseEntity<String> response = restTemplate.exchange(jiraUrl + requestUrl,

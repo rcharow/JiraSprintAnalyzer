@@ -1,10 +1,11 @@
 package com.analyzer.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -20,6 +21,9 @@ public class JiraWorklog {
     private String id;
     @Column(name = "jira_url")
     private String self;
+    @OneToOne()
+    @Cascade(CascadeType.ALL)
+    @JoinColumn(name = "author")
     private JiraWorklogAuthor author;
     private String comment;
     @Column(name = "update_time")
@@ -103,5 +107,20 @@ public class JiraWorklog {
 
     public void setBoardId(String boardId) {
         this.boardId = boardId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JiraWorklog that = (JiraWorklog) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

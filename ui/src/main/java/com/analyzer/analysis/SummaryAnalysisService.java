@@ -2,8 +2,8 @@ package com.analyzer.analysis;
 
 import com.analyzer.dao.JiraIssueDao;
 import com.analyzer.dao.JiraSprintDao;
+import com.analyzer.dao.JiraWorklogDao;
 import com.analyzer.domain.*;
-import com.analyzer.jira.JiraIssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.*;
 public class SummaryAnalysisService {
     private final JiraSprintDao jiraSprintDao;
     private final JiraIssueDao jiraIssueDao;
-    private final JiraIssueService jiraIssueService;
+    private final JiraWorklogDao jiraWorklogDao;
     private Integer clientCostPerHour;
     private Integer internalCostPerHour;
 
@@ -25,12 +25,12 @@ public class SummaryAnalysisService {
     public SummaryAnalysisService(
         JiraSprintDao jiraSprintDao,
         JiraIssueDao jiraIssueDao,
-        JiraIssueService jiraIssueService,
+        JiraWorklogDao jiraWorklogDao,
         @Value("${domain.hourlyCost.client}") String clientCost,
         @Value("${domain.hourlyCost.internal}") String internalCost){
         this.jiraSprintDao = jiraSprintDao;
         this.jiraIssueDao = jiraIssueDao;
-        this.jiraIssueService = jiraIssueService;
+        this.jiraWorklogDao = jiraWorklogDao;
         this.clientCostPerHour = Integer.parseInt(clientCost);
         this.internalCostPerHour = Integer.parseInt(internalCost);
     }
@@ -62,7 +62,7 @@ public class SummaryAnalysisService {
         HashMap worklogMap = new HashMap<String,Double>();
         for (JiraIssue issue : issues) {
 
-            List<JiraWorklog> worklogs = jiraIssueService.getIssueWorklogs(issue.getId());
+            List<JiraWorklog> worklogs = jiraWorklogDao.getWorklogsByIssue(issue.getId());
 
             if(worklogs != null){
                 for(JiraWorklog item : worklogs){

@@ -31,6 +31,8 @@ public class JiraSprint implements Comparable<JiraSprint> {
     private Date completeDate;
     @Column(name = "origin_board")
     private String originBoardId;
+    @Column(name = "current_board")
+    private String currentBoardId;
     @Column(name = "issues_synced")
     private Boolean issuesSynced = false;
     @Column(name = "worklogs_synced")
@@ -104,6 +106,14 @@ public class JiraSprint implements Comparable<JiraSprint> {
         this.originBoardId = originBoardId;
     }
 
+    public String getCurrentBoardId() {
+        return currentBoardId;
+    }
+
+    public void setCurrentBoardId(String currentBoardId) {
+        this.currentBoardId = currentBoardId;
+    }
+
     public Boolean getIssuesSynced() {
         return issuesSynced;
     }
@@ -125,4 +135,18 @@ public class JiraSprint implements Comparable<JiraSprint> {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JiraSprint that = (JiraSprint) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

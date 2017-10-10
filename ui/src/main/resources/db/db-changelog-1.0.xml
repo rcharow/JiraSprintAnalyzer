@@ -25,6 +25,7 @@
             <column name="end_date" type="DATE"/>
             <column name="complete_date" type="DATE"/>
             <column name="origin_board" type="VARCHAR(100)"/>
+            <column name="current_board" type="VARCHAR(100)"/>
             <column name="issues_synced" type="BOOLEAN" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
@@ -60,12 +61,21 @@
             </column>
             <column name="issue_id" type="VARCHAR(100)"></column>
             <column name="jira_url" type="VARCHAR(255)"></column>
-            <column name="author" type="VARCHAR(100)"></column>
+            <column name="author" type="INTEGER"></column>
             <column name="comment" type="VARCHAR(255)"></column>
             <column name="update_time" type="DATETIME"></column>
             <column name="time_logged_seconds" type="INTEGER"></column>
             <column name="sprint_id" type="VARCHAR(100)"></column>
             <column name="board_id" type="VARCHAR(100)"></column>
+        </createTable>
+        <createTable tableName="jira_worklog_author">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="jira_url" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(150)"/>
+            <column name="display_name" type="VARCHAR(150)"/>
+            <column name="active" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
