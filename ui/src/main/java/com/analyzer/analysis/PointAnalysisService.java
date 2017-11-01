@@ -39,7 +39,7 @@ public class PointAnalysisService {
     }
 
     public List<JiraSprintPointAnalysis> getBoardPointAnalysis(String boardId) {
-        List<JiraSprint> sprints = jiraSprintDao.getSprintsByBoardId(boardId);
+        List<JiraSprint> sprints = jiraSprintDao.getClosedSprintsByBoardId(boardId);
         List<JiraSprintIssues> sprintIssueList = new ArrayList<>();
         for(JiraSprint sprint : sprints) {
             List<JiraIssue> issues = jiraIssueDao.getParentIssuesBySprint(sprint.getId());

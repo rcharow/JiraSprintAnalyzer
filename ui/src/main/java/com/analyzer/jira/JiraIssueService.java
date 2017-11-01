@@ -54,7 +54,7 @@ public class JiraIssueService extends JiraService {
     if (parentIssuesOnly) {
       issues = getParentIssues(issues);
     }
-    List<JiraSprint> sprints = jiraSprintDao.getSprintsByBoardId(boardId, "closed");
+    List<JiraSprint> sprints = jiraSprintDao.getClosedSprintsByBoardId(boardId, "closed");
     List<JiraSprintIssues> sprintIssues = new ArrayList<>();
     for (JiraSprint sprint : sprints) {
       JiraSprintIssues singleSprintIssues = new JiraSprintIssues();

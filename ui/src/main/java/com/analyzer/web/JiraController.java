@@ -55,13 +55,13 @@ public class JiraController {
     @GET
     @Path("/board/{boardId}/sprints/")
     public List<JiraSprint> getSprints(@PathParam("boardId") String boardId) {
-        return jiraSprintDao.getSprintsByBoardId(boardId);
+        return jiraSprintDao.getClosedSprintsByBoardId(boardId);
     }
 
     @GET
     @Path("/board/{boardId}/sprints/{sprintState}")
     public List<JiraSprint> getSprints(@PathParam("boardId") String boardId, @PathParam("sprintState") String sprintState) {
-        return jiraSprintDao.getSprintsByBoardId(boardId, sprintState);
+        return jiraSprintDao.getClosedSprintsByBoardId(boardId, sprintState);
     }
 
 //    @GET

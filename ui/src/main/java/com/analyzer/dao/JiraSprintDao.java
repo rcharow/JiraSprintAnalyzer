@@ -41,8 +41,8 @@ public class JiraSprintDao {
         return em.createQuery("FROM JiraSprint as sprint WHERE worklogsSynced = false AND state = 'closed'", JiraSprint.class).getResultList();
     }
 
-    public List<JiraSprint> getSprintsByBoardId(String boardId) {
-        String query = "FROM JiraSprint as sprint WHERE originBoardId = :boardId";
+    public List<JiraSprint> getClosedSprintsByBoardId(String boardId) {
+        String query = "FROM JiraSprint as sprint WHERE originBoardId = :boardId AND state = 'closed'";
         List<JiraSprint> sprints = em.createQuery(query, JiraSprint.class)
                 .setParameter("boardId", boardId)
                 .getResultList();
@@ -50,7 +50,7 @@ public class JiraSprintDao {
         return sprints;
     }
 
-    public List<JiraSprint> getSprintsByBoardId(String boardId, String sprintState) {
+    public List<JiraSprint> getClosedSprintsByBoardId(String boardId, String sprintState) {
         String query = "FROM JiraSprint as sprint WHERE sprint.originBoardId = :boardId AND sprint.state = :sprintState";
         List<JiraSprint> sprints = em.createQuery(query, JiraSprint.class)
                 .setParameter("boardId", boardId)
