@@ -100,4 +100,19 @@ public class JiraIssue {
                 ", key='" + key + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JiraIssue jiraIssue = (JiraIssue) o;
+
+        return id.equals(jiraIssue.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
