@@ -3,6 +3,7 @@ package com.analyzer.dao;
 import com.analyzer.domain.JiraBoard;
 import com.analyzer.domain.JiraSprint;
 import com.analyzer.jira.JiraSprintService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,11 +71,14 @@ public class JiraSprintDao {
         for (JiraBoard board : boards) {
             List<JiraSprint> sprints = jiraSprintService.getSprints(board.getId());
             if (sprints.size() > 0) {
-                for (JiraSprint sprint : sprints) {
-                    JiraSprint existingSprint = em.find(JiraSprint.class, sprint.getId());
+                for (JiraSprint updatedSprint : sprints) {
+                    JiraSprint existingSprint = em.find(JiraSprint.class, updatedSprint.getId());
+
+                    updatedSprint.setCurrentBoardId(board.getId());
                     if (existingSprint == null) {
-                        sprint.setCurrentBoardId(board.getId());
-                        em.persist(sprint);
+                        em.persist(updatedSprint);
+                    } else {
+                        BeanUtils.copyProperties(updatedSprint, existingSprint, "id", "issuesSynced", "worklogsSynced");
                     }
                 }
             }
