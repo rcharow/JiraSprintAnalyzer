@@ -51,45 +51,42 @@ public class JiraIssueDao {
   }
 
   @Transactional
-  public void updateJiraIssues() {
+  public void updateJiraSprintIssues(JiraSprint sprint) {
 
-    List<JiraSprint> sprints = sprintDao.getClosedSprintsWithUnsyncedIssues();
-    for (JiraSprint sprint : sprints) {
-      //TODO: Is using the 'current board' correct? Seems like the origin board might not exist. Will this cause dupes?
-      List<JiraIssue> sprintIssues = jiraIssueService.getCompletedSprintIssues(sprint.getCurrentBoardId(), sprint.getId());
-      for (JiraIssue updatedIssue : sprintIssues) {
-        updatedIssue.setBoardId(sprint.getCurrentBoardId());
-        updatedIssue.setSprintId(sprint.getId());
-        JiraIssue currentIssue = em.find(JiraIssue.class, updatedIssue.getId());
-        if(currentIssue != null) {
-          currentIssue.setDetails(updatedIssue.getDetails());
-        } else {
-          em.persist(updatedIssue);
+    //TODO: Is using the 'current board' correct? Seems like the origin board might not exist. Will this cause dupes?
+    List<JiraIssue> sprintIssues = jiraIssueService.getCompletedSprintIssues(sprint.getCurrentBoardId(), sprint.getId());
+    for (JiraIssue updatedIssue : sprintIssues) {
+      updatedIssue.setBoardId(sprint.getCurrentBoardId());
+      updatedIssue.setSprintId(sprint.getId());
+      JiraIssue currentIssue = em.find(JiraIssue.class, updatedIssue.getId());
+      if (currentIssue != null) {
+        currentIssue.setDetails(updatedIssue.getDetails());
+      } else {
+        em.persist(updatedIssue);
+      }
+    }
+
+    //Remove cached issues that don't exist in jira anymore
+    List<JiraIssue> cachedIssues = getParentIssuesBySprint(sprint.getId());
+    for (JiraIssue cached : cachedIssues) {
+      Boolean exists = false;
+      for (JiraIssue issue : sprintIssues) {
+        if (cached.equals(issue)) {
+          exists = true;
         }
       }
-
-      //Remove cached issues that don't exist in jira anymore
-      List<JiraIssue> cachedIssues = getParentIssuesBySprint(sprint.getId());
-      for(JiraIssue cached : cachedIssues) {
-        Boolean exists = false;
-        for(JiraIssue issue : sprintIssues) {
-          if(cached.equals(issue)) {
-            exists = true;
-          }
-        }
-        if(!exists) {
-          em.remove(cached);
-        }
+      if (!exists) {
+        em.remove(cached);
       }
+    }
 
-      Date completeDate = sprint.getCompleteDate();
-      //TODO: Is this right? what about the timezone?
-      Date today = new Date();
-      LocalDate localToday = today.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-      LocalDate localComplete = completeDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-      if (ChronoUnit.WEEKS.between(localComplete, localToday) > 2) {
-        sprint.setIssuesSynced(true);
-      }
+    Date completeDate = sprint.getCompleteDate();
+    //TODO: Is this right? what about the timezone?
+    Date today = new Date();
+    LocalDate localToday = today.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    LocalDate localComplete = completeDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    if (ChronoUnit.WEEKS.between(localComplete, localToday) > 2) {
+      sprint.setIssuesSynced(true);
     }
   }
 

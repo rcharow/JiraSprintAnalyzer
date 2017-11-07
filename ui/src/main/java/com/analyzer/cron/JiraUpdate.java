@@ -4,13 +4,14 @@ import com.analyzer.dao.JiraBoardDao;
 import com.analyzer.dao.JiraIssueDao;
 import com.analyzer.dao.JiraSprintDao;
 import com.analyzer.dao.JiraWorklogDao;
+import com.analyzer.domain.JiraSprint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * Created by rcharow on 8/27/17.
@@ -45,10 +46,17 @@ public class JiraUpdate {
         sprintDao.updateSprints();
         logger.info("--------------- Updated jira sprints!");
 
-        issueDao.updateJiraIssues();
+
+        List<JiraSprint> issueSprints = sprintDao.getClosedSprintsWithUnsyncedIssues();
+        for (JiraSprint sprint : issueSprints) {
+            issueDao.updateJiraSprintIssues(sprint);
+        }
         logger.info("--------------- Updated jira issues!");
 
-        worklogDao.updateJiraWorklogs();
+        List<JiraSprint> worklogSprints = sprintDao.getClosedSprintsWithUnsyncedWorklogs();
+        for (JiraSprint sprint : worklogSprints) {
+            worklogDao.updateJiraSprintWorklogs(sprint);
+        }
         logger.info("--------------- Updated jira worklogs!");
 
     }

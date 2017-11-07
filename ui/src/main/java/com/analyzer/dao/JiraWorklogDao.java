@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -62,15 +61,8 @@ public class JiraWorklogDao {
         .getResultList();
   }
 
-  public void updateJiraWorklogs() {
-    List<JiraSprint> sprints = sprintDao.getClosedSprintsWithUnsyncedWorklogs();
-    for (JiraSprint sprint : sprints) {
-      updateSprintWorklogs(sprint);
-    }
-  }
-
   @Transactional
-  private void updateSprintWorklogs(JiraSprint sprint) {
+  public void updateJiraSprintWorklogs(JiraSprint sprint) {
 
     List<JiraIssue> sprintIssues = issueDao.getParentIssuesBySprint(sprint.getId());
     for (JiraIssue issue : sprintIssues) {
