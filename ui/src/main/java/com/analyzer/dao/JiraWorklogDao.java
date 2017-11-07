@@ -71,8 +71,7 @@ public class JiraWorklogDao {
 
   @Transactional
   private void updateSprintWorklogs(JiraSprint sprint) {
-    Date today = new Date();
-    LocalDate localToday = new java.sql.Date(today.getTime()).toLocalDate();
+
     List<JiraIssue> sprintIssues = issueDao.getParentIssuesBySprint(sprint.getId());
     for (JiraIssue issue : sprintIssues) {
       //Update worklogs and add new
@@ -110,6 +109,8 @@ public class JiraWorklogDao {
       }
     }
 
+    Date today = new Date();
+    LocalDate localToday = today.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     Date completeDate = sprint.getCompleteDate();
     LocalDate localComplete = completeDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     if (ChronoUnit.WEEKS.between(localComplete, localToday) > 2) {

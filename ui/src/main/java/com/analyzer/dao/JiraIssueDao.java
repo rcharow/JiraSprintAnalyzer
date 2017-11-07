@@ -52,8 +52,7 @@ public class JiraIssueDao {
 
   @Transactional
   public void updateJiraIssues() {
-    Date today = new Date();
-    LocalDate localToday = new java.sql.Date(today.getTime()).toLocalDate();
+
     List<JiraSprint> sprints = sprintDao.getClosedSprintsWithUnsyncedIssues();
     for (JiraSprint sprint : sprints) {
       //TODO: Is using the 'current board' correct? Seems like the origin board might not exist. Will this cause dupes?
@@ -85,6 +84,8 @@ public class JiraIssueDao {
 
       Date completeDate = sprint.getCompleteDate();
       //TODO: Is this right? what about the timezone?
+      Date today = new Date();
+      LocalDate localToday = today.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       LocalDate localComplete = completeDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       if (ChronoUnit.WEEKS.between(localComplete, localToday) > 2) {
         sprint.setIssuesSynced(true);
