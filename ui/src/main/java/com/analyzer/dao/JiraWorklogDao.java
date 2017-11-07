@@ -4,6 +4,8 @@ import com.analyzer.domain.JiraIssue;
 import com.analyzer.domain.JiraSprint;
 import com.analyzer.domain.JiraWorklog;
 import com.analyzer.jira.JiraIssueService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +30,7 @@ public class JiraWorklogDao {
   private JiraIssueService jiraIssueService;
   private JiraSprintDao sprintDao;
   private JiraIssueDao issueDao;
+  private static final Logger logger = LoggerFactory.getLogger(JiraWorklog.class);
 
   @Autowired
   public JiraWorklogDao(JiraIssueService jiraIssueService, JiraSprintDao jiraSprintDao, JiraIssueDao jiraIssueDao) {
@@ -57,42 +62,59 @@ public class JiraWorklogDao {
         .getResultList();
   }
 
-  @Transactional
   public void updateJiraWorklogs() {
-    Date today = new Date();
-    LocalDate localToday = new java.sql.Date(today.getTime()).toLocalDate();
     List<JiraSprint> sprints = sprintDao.getClosedSprintsWithUnsyncedWorklogs();
     for (JiraSprint sprint : sprints) {
-      List<JiraIssue> sprintIssues = issueDao.getIssuesByBoard(sprint.getOriginBoardId());
-      for (JiraIssue issue : sprintIssues) {
-        //Update worklogs and add new
-        List<JiraWorklog> worklogs = jiraIssueService.getIssueWorklogs(issue.getId());
-        for (JiraWorklog worklog : worklogs) {
-          em.merge(worklog);
-        }
+      updateSprintWorklogs(sprint);
+    }
+  }
 
-        //Remove cached worklogs that don't exist in jira anymore
-        List<JiraWorklog> cachedWorklogs = getWorklogsByIssue(issue.getId());
-        for(JiraWorklog cached : cachedWorklogs) {
-          Boolean exists = false;
-          for(JiraWorklog worklog : worklogs) {
-            if(cached.equals(worklog)) {
-              exists = true;
-            }
-          }
-          if(!exists) {
-            em.remove(cached);
-          }
+  @Transactional
+  private void updateSprintWorklogs(JiraSprint sprint) {
+    Date today = new Date();
+    LocalDate localToday = new java.sql.Date(today.getTime()).toLocalDate();
+    List<JiraIssue> sprintIssues = issueDao.getParentIssuesBySprint(sprint.getId());
+    for (JiraIssue issue : sprintIssues) {
+      //Update worklogs and add new
+      List<JiraWorklog> worklogs = jiraIssueService.getIssueWorklogs(issue.getId());
+      for (JiraWorklog updatedWorklog : worklogs) {
+        String comment = updatedWorklog.getComment();
+        if(comment.length() > 255) {
+          updatedWorklog.setComment(comment.substring(0, Math.min(comment.length(), 255)));
+        }
+        updatedWorklog.setBoardId(sprint.getOriginBoardId());
+        updatedWorklog.setSprintId(sprint.getId());
+        updatedWorklog.setUpdateTime(new Date());
+        JiraWorklog currentWorklog = em.find(JiraWorklog.class, updatedWorklog.getId());
+        if(currentWorklog != null) {
+          currentWorklog.setComment(updatedWorklog.getComment());
+          currentWorklog.setTimeSpentSeconds(updatedWorklog.getTimeSpentSeconds());
+          currentWorklog.setAuthor(updatedWorklog.getAuthor());
+        } else {
+          em.persist(updatedWorklog);
         }
       }
 
-      Date completeDate = sprint.getCompleteDate();
-      LocalDate localComplete = new java.sql.Date(completeDate.getTime()).toLocalDate();
-      if (ChronoUnit.DAYS.between(localComplete, localToday) > 14) {
-//        em.getTransaction().begin();
-        sprint.setWorklogsSynced(true);
-//        em.getTransaction().commit();
+      //Remove cached worklogs that don't exist in jira anymore
+      List<JiraWorklog> cachedWorklogs = getWorklogsByIssue(issue.getId());
+      for(JiraWorklog cached : cachedWorklogs) {
+        Boolean exists = false;
+        for(JiraWorklog worklog : worklogs) {
+          if(cached.equals(worklog)) {
+            exists = true;
+          }
+        }
+        if(!exists) {
+          em.remove(cached);
+        }
       }
     }
+
+    Date completeDate = sprint.getCompleteDate();
+    LocalDate localComplete = completeDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    if (ChronoUnit.WEEKS.between(localComplete, localToday) > 2) {
+      sprint.setWorklogsSynced(true);
+    }
+    logger.info("--------------- Updated jira worklogs for sprint {}!", sprint.getId());
   }
 }
