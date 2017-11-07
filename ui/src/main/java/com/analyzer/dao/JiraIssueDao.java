@@ -1,8 +1,11 @@
 package com.analyzer.dao;
 
 import com.analyzer.domain.JiraIssue;
+import com.analyzer.domain.JiraIssueDetails;
+import com.analyzer.domain.JiraIssueTypeFields;
 import com.analyzer.domain.JiraSprint;
 import com.analyzer.jira.JiraIssueService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Date;
@@ -54,8 +58,15 @@ public class JiraIssueDao {
     for (JiraSprint sprint : sprints) {
       //TODO: Is using the 'current board' correct? Seems like the origin board might not exist. Will this cause dupes?
       List<JiraIssue> sprintIssues = jiraIssueService.getCompletedSprintIssues(sprint.getCurrentBoardId(), sprint.getId());
-      for (JiraIssue issue : sprintIssues) {
-        em.merge(issue);
+      for (JiraIssue updatedIssue : sprintIssues) {
+        updatedIssue.setBoardId(sprint.getCurrentBoardId());
+        updatedIssue.setSprintId(sprint.getId());
+        JiraIssue currentIssue = em.find(JiraIssue.class, updatedIssue.getId());
+        if(currentIssue != null) {
+          currentIssue.setDetails(updatedIssue.getDetails());
+        } else {
+          em.persist(updatedIssue);
+        }
       }
 
       //Remove cached issues that don't exist in jira anymore
@@ -73,11 +84,10 @@ public class JiraIssueDao {
       }
 
       Date completeDate = sprint.getCompleteDate();
-      LocalDate localComplete = new java.sql.Date(completeDate.getTime()).toLocalDate();
-      if (ChronoUnit.DAYS.between(localComplete, localToday) > 14) {
-//        em.getTransaction().begin();
+      //TODO: Is this right? what about the timezone?
+      LocalDate localComplete = completeDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+      if (ChronoUnit.WEEKS.between(localComplete, localToday) > 2) {
         sprint.setIssuesSynced(true);
-//        em.getTransaction().commit();
       }
     }
   }
