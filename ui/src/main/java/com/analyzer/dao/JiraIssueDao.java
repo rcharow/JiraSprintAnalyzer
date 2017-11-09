@@ -51,7 +51,9 @@ public class JiraIssueDao {
   }
 
   @Transactional
-  public void updateJiraSprintIssues(JiraSprint sprint) {
+  public void updateJiraSprintIssues(String sprintId) {
+
+    JiraSprint sprint = em.find(JiraSprint.class,sprintId);
 
     //TODO: Is using the 'current board' correct? Seems like the origin board might not exist. Will this cause dupes?
     List<JiraIssue> sprintIssues = jiraIssueService.getCompletedSprintIssues(sprint.getCurrentBoardId(), sprint.getId());

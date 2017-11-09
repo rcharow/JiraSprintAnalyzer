@@ -62,7 +62,8 @@ public class JiraWorklogDao {
   }
 
   @Transactional
-  public void updateJiraSprintWorklogs(JiraSprint sprint) {
+  public void updateJiraSprintWorklogs(String sprintId) {
+    JiraSprint sprint = em.find(JiraSprint.class, sprintId);
 
     List<JiraIssue> sprintIssues = issueDao.getParentIssuesBySprint(sprint.getId());
     for (JiraIssue issue : sprintIssues) {

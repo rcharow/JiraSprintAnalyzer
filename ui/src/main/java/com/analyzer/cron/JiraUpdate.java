@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -23,6 +25,8 @@ public class JiraUpdate {
     private JiraIssueDao issueDao;
     private JiraWorklogDao worklogDao;
     private static final Logger logger = LoggerFactory.getLogger(JiraUpdate.class);
+    @PersistenceContext
+    private EntityManager em;
 
     @Autowired
     public JiraUpdate(JiraBoardDao boardDao, JiraSprintDao sprintDao, JiraIssueDao issueDao, JiraWorklogDao worklogDao) {
@@ -47,16 +51,11 @@ public class JiraUpdate {
         logger.info("--------------- Updated jira sprints!");
 
 
-        List<JiraSprint> issueSprints = sprintDao.getClosedSprintsWithUnsyncedIssues();
-        for (JiraSprint sprint : issueSprints) {
-            issueDao.updateJiraSprintIssues(sprint);
-        }
+        em.createQuery("SELECT s.id FROM JiraSprint s WHERE s.issuesSynced = false AND s.state = 'closed'", String.class).getResultList().stream().forEach(p -> issueDao.updateJiraSprintIssues(p));
+
         logger.info("--------------- Updated jira issues!");
 
-        List<JiraSprint> worklogSprints = sprintDao.getClosedSprintsWithUnsyncedWorklogs();
-        for (JiraSprint sprint : worklogSprints) {
-            worklogDao.updateJiraSprintWorklogs(sprint);
-        }
+        em.createQuery("SELECT s.id FROM JiraSprint s WHERE s.worklogsSynced = false AND s.state = 'closed'", String.class).getResultList().stream().forEach(p -> worklogDao.updateJiraSprintWorklogs(p));
         logger.info("--------------- Updated jira worklogs!");
 
     }
